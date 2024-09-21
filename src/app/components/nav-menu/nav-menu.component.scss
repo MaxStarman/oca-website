@@ -1,3 +1,9 @@
+.nav{
+    display: none;
+    &.open {
+        display: block;
+    }
+}
 
 a:hover {
     opacity: 0.75;

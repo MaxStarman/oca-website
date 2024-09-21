@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {NavService} from "../../services/nav.service";
 
 @Component({
   selector: 'home-page',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class HomePageComponent {
 
+    constructor(private navService: NavService) {}
+
+    toggleNav() {
+        console.log('click')
+        this.navService.toggleNav();
+    }
 }
