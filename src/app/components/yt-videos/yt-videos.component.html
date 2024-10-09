@@ -1,33 +1,29 @@
 <nav-menu-icon></nav-menu-icon>
 
+<!--<div class="container">-->
+<!--    <h1>YT video player</h1>-->
+<!--    <p>For video player ->-->
+<!--        <a href="https://github.com/angular/components/tree/main/src/youtube-player">Angular YouTube Player component-->
+<!--        </a> in <a href="https://developers.google.com/youtube/iframe_api_reference">Google docs za YT player API</a>-->
+<!--    </p>-->
+<!--</div>-->
+
+
 <div class="container">
-    <h1>YT video player</h1>
-    <p>For video player ->
-        <a href="https://github.com/angular/components/tree/main/src/youtube-player">Angular YouTube Player component
-        </a> in <a href="https://developers.google.com/youtube/iframe_api_reference">Google docs za YT player API</a>
-    </p>
-</div>
-<div class="container">
-    <button
-        (click)="consoleLog()"
-        class="btn btn-danger m-2"
-    >
-        Console log videos and get them first
-    </button>
-    <div class="container row">
-        <div *ngFor="let video of videos" class="col-xl-6 col-md-6 mb-4">
-            <div class="card border-0 shadow vh-50">
-                <a href="https://www.youtube.com/watch?v={{video.id.videoId}}" target="_blank">
-                    <img [src]="video.snippet.thumbnails.medium.url" alt="..." class="card-img-top"></a>
-                <div class="card-body text-center">
-                    <h5 class="card-title mb-0">
-                        <a href="https://www.youtube.com/watch?v={{video.id.videoId}}">{{ video.snippet.title }}
-                        </a></h5>
-                    <div class="card-text text-black-50">{{ video.snippet.description.slice(0, 100) }}</div>
-                    <p class="card-text">{{ video.snippet.description }}</p>
-                </div>
+    <div *ngFor="let video of videos" class="video-section">
+        <!-- Video card -->
+        <div class="card border-0 shadow vh-50">
+            <a href="https://www.youtube.com/watch?v={{video.id.videoId}}" target="_blank">
+                <img [src]="video.snippet.thumbnails.medium.url" alt="..." class="card-img-top"></a>
+            <div class="card-body text-center">
+                <h5 class="card-title mb-0">
+                    <a href="https://www.youtube.com/watch?v={{video.id.videoId}}">{{ video.snippet.title }}</a>
+                </h5>
+                <p class="card-text">{{ video.snippet.description }}</p>
             </div>
         </div>
     </div>
-    <!--<youtube-player></youtube-player>-->
 </div>
+<!--<youtube-player></youtube-player>-->
+
+

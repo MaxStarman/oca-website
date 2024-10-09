@@ -1,12 +1,34 @@
-.nav{
+// show navigation
+.nav {
     display: none;
+
     &.open {
         display: block;
     }
 }
 
-a:hover {
-    opacity: 0.75;
-    cursor: pointer;
-}
 
+a {
+
+    text-decoration: none;
+
+    p {
+        margin-top: 3rem;
+        color: white;
+        visibility: hidden;
+    }
+
+    &:hover {
+        opacity: 0.75;
+        cursor: pointer;
+
+        img, p {
+            transition: transform .2s;
+            transform: scale(1.5);
+        }
+
+        p {
+            visibility: visible;
+        }
+    }
+}

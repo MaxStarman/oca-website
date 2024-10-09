@@ -1,0 +1,17 @@
+
+.container {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+    height: 100vh;
+    max-width: 100%;
+
+}
+
+.video-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+}
