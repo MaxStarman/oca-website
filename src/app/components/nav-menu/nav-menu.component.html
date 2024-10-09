@@ -1,27 +1,33 @@
-<div [ngClass]="{'open': isOpen}" class="nav">
-    <div class="container-fluid vh-100 bg-secondary z-1">
+<div [ngClass]="{'open': isOpen}" class="nav overlay">
 
-        <nav-menu-icon></nav-menu-icon>
 
-        <div class="row h-100">
+    <video autoplay id="myVideo" loop muted>
+        <source src="/assets/videos/oca-nav-video.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
 
-            <a (click)="toggleNav()" [routerLink]="'news'"
-               class="col-lg-4 d-flex flex-column justify-content-center align-items-center ">
-                <img alt="" height="76" ngSrc="assets/svg-icons/alert-white.svg" width="87">
-                <p>Novice</p>
-            </a>
+    <nav-menu-icon></nav-menu-icon>
 
-            <a (click)="toggleNav()" [routerLink]="'music'"
-               class="col-lg-4 d-flex flex-column justify-content-center align-items-center">
-                <img alt="" height="74" ngSrc="assets/svg-icons/note-white.svg" width="48">
-                <p>Glasba</p>
-            </a>
+    <div class="row h-100 position-relative">
 
-            <a (click)="toggleNav()" [routerLink]="'contact'"
-               class="col-lg-4 d-flex flex-column justify-content-center align-items-center">
-                <img alt="" height="74" ngSrc="assets/svg-icons/mail-white.svg" width="93">
-                <p>Kontakt + feedback</p>
-            </a>
-        </div>
+        <a (click)="toggleNav()" [routerLink]="'news'"
+           class="col-lg-4 d-flex flex-column justify-content-center align-items-center ">
+            <img alt="" height="76" ngSrc="assets/svg-icons/alert-white.svg" width="87">
+            <p>Novice</p>
+        </a>
+
+        <a (click)="toggleNav()" [routerLink]="'music'"
+           class="col-lg-4 d-flex flex-column justify-content-center align-items-center">
+            <img alt="" height="74" ngSrc="assets/svg-icons/note-white.svg" width="48">
+            <p>Glasba</p>
+        </a>
+
+        <a (click)="toggleNav()" [routerLink]="'contact'"
+           class="col-lg-4 d-flex flex-column justify-content-center align-items-center">
+            <img alt="" height="74" ngSrc="assets/svg-icons/mail-white.svg" width="93">
+            <p>Kontakt + feedback</p>
+        </a>
     </div>
+
+
 </div>

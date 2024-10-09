@@ -1,4 +1,27 @@
-<nav-menu-icon></nav-menu-icon>
-<div class="container">
-    <p>news works!</p>
-</div>
+
+    <nav-menu-icon></nav-menu-icon>
+
+
+
+<section
+    (click)="onBackgroundClick()"
+    [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}"
+    class="full-screen">
+    <div class="overlay"></div>
+</section>
+
+<section class="content-section" id="nextSection">
+    <h1>Next Section Content</h1>
+    <p>This is the next section after the background image change.</p>
+
+</section>
+
+<!-- Za bolj smooth prehod -->
+<!--<section class="full-screen" (click)="onBackgroundClick()">-->
+<!--    <div class="background-overlay" [ngClass]="{'show-overlay': showOverlay}"></div>-->
+<!--</section>-->
+
+<!--<section class="content-section" id="nextSection">-->
+<!--    <h1>Next Section Content</h1>-->
+<!--    <p>This is the next section after the background image change.</p>-->
+<!--</section>-->
