@@ -20,7 +20,6 @@ export class YoutubeService {
 
     private channelId = 'UCmZl5oAf_0DArAIUyv7PKHg'
     private searchUrl = 'https://www.googleapis.com/youtube/v3/search?key=';
-    private videoUrl = 'https://www.googleapis.com/youtube/v3/search?key=';
     private cachedVideos: ReplaySubject<any> = new ReplaySubject(1);
     private sessionKey = 'youtubeVideos';
 
@@ -47,8 +46,8 @@ export class YoutubeService {
                 ).subscribe();
         }
         return this.cachedVideos.asObservable();
-
     }
+
     /** Dva API klica za dodatne info o videjih
      *  za 5 videjov je potrebnih 6 klicev
      *  za extra data je potrebno klicati API za vsak video posebaj

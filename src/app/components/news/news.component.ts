@@ -1,20 +1,30 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NavService} from "../../services/nav.service";
+import {InstagramService} from "../../services/instagram.service";
 
 @Component({
     selector: 'news-page',
     templateUrl: './news.component.html',
     styleUrls: ['./news.component.scss']
 })
-export class NewsComponent {
+export class NewsComponent implements OnInit {
 
     backgroundImage: string = '/assets/images/news-start-full.jpeg'; // Initial background image
+    posts: any = [];
 
-    constructor(private navService: NavService) {
+    constructor(private navService: NavService,
+                private instagramService: InstagramService) {
         this.navService.isOpen$.subscribe((isOpen) => {
             if (!isOpen) {
                 this.backgroundImage = '/assets/images/news-start-full.jpeg';
             }
+        })
+    }
+
+    ngOnInit() {
+        this.instagramService.getUserMedia().subscribe(posts => {
+            this.posts = posts.data
+            console.log(this.posts)
         })
     }
 
