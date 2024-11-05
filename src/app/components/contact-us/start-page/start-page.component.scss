@@ -1,0 +1,43 @@
+.bg-image {
+    background-image: url("/assets/images/contact-us/contact-start.jpeg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: crosshair;
+
+    .title-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        text-align: center;
+
+        h1 {
+            font-family: 'Ethnocentric', sans-serif;
+            font-weight: 400;
+            color: white;
+            font-size: 64px;
+        }
+    }
+}
+
+
+// TODO fix
+@media(min-width: 768px) and (max-width: 1024px) {
+    h1 {
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 767px) {
+    h1 {
+        font-size: 21px;
+    }
+}
+
+

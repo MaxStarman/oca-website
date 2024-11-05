@@ -1,0 +1,12 @@
+<nav-menu-icon></nav-menu-icon>
+
+<section
+    (click)="onBackgroundClick()"
+    [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}"
+    class="full-screen">
+</section>
+
+<section class="instagram-feed" id="nextSection">
+    <display-posts [posts]="instagramData"></display-posts>
+</section>
+

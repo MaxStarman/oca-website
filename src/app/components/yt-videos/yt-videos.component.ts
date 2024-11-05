@@ -3,7 +3,7 @@ import {YoutubeService} from "../../services/youtube.service";
 import {Subject, takeUntil} from "rxjs";
 
 @Component({
-    selector: 'app-yt-videos',
+    selector: 'yt-videos',
     templateUrl: './yt-videos.component.html',
     styleUrls: ['./yt-videos.component.scss']
 })

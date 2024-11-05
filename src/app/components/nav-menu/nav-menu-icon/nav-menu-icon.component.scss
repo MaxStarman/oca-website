@@ -1,7 +1,11 @@
 
-a:hover {
-    opacity: 0.75;
-    cursor: pointer;
+a {
+    z-index: 1022;
+
+    &:hover {
+        opacity: 0.75;
+        cursor: pointer;
+    }
 }
 
 .quarter-circle {
@@ -17,6 +21,11 @@ a:hover {
         transform: translate(-25%, -25%); /* Adjust for the quarter-circle's shape */
         width: 65px; /* Adjust size as necessary */
         height: auto;
+    }
+
+    // TODO make it scale like in figma when hover
+    &:hover {
+        transform: scale(110%);
     }
 }
 

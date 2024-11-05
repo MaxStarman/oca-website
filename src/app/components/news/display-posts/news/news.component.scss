@@ -1,0 +1,21 @@
+/* Full screen section */
+.full-screen {
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    cursor: crosshair;
+    overflow: hidden; /* No scroll allowed */
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    background-color: #1f1f1f;
+}
+
+
+.instagram-feed {
+    background-color: #f0f0f0;
+    max-width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+

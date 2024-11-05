@@ -1,26 +1,11 @@
 <nav-menu-icon></nav-menu-icon>
 
-<div class="container-fluid py-3" id="component">
-    <div class="position-relative  row">
-        <img class="left-0 top-0 position-absolute col-xl-12" src="https://via.placeholder.com/1280x565" alt="">
-        <div class="left-0 top-0 position-absolute bg-black bg-opacity-75 col-xl-12">
-        </div>
-        <p class="position-absolute text-center text-white fs-1 fw-normal font-family-Ethnocentric col-xl-8 m-0 px-3 py-2">
-            ALE, DEJMO SE ZMENIT
-        </p>
-<!--        <img class="position-absolute col-xl-9" src="https://via.placeholder.com/930x444">-->
-<!--        <img class="position-absolute col-xl-7" src="https://via.placeholder.com/720x458">-->
-<!--        <img class="position-absolute col-xl-6" src="https://via.placeholder.com/666x415">-->
-<!--        <img class="position-absolute col-xl-7" src="https://via.placeholder.com/790x502">-->
-        <div class="position-absolute col-xl-12 row">
-            <div class="left-0 top-0 position-absolute bg-black col-xl-12">
-            </div>
-            <p class="position-absolute text-center text-white text-opacity-50 fs-6 fw-normal font-family-Jersey 10 col-xl-4 m-0 px-3 py-2">
-                Organizatorji dogodkov, glasbeniki, oboževalci, hejterji in drugi! Vsi ste dobrodošli da nas
-                kontaktirate za sodelovanje z nami in povratne informacije o nas, naši glasbi, dizajnu, čemerkoli.
-            </p>
-        </div>
-        <img class="position-absolute col-xl-2" src="https://via.placeholder.com/246x243" alt="">
-    </div>
+<div>
+    <ng-container *ngIf="showStartPage; else contentTemplate">
+        <start-page (clicked)="toggleStartPage()" @fadeOut></start-page>
+    </ng-container>
+    <ng-template #contentTemplate>
+        <content @fadeIn></content>
+    </ng-template>
 </div>
 

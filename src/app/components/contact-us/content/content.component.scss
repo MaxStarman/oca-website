@@ -1,0 +1,110 @@
+.base-bg {
+    background-image: url("/assets/images/dry-earth-bg.jpeg");
+    //filter: brightness(0.35);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+}
+
+#intro-section {
+
+    height: 100vh;
+
+    .header {
+
+        position: relative;
+        height: 66vh;
+        width: 100%;
+        overflow: hidden;
+
+        .heading {
+            position: relative;
+            top: 3rem;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            z-index: 4;
+
+            h1 {
+                font-family: 'Ethnocentric', sans-serif;
+                font-weight: 400;
+                color: white;
+                font-size: 64px;
+                width: 80%;
+            }
+        }
+    }
+
+    .main-bg-image,
+    .band-img {
+        position: absolute;
+        width: 100%;
+        height: 66vh;
+    }
+
+    .main-bg-image {
+        top: 0;
+        filter: brightness(0.35);
+        z-index: 2;
+    }
+
+    .band-img {
+        bottom: 0;
+        max-height: 66vh;
+        height: auto;
+        z-index: 4;
+    }
+
+    .footer {
+        height: 33vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        p {
+            color: rgba(0, 0, 0, 1);
+            font-size: 32px;
+            font-family: "Jersey 10", sans-serif;
+            font-weight: 400;
+            word-wrap: break-word
+        }
+    }
+}
+
+#contact-section {
+
+    height: 300vh;
+    background-image: linear-gradient(rgba(234, 69, 69, 0.8), rgba(87, 128, 232, 0.81));
+
+    .contact-info {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        div > i {
+            margin-right: 2rem;
+        }
+
+        .phone-number, .email, .location {
+            display: flex;
+            align-items: center;
+        }
+    }
+    .info {
+        font-family: 'Ethnocentric', sans-serif;
+        font-weight: 400;
+        color: white;
+        font-size: 32px;
+    }
+}
+
+
+
+
+

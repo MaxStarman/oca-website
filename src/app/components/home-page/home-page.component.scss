@@ -1,12 +1,9 @@
 .bg-image {
-    background-image:url("/assets/images/title-screen-bg.jpeg");
+    background-image:url("/assets/images/dry-earth-bg.jpeg");
     height: 100vh;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 #title-logo-img:hover {
