@@ -26,6 +26,7 @@
                     {{ post.caption }}
                 </p>
 
+<!--    TODO bug - text shown twice            -->
                 <!-- Show collapsed version if caption is longer than 50 characters -->
                 <p *ngIf="post.caption.length > 100">
                     {{ post.caption | slice: 0: 100 }}...

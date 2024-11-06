@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'content',
@@ -7,11 +8,21 @@ import { Component } from '@angular/core';
 })
 export class ContentComponent {
 
-    contentItems = [
-        {title: 'Section 1', text: 'This is the first section.'},
-        {title: 'Section 2', text: 'More information in this section.'},
-        {title: 'Section 3', text: 'Another section with details.'},
-        // Add more sections as needed
-    ];
+    emailForm: FormGroup;
+
+    constructor(private fb: FormBuilder) {
+        this.emailForm = this.fb.group({
+            name: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email]],
+            message: ['', Validators.required]
+        });
+    }
+
+    onSubmit() {
+        if (this.emailForm.valid) {
+            console.log('Form Submitted', this.emailForm.value);
+            this.emailForm.reset();
+        }
+    }
 
 }

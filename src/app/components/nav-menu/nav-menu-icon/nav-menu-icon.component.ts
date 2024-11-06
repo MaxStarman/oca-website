@@ -13,6 +13,7 @@ export class NavMenuIconComponent {
 
     toggleNav() {
         console.log('click on icon')
+        // TODO naj redirecta na homespage
         this.navService.toggleNav();
     }
 

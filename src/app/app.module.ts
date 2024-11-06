@@ -18,6 +18,7 @@ import {CarouselModule} from "ngx-bootstrap/carousel";
 import {DisplayPostsComponent} from './components/news/display-posts/display-posts/display-posts.component';
 import {StartPageComponent} from './components/contact-us/start-page/start-page.component';
 import {ContentComponent} from './components/contact-us/content/content.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -40,7 +41,8 @@ import {ContentComponent} from './components/contact-us/content/content.componen
         HttpClientModule,
         YouTubePlayerModule,
         NgOptimizedImage,
-        CarouselModule.forRoot()
+        CarouselModule.forRoot(),
+        ReactiveFormsModule
     ],
     providers: [
         provideAnimations()
