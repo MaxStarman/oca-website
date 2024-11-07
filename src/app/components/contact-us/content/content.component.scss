@@ -10,6 +10,8 @@
 #intro-section {
 
     height: 100vh;
+    max-width: 100%;
+    overflow-x: hidden;
 
     .header {
 
@@ -33,6 +35,7 @@
         width: 100%;
         height: 66vh;
     }
+
     .main-bg-image {
         top: 0;
         filter: brightness(0.35);
@@ -61,11 +64,13 @@
             margin-left: -180px;
             object-fit: cover;
             object-position: bottom center;
+            overflow-x: hidden;
         }
 
         #cink {
             margin-left: -20px;
         }
+
         #maj {
             margin-left: -280px;
         }
@@ -97,6 +102,7 @@
         }
         .header .heading {
             top: 130px;
+
             h1 {
                 font-size: 58px;
             }
@@ -113,6 +119,7 @@
             &#cink {
                 margin-left: -60px;
             }
+
             &#maj {
                 margin-left: -330px;
             }
@@ -137,12 +144,14 @@
             &#maj {
                 margin-left: -240px;
             }
+
             &#miha {
                 margin-left: -100px;
             }
         }
         .header .heading {
             top: 100px;
+
             h1 {
                 font-size: 28px;
             }
@@ -166,6 +175,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        text-align: center;
         gap: 1rem;
 
         div > i, img {
@@ -182,45 +192,94 @@
         font-family: 'Ethnocentric', sans-serif;
         font-weight: 400;
         color: white;
-        font-size: 32px;
+    }
+
+    .info-feedback {
+        font-family: 'Jersey 10', sans-serif;
+        font-weight: 400;
+        color: white;
     }
 }
 
-#contact-form-section {
+#contact-feedback-section {
+    background-image: linear-gradient(rgba(0, 88, 145, 0.7), rgba(0, 88, 145, 0.7)), url('/assets/images/stone-wall.png');
+    background-size: cover;
+    background-position: center;
     height: 100vh;
 
-    form {
+    .title {
+        h1 {
+            position: relative;
+            top: 4rem;
+            text-align: center;
+        }
+    }
+
+    .feedback-form {
         display: flex;
         flex-direction: column;
-        max-width: 400px;
-        margin: 0 auto;
+        align-items: center;
+        width: 80%;
+        max-width: 500px;
+        gap: 10px;
+
+        textarea {
+            width: 100%;
+            height: 50%;
+            border-radius: 15px;
+            border: none;
+            background-color: #000;
+            color: white;
+            padding: 15px;
+            font-size: 1rem;
+            resize: none;
+        }
+
+        input, textarea {
+
+            &[type="email"] {
+                width: 100%;
+                height: 50px;
+                border-radius: 25px;
+                border: none;
+                background-color: #000;
+                color: white;
+                text-align: center;
+                font-size: 1rem;
+                padding: 10px;
+            }
+
+            &::placeholder {
+                font-family: 'Ethnocentric', sans-serif;
+                font-weight: 400;
+                color: #FFFFFF80;
+                font-size: 1rem;
+                text-align: center;
+            }
+        }
+
+        button {
+            width: 75%;
+            height: 50px;
+            border-radius: 25px;
+            border: none;
+            background-color: #000;
+            color: white;
+            font-size: 1.2rem;
+            cursor: crosshair;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
     }
 
-    label {
-        margin-top: 10px;
-    }
-
-    input, textarea {
-        padding: 8px;
-        margin-top: 5px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-    }
-
-    button {
-        margin-top: 15px;
-        padding: 10px;
-        background-color: #21409A;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-
-    button:disabled {
-        background-color: #ccc;
-    }
 }
 
+#contact-nav-menu {
+    height: 100vh;
+    background-color: #3897f0;
+}
 
 

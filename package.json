@@ -26,6 +26,7 @@
         "@fortawesome/fontawesome-free": "^6.6.0",
         "bootstrap": "^5.3.3",
         "ngx-bootstrap": "^11.0.2",
+        "ngx-captcha": "^13.0.0",
         "rxjs": "~7.8.0",
         "single-spa-angular": "^9.2.0",
         "tslib": "^2.3.0",

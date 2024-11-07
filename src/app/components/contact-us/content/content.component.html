@@ -31,44 +31,69 @@
 
 <section id="contact-section">
 
+    <!-- TODO add media breakpoints   -->
     <div class="container contact-info">
         <div class="phone-number">
-            <i class="fa-solid fa-phone fa-2xl"></i>
+            <!--            <i class="fa-solid fa-phone fa-2xl"></i>-->
             <img alt="" height="33" ngSrc="assets/svg-icons/phone-white.svg" width="38">
-            <span class="info">+386 41 631 169</span>
+            <span class="info fs-2">+386 41 631 169</span>
         </div>
         <div class="email">
-            <i class="fa-regular fa-envelope fa-2xl"></i>
+            <!--            <i class="fa-regular fa-envelope fa-2xl"></i>-->
             <img alt="" height="26" ngSrc="assets/svg-icons/mail-white.svg" width="38">
-            <span class="info">OCABAND@PROTONMAIL.COM</span>
+            <span class="info fs-3">OCABAND@PROTONMAIL.COM</span>
         </div>
         <div class="location">
-            <i class="fa-solid fa-map-pin fa-2xl"></i>
+            <!--            <i class="fa-solid fa-map-pin fa-2xl"></i>-->
             <img alt="" height="34" ngSrc="assets/svg-icons/location-white.svg" width="30">
-            <span class="info">KOPER, SLOVENIJA</span>
+            <span class="info fs-4">KOPER, SLOVENIJA</span>
+        </div>
+        <div class="feedback-button mt-3">
+            <button (click)="scrollToFeedback()" class="btn btn-primary">
+                <span class="info fs-3">FEEDBACK</span>
+            </button>
+        </div>
+        <div class="feedback-text">
+            <span class="info-feedback fs-4">Radi bi se izboljšali! Če se le da, bomo odpisali.</span>
         </div>
     </div>
 </section>
 
-<section id="contact-form-section">
+<section id="contact-feedback-section">
 
-    <form (ngSubmit)="onSubmit()" [formGroup]="emailForm" action="mailto:max.starman@outlook.com" enctype="text/plain"
-          method="GET">
-        <label for="name">Name:</label>
-        <input formControlName="name" id="name" type="text"/>
+    <!--    <div class="sticky-top">-->
+    <div class="title h-25">
+        <h1>FEEDBACK</h1>
+    </div>
+    <div class="container h-75 d-flex justify-content-center">
+        <form (ngSubmit)="onSubmit()" [formGroup]="emailForm" action="mailto:max.starman@outlook.com"
+              class="feedback-form"
+              enctype="text/plain"
+              method="GET">
 
-        <label for="email">Email:</label>
-        <input formControlName="email" id="email" type="email"/>
+            <label for="message"></label>
+            <textarea formControlName="message" id="message" placeholder="Sporočilo"></textarea>
 
-        <label for="message">Message:</label>
-        <textarea formControlName="message" id="message"></textarea>
+            <label for="email"></label>
+            <input formControlName="email" id="email" placeholder="EMAIL" type="email"/>
+            <div *ngIf="emailForm.controls['email'].invalid && emailForm.controls['email'].touched">
+                <h1 class="fs-6">Prosim vnesite veljaven email.</h1>
+            </div>
 
-        <button [disabled]="emailForm.invalid" type="submit">Send</button>
-    </form>
+            <button [disabled]="emailForm.invalid" class="mt-2" type="submit"><h1 class="fs-5 text-center m-0">
+                Pošlji</h1></button>
+        </form>
+    </div>
+    <!--    </div>-->
 
-    <div *ngIf="emailForm.controls['email'].invalid && emailForm.controls['email'].touched">
-        Please enter a valid email.
+</section>
+
+<section id="contact-nav-menu">
+    <div class="d-flex justify-content-center">
+        <h1>NAV MENU</h1>
     </div>
 
+    <a href="mailto:piotr@mailtrap.io?subject=ssss&body=aaaa" style="color: white" target="_blank">I want free
+        Bitcoins</a>
 </section>
 
