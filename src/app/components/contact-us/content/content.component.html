@@ -66,10 +66,13 @@
         <h1>FEEDBACK</h1>
     </div>
     <div class="container h-75 d-flex justify-content-center">
-        <form (ngSubmit)="onSubmit()" [formGroup]="emailForm" action="mailto:max.starman@outlook.com"
+        <form (ngSubmit)="onSubmit()"
+              [formGroup]="emailForm"
               class="feedback-form"
-              enctype="text/plain"
-              method="GET">
+        >
+
+            <label for="subject"></label>
+            <input formControlName="subject" id="subject" placeholder="Zadeva" type="text"/>
 
             <label for="message"></label>
             <textarea formControlName="message" id="message" placeholder="Sporočilo"></textarea>
@@ -79,6 +82,11 @@
             <div *ngIf="emailForm.controls['email'].invalid && emailForm.controls['email'].touched">
                 <h1 class="fs-6">Prosim vnesite veljaven email.</h1>
             </div>
+            <ngx-recaptcha2 #captchaElem
+                            (success)="handleSuccess($event)"
+                            [siteKey]="'6LejFHgqAAAAAGin9n-51NplW-iTJednTqULyzcd'"
+                            [size]="'normal'">
+            </ngx-recaptcha2>
 
             <button [disabled]="emailForm.invalid" class="mt-2" type="submit"><h1 class="fs-5 text-center m-0">
                 Pošlji</h1></button>
@@ -93,7 +101,5 @@
         <h1>NAV MENU</h1>
     </div>
 
-    <a href="mailto:piotr@mailtrap.io?subject=ssss&body=aaaa" style="color: white" target="_blank">I want free
-        Bitcoins</a>
 </section>
 

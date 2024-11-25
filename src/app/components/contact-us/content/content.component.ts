@@ -17,15 +17,31 @@ export class ContentComponent {
     constructor(private fb: FormBuilder, private router: Router, private viewportScroller: ViewportScroller) {
         this.emailForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
-            message: ['', Validators.required]
+            message: ['', Validators.required],
+            subject: ['']
         });
     }
 
-    // TODO form submit
+    handleSuccess(captchaResponse: string) {
+        console.log('Resolved captcha with response: ', captchaResponse);
+        // Further processing
+    }
+
+    // TODO form submit with firebase
     onSubmit() {
         if (this.emailForm.valid) {
             console.log('Form Submitted', this.emailForm.value);
-            this.emailForm.reset();
+            // const formData = this.emailForm.value;
+
+            // TODO before deploy check for api email implementation
+            const subject = this.emailForm.get('subject')?.value;
+            const message = this.emailForm.get('message')?.value;
+            const email = this.emailForm.get('email')?.value;
+            window.location.href = `mailto:info@protonmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+
+            setTimeout(() => {
+                this.emailForm.reset();
+            }, 2000)
         }
     }
 

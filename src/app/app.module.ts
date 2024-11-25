@@ -19,6 +19,7 @@ import {DisplayPostsComponent} from './components/news/display-posts/display-pos
 import {StartPageComponent} from './components/contact-us/start-page/start-page.component';
 import {ContentComponent} from './components/contact-us/content/content.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {NgxCaptchaModule} from "ngx-captcha";
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import {ReactiveFormsModule} from "@angular/forms";
         YouTubePlayerModule,
         NgOptimizedImage,
         CarouselModule.forRoot(),
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NgxCaptchaModule
     ],
     providers: [
         provideAnimations()

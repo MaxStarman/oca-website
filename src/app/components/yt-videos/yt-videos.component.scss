@@ -1,17 +1,110 @@
 
-.container {
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
-    overflow-y: scroll;
+.base-bg {
+    background-image: url("/assets/images/dry-earth-bg.jpeg");
+    //filter: brightness(0.5);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    //z-index: -1;
+    //position: relative;
+}
+
+#featured-video-section {
     height: 100vh;
     max-width: 100%;
+    //display: flex;
+    //flex-direction: column;
+
+    .header {
+        position: relative;
+        height: 60vh;
+        width: 100%;
+        overflow: hidden;
+
+    }
+
+    .thumbnail-bg {
+        filter: brightness(0.75); // Dim the background image
+        width: 100%;
+        height: auto;
+        position: absolute; // Ensure it's part of the stacking context
+        top: 0;
+        left: 0;
+        z-index: 1; // Place the background image below the YouTube player
+    }
+
+    .video-container {
+        display: flex; // Flexbox for centering
+        justify-content: center; // Center horizontally
+        align-items: center; // Center vertically
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2; // Place above the background
+
+        .video-player {
+            //width: 80%; // Make the player responsive
+            //max-width: 900px; // Limit the maximum width
+            //aspect-ratio: 16 / 9; // Maintain the aspect ratio
+            //z-index: 2; // Ensure the player appears on top
+        }
+    }
+
+
+    .footer {
+        height: 33vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        p {
+            color: rgba(0, 0, 0, 1);
+        }
+    }
 
 }
 
-.video-section {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    scroll-snap-align: start;
+#more-videos-section {
+    height: 300vh;
+    background-image: linear-gradient(rgba(234, 69, 69, 0.8), rgba(87, 128, 232, 0.81));
+
+    .more-videos {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); // Create 2 columns of equal width
+            gap: 1rem; // Add space between grid items
+            width: 100%;
+            max-width: 1200px; // Optional max width for the grid
+            margin: 0 auto; // Center the grid horizontally
+            padding: 1rem;
+
+            .video-card {
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: transform 0.2s;
+
+                &:hover {
+                    transform: translateY(-5px); // Slight lift effect on hover
+                }
+
+                .video-thumbnail {
+                    width: 100%;
+                    height: auto;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+
 }

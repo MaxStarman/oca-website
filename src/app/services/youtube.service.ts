@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
 import {Observable, of, ReplaySubject} from "rxjs";
-import { environment } from '../../enviroments/enviroment';
+import {environment} from '../../enviroments/enviroment';
 
 
 @Injectable({
@@ -20,6 +20,7 @@ export class YoutubeService {
 
     private channelId = 'UCmZl5oAf_0DArAIUyv7PKHg'
     private searchUrl = 'https://www.googleapis.com/youtube/v3/search?key=';
+    private videoUrl = 'https://www.googleapis.com/youtube/v3/videos?key=';
     private cachedVideos: ReplaySubject<any> = new ReplaySubject(1);
     private sessionKey = 'youtubeVideos';
 
@@ -48,54 +49,26 @@ export class YoutubeService {
         return this.cachedVideos.asObservable();
     }
 
-    /** Dva API klica za dodatne info o videjih
-     *  za 5 videjov je potrebnih 6 klicev
-     *  za extra data je potrebno klicati API za vsak video posebaj
-    */
-    /*
-        private searchUrl = 'https://www.googleapis.com/youtube/v3/search';
-        private videoUrl = 'https://www.googleapis.com/youtube/v3/videos';
-        private apiKey = environment.youtubeApiKey;
-        private sessionKey = 'youtubeVideos';
 
-        constructor(private http: HttpClient) {}
+    fetchVideoDetails(videoId: string): Observable<any> {
+        const sessionKey = `videoDetails_${videoId}`;
+        const cachedVideoDetails = sessionStorage.getItem(sessionKey);
 
-        // Function to search for videos and fetch their details
-        searchVideos(query: string, channelId: string = ''): Observable<any> {
-            const cachedData = sessionStorage.getItem(this.sessionKey);
-
-            if (cachedData) {
-                // If data exists in sessionStorage, return it as Observable
-                return of(JSON.parse(cachedData));
-            }
-
-            // If no cached data, make API calls
-            const url = `${this.searchUrl}?key=${this.apiKey}&q=${query}&channelId=${channelId}&part=snippet&type=video&maxResults=5`;
-
-            return this.http.get<any>(url).pipe(
-                // Extract video IDs from search results
-                map(response => response.items.map((item: any) => item.id.videoId)),
-                // Use video IDs to get video details
-                switchMap(videoIds => this.getVideoDetails(videoIds)),
-                // Save result to sessionStorage after fetching video details
-                tap(videos => {
-                    sessionStorage.setItem(this.sessionKey, JSON.stringify(videos));
+        if (cachedVideoDetails) {
+            // Serve from sessionStorage
+            return of(JSON.parse(cachedVideoDetails));
+        } else {
+            // Fetch from API if not cached
+            return this.http.get(this.videoUrl + environment.youtubeApiKey + `&id=${videoId}` + '&part=snippet').pipe(
+                tap(response => {
+                    sessionStorage.setItem(sessionKey, JSON.stringify(response)); // Cache details
+                }),
+                catchError(error => {
+                    console.error(`Error fetching video details for ID ${videoId}:`, error);
+                    return of(null); // Gracefully handle errors by returning null
                 })
             );
         }
+    }
 
-        // Function to fetch video details by video IDs
-        getVideoDetails(videoIds: string[]): Observable<any> {
-            const ids = videoIds.join(',');
-            const url = `${this.videoUrl}?key=${this.apiKey}&id=${ids}&part=snippet,contentDetails,statistics`;
-
-            return this.http.get<any>(url).pipe(
-                map(response => response.items)
-            );
-        }
-        */
-
-    /**
-     *
-     */
 }

@@ -9,6 +9,7 @@ const routes: Routes = [
     {path: '', component: HomePageComponent},
     {path: 'news', component: NewsComponent},
     {path: 'music', component: YtVideosComponent},
+    {path: 'music/video/:id', component: YtVideosComponent},
     {path: 'contact', component: ContactUsComponent},
 ];
 

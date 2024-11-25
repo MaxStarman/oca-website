@@ -1,30 +1,46 @@
 <nav-menu-icon></nav-menu-icon>
 
-<!--<div class="container">-->
-<!--    <h1>YT video player</h1>-->
-<!--    <p>For video player ->-->
-<!--        <a href="https://github.com/angular/components/tree/main/src/youtube-player">Angular YouTube Player component-->
-<!--        </a> in <a href="https://developers.google.com/youtube/iframe_api_reference">Google docs za YT player API</a>-->
-<!--    </p>-->
-<!--</div>-->
 
-<!--TODO lepsi display videjov, ozadje naj bo temnejsi in thumbnail-->
+<section class="base-bg" id="featured-video-section">
 
-<div class="container">
-    <div *ngFor="let video of videos" class="video-section">
-        <!-- Video card -->
-        <div class="card border-0 shadow vh-50">
-            <a href="https://www.youtube.com/watch?v={{video.id.videoId}}" target="_blank">
-                <img [src]="video.snippet.thumbnails.medium.url" alt="..." class="card-img-top"></a>
-            <div class="card-body text-center">
-                <h5 class="card-title mb-0">
-                    <a href="https://www.youtube.com/watch?v={{video.id.videoId}}">{{ video.snippet.title }}</a>
-                </h5>
-                <p class="card-text">{{ video.snippet.description }}</p>
+    <div class="sticky-top">
+        <div class="header">
+            <img alt="glavno ozadje" class="thumbnail-bg" src="{{selectedVideo.snippet.thumbnails.medium.url}}">
+        </div>
+
+        <div class="video-container">
+            <!-- TODO make it responsive      -->
+            <youtube-player [videoId]="selectedVideo.id"
+                            class="video-player"
+            ></youtube-player>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container text-center mx-4">
+            <p>{{
+                    selectedVideo.snippet.description
+                }}</p>
+        </div>
+    </div>
+
+
+</section>
+
+<section id="more-videos-section">
+    <div class="container more-videos">
+        <h1>grid of videos</h1>
+        <div class="video-grid">
+            <div (click)="viewVideo(video.id.videoId)"
+                 *ngFor="let video of otherVideos; let i = index"
+                 class="video-card">
+                <img
+                    alt="Our video"
+                    class="video-thumbnail"
+                    src="{{video.snippet.thumbnails.medium.url}}"
+                >
             </div>
         </div>
     </div>
-</div>
-<!--<youtube-player></youtube-player>-->
 
-
+</section>

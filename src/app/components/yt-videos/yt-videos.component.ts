@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {YoutubeService} from "../../services/youtube.service";
-import {Subject, takeUntil} from "rxjs";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ViewportScroller} from "@angular/common";
 
 @Component({
     selector: 'yt-videos',
@@ -9,21 +10,49 @@ import {Subject, takeUntil} from "rxjs";
 })
 export class YtVideosComponent implements OnInit {
 
+    videos: any[] = [];
+    otherVideos: any[] = [];
+    selectedVideo: any = null;
 
-    videos: any = [];
-    private unsubscribe$: Subject<any> = new Subject();
-
-    constructor(private ytService: YoutubeService) {
+    constructor(
+        private ytService: YoutubeService,
+        private route: ActivatedRoute,
+        private router: Router,
+        private viewportScroller: ViewportScroller
+    ) {
     }
 
-    // TODO read videos only once per session
-    ngOnInit() {
+    ngOnInit(): void {
         this.ytService.getYoutubeVideos().subscribe(data => {
             this.videos = data.items
         })
+        // Listen for route changes to update state
+        this.route.paramMap.subscribe((params: any) => {
+            const videoId = params.get('id');
+            if (videoId) {
+                this.fetchAndDisplayVideo(videoId); // Video detail view
+            } else if (this.videos.length > 0) {
+                // Display the latest video by default
+                this.fetchAndDisplayVideo(this.videos[0].id.videoId);
+            }
+        });
     }
 
+    fetchAndDisplayVideo(videoId: string): void {
+        this.ytService.fetchVideoDetails(videoId).subscribe(details => {
+            this.selectedVideo = details.items[0];
 
-//     YT player Angular wrapper
-//     https://github.com/angular/components/tree/main/src/youtube-player
+            // Filter out the selected video from the grid
+            this.otherVideos = this.videos.filter(
+                (video) => video.id.videoId !== videoId
+            );
+        });
+    }
+
+    // Redirect when a video is clicked
+    viewVideo(videoId: string): void {
+        this.router.navigate(['/music/video', videoId]);
+        this.viewportScroller.scrollToPosition([0, 0]);
+    }
+
 }

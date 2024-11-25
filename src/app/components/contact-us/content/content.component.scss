@@ -4,14 +4,14 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    z-index: -1;
+    //z-index: -1;
 }
 
 #intro-section {
 
     height: 100vh;
     max-width: 100%;
-    overflow-x: hidden;
+    //overflow-x: hidden;
 
     .header {
 
@@ -38,7 +38,7 @@
 
     .main-bg-image {
         top: 0;
-        filter: brightness(0.35);
+        //filter: brightness(0.35);
         z-index: 2;
     }
 
@@ -201,6 +201,30 @@
     }
 }
 
+.container.contact-info {
+    .info,
+    .info-feedback {
+        // Default (Bootstrap's fs-4 size)
+        font-size: 1.25rem;
+
+        // Small screens
+        @media (max-width: 576px) {
+            font-size: 1rem; // Adjust to fs-5 equivalent
+        }
+
+        // Medium screens
+        @media (min-width: 577px) and (max-width: 768px) {
+            font-size: 1.125rem; // Slightly larger than fs-5
+        }
+
+        // Large screens
+        @media (min-width: 769px) {
+            font-size: 1.5rem; // Adjust to fs-3 equivalent for larger screens
+        }
+    }
+}
+
+
 #contact-feedback-section {
     background-image: linear-gradient(rgba(0, 88, 145, 0.7), rgba(0, 88, 145, 0.7)), url('/assets/images/stone-wall.png');
     background-size: cover;
@@ -237,7 +261,7 @@
 
         input, textarea {
 
-            &[type="email"] {
+            &[type="email"], &[type="text"] {
                 width: 100%;
                 height: 50px;
                 border-radius: 25px;
