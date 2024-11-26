@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
-import {NavService} from "../../services/nav.service";
+import {NavService} from "../../../services/nav.service";
 
 @Component({
-    selector: 'nav-menu',
-    templateUrl: './nav-menu.component.html',
-    styleUrls: ['./nav-menu.component.scss']
+    selector: 'nav-menu-overlay',
+    templateUrl: './nav-menu-overlay.component.html',
+    styleUrls: ['./nav-menu-overlay.component.scss']
 })
-export class NavMenuComponent {
+export class NavMenuOverlayComponent {
 // full page navigation
     isOpen = false;
 
@@ -16,8 +16,7 @@ export class NavMenuComponent {
         });
     }
 
-    toggleNav() {
-        console.log('click on icon')
+    onToggleNav() {
         this.navService.toggleNav();
     }
 }

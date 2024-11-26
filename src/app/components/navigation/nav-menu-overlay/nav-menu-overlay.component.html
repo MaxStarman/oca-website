@@ -1,0 +1,9 @@
+<div [ngClass]="{'open': isOpen}" class="nav overlay">
+
+
+    <nav-menu
+        (toggleNav)="onToggleNav()"
+        [isFromOverlay]="true"
+    ></nav-menu>
+
+</div>

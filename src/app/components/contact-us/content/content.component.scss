@@ -27,6 +27,10 @@
             justify-content: center;
             text-align: center;
             z-index: 4;
+
+            h1 {
+                font-size: 64px;
+            }
         }
     }
 
@@ -150,7 +154,7 @@
             }
         }
         .header .heading {
-            top: 100px;
+            top: 115px;
 
             h1 {
                 font-size: 28px;
@@ -236,6 +240,7 @@
             position: relative;
             top: 4rem;
             text-align: center;
+            font-size: 64px;
         }
     }
 
@@ -249,7 +254,7 @@
 
         textarea {
             width: 100%;
-            height: 50%;
+            height: 40%;
             border-radius: 15px;
             border: none;
             background-color: #000;

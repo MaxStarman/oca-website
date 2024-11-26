@@ -1,4 +1,7 @@
-<nav-menu-icon></nav-menu-icon>
+<nav-icon
+    [icon]="'note'"
+    [type]="'prev-page'"
+></nav-icon>
 
 
 <section class="base-bg" id="featured-video-section">
@@ -29,13 +32,12 @@
 
 <section id="more-videos-section">
     <div class="container more-videos">
-        <h1>grid of videos</h1>
         <div class="video-grid">
             <div (click)="viewVideo(video.id.videoId)"
-                 *ngFor="let video of otherVideos; let i = index"
+                 *ngFor="let video of otherVideos"
                  class="video-card">
                 <img
-                    alt="Our video"
+                    alt="Other videos"
                     class="video-thumbnail"
                     src="{{video.snippet.thumbnails.medium.url}}"
                 >
@@ -43,4 +45,8 @@
         </div>
     </div>
 
+</section>
+
+<section id="nav-menu-section">
+    <!--    <nav-menu></nav-menu>-->
 </section>

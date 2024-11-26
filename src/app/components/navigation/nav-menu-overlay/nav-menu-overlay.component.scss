@@ -1,0 +1,18 @@
+// show navigation
+.nav {
+    display: none;
+
+    &.open {
+        display: block;
+    }
+}
+
+.overlay {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    overflow-x: hidden;
+}

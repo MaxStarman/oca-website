@@ -1,9 +1,10 @@
 
 a {
     z-index: 1022;
+    opacity: 0.75;
 
     &:hover {
-        opacity: 0.75;
+        opacity: 1;
         cursor: pointer;
     }
 }
