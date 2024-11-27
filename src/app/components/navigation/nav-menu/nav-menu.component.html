@@ -4,31 +4,33 @@
 ></nav-icon>
 
 <div class="background-video-container">
-    <video autoplay class="background-video" loop muted>
+    <video autoplay class="background-video" id="bg-video" loop muted>
         <source src="./assets/videos/oca-nav-video.mp4" type="video/mp4">
         Your browser does not support HTML5 video.
     </video>
-</div>
 
-<div class="links">
-    <div class="row h-100 position-relative">
+    <div class="links">
+        <div class="row h-100 position-relative">
 
-        <a (click)="notifyParent()" [routerLink]="'news'"
-           class="col-lg-4 d-flex flex-column justify-content-center align-items-center ">
-            <img [height]="76" [width]="87" alt="News Icon" ngSrc="../../../../assets/svg-icons/alert-white.svg">
-            <h1>Novice</h1>
-        </a>
+            <a (click)="notifyParent()" [routerLink]="'/news'"
+               class="col-lg-4 d-flex flex-column justify-content-center align-items-center ">
+                <img [height]="76" [width]="87" alt="News Icon" ngSrc="../../../../assets/svg-icons/alert-white.svg">
+                <h1>Novice</h1>
+            </a>
 
-        <a (click)="notifyParent()" [routerLink]="'music'"
-           class="col-lg-4 d-flex flex-column justify-content-center align-items-center">
-            <img [height]="74" [width]="48" alt="Music Icon" ngSrc="../../../../assets/svg-icons/note-white.svg">
-            <h1>Glasba</h1>
-        </a>
+            <a (click)="notifyParent()" [routerLink]="'/music'"
+               class="col-lg-4 d-flex flex-column justify-content-center align-items-center">
+                <img [height]="74" [width]="48" alt="Music Icon" ngSrc="../../../../assets/svg-icons/note-white.svg">
+                <h1>Glasba</h1>
+            </a>
 
-        <a (click)="notifyParent()" [routerLink]="'contact'"
-           class="col-lg-4 d-flex flex-column justify-content-center align-items-center">
-            <img [height]="74" [width]="93" alt="Contact Icon" ngSrc="../../../../assets/svg-icons/mail-white.svg">
-            <h1>Kontakt</h1>
-        </a>
+            <a (click)="notifyParent()" [routerLink]="'/contact'"
+               class="col-lg-4 d-flex flex-column justify-content-center align-items-center">
+                <img [height]="74" [width]="93" alt="Contact Icon" ngSrc="../../../../assets/svg-icons/mail-white.svg">
+                <h1>Kontakt</h1>
+            </a>
+        </div>
     </div>
+
 </div>
+

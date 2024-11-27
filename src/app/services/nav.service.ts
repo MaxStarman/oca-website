@@ -10,7 +10,6 @@ export class NavService {
     isOpen$ = this.isOpenSubject.asObservable();
 
     toggleNav() {
-        console.log(this.isOpenSubject.value)
         this.isOpenSubject.next(!this.isOpenSubject.value);
     }
 

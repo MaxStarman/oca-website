@@ -12,7 +12,11 @@ export class NavMenuComponent {
     @Input()
     isFromOverlay = false;
 
+    // constructor(private viewportScroller: ViewportScroller) {
+    // }
+
     notifyParent() {
         this.toggleNav.emit();
+        // this.viewportScroller.scrollToPosition([0, 0]);
     }
 }

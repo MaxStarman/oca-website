@@ -33,8 +33,8 @@ a {
 /* Media query for mobile devices */
 @media (max-width: 768px) {
     .quarter-circle {
-        width: 120px; /* Smaller size for mobile */
-        height: 120px;
+        width: 110px; /* Smaller size for mobile */
+        height: 110px;
         border-radius: 0 0 0 120px; /* Adjusted border radius */
     }
 
