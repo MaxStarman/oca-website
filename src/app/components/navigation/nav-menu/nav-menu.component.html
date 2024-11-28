@@ -9,23 +9,23 @@
         Your browser does not support HTML5 video.
     </video>
 
+    <!-- TODO vecji padding za click in razporeditev na vertical   -->
     <div class="links">
         <div class="row h-100 position-relative">
-
-            <a (click)="notifyParent()" [routerLink]="'/news'"
-               class="col-lg-4 d-flex flex-column justify-content-center align-items-center ">
+            <a (click)="notifyParentAndHandleEvent($event, '/news')"
+               class="col-lg-4 d-flex flex-column justify-content-center align-items-center link-item">
                 <img [height]="76" [width]="87" alt="News Icon" ngSrc="../../../../assets/svg-icons/alert-white.svg">
                 <h1>Novice</h1>
             </a>
 
-            <a (click)="notifyParent()" [routerLink]="'/music'"
-               class="col-lg-4 d-flex flex-column justify-content-center align-items-center">
+            <a (click)="notifyParentAndHandleEvent($event, '/music')"
+               class="col-lg-4 d-flex flex-column justify-content-center align-items-center link-item">
                 <img [height]="74" [width]="48" alt="Music Icon" ngSrc="../../../../assets/svg-icons/note-white.svg">
                 <h1>Glasba</h1>
             </a>
 
-            <a (click)="notifyParent()" [routerLink]="'/contact'"
-               class="col-lg-4 d-flex flex-column justify-content-center align-items-center">
+            <a (click)="notifyParentAndHandleEvent($event, '/contact')"
+               class="col-lg-4 d-flex flex-column justify-content-center align-items-center link-item">
                 <img [height]="74" [width]="93" alt="Contact Icon" ngSrc="../../../../assets/svg-icons/mail-white.svg">
                 <h1>Kontakt</h1>
             </a>

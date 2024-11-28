@@ -52,7 +52,7 @@ export class YtVideosComponent implements OnInit {
     // Redirect when a video is clicked
     viewVideo(videoId: string): void {
         this.router.navigate(['/music/video', videoId]);
-        // this.viewportScroller.scrollToPosition([0, 0]);
+        this.viewportScroller.scrollToPosition([0, 0]);
     }
 
 }
