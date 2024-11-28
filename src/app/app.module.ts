@@ -21,6 +21,12 @@ import {ContentComponent} from './components/contact-us/content/content.componen
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgxCaptchaModule} from "ngx-captcha";
 import {NavMenuComponent} from './components/navigation/nav-menu/nav-menu.component';
+import {AngularFireModule} from "@angular/fire/compat";
+import {environment} from "../enviroments/enviroment";
+import {AngularFireAnalyticsModule} from "@angular/fire/compat/analytics";
+import {initializeApp} from "@angular/fire/app";
+import {getAnalytics} from "@angular/fire/analytics";
+import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
 
 @NgModule({
     declarations: [
@@ -46,7 +52,10 @@ import {NavMenuComponent} from './components/navigation/nav-menu/nav-menu.compon
         NgOptimizedImage,
         CarouselModule.forRoot(),
         ReactiveFormsModule,
-        NgxCaptchaModule
+        NgxCaptchaModule,
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireAnalyticsModule,
+        AngularFirestoreModule
     ],
     providers: [
         provideAnimations()
@@ -54,4 +63,9 @@ import {NavMenuComponent} from './components/navigation/nav-menu/nav-menu.compon
     bootstrap: [AppComponent]
 })
 export class AppModule {
+    constructor() {
+        const app = initializeApp(environment.firebaseConfig);
+        const analytics = getAnalytics(app);
+    }
+
 }

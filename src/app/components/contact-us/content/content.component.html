@@ -67,30 +67,42 @@
         <h1>FEEDBACK</h1>
     </div>
     <div class="container h-75 d-flex justify-content-center">
+        <!--   TODO form validacija in preglednost     -->
         <form (ngSubmit)="onSubmit()"
               [formGroup]="emailForm"
               class="feedback-form"
         >
+            <label for="name"></label>
+            <input formControlName="name" id="name" placeholder="Ime" type="text"/>
+            <div *ngIf="emailForm.controls['name'].invalid && emailForm.controls['name'].touched">
+                <h1 class="fs-6">Prosim vnesite ime.</h1>
+            </div>
 
             <label for="subject"></label>
             <input formControlName="subject" id="subject" placeholder="Zadeva" type="text"/>
 
             <label for="message"></label>
             <textarea formControlName="message" id="message" placeholder="Sporočilo"></textarea>
+            <div *ngIf="emailForm.controls['message'].invalid && emailForm.controls['message'].touched">
+                <h1 class="fs-6">Prosim vnesite sporočilo.</h1>
+            </div>
 
             <label for="email"></label>
             <input formControlName="email" id="email" placeholder="EMAIL" type="email"/>
             <div *ngIf="emailForm.controls['email'].invalid && emailForm.controls['email'].touched">
                 <h1 class="fs-6">Prosim vnesite veljaven email.</h1>
             </div>
-            <ngx-recaptcha2 #captchaElem
-                            (success)="handleSuccess($event)"
-                            [siteKey]="'6LejFHgqAAAAAGin9n-51NplW-iTJednTqULyzcd'"
-                            [size]="'normal'">
-            </ngx-recaptcha2>
+            <!--            <ngx-recaptcha2 #captchaElem-->
+            <!--                            (success)="handleSuccess($event)"-->
+            <!--                            [siteKey]="'6LejFHgqAAAAAGin9n-51NplW-iTJednTqULyzcd'"-->
+            <!--                            [size]="'normal'">-->
+            <!--            </ngx-recaptcha2>-->
 
-            <button [disabled]="emailForm.invalid" class="mt-2" type="submit"><h1 class="fs-5 text-center m-0">
-                Pošlji</h1></button>
+            <button [disabled]="emailForm.invalid" class="mt-2" type="submit">
+                <h1 class="fs-5 text-center m-0">
+                    Pošlji
+                </h1>
+            </button>
         </form>
     </div>
     <!--    </div>-->

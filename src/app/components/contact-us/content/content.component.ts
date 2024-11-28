@@ -16,9 +16,10 @@ export class ContentComponent {
 
     constructor(private fb: FormBuilder, private router: Router, private viewportScroller: ViewportScroller) {
         this.emailForm = this.fb.group({
-            email: ['', [Validators.required, Validators.email]],
+            name: ['', Validators.required],
+            subject: [''],
             message: ['', Validators.required],
-            subject: ['']
+            email: ['', [Validators.required, Validators.email]]
         });
     }
 
@@ -27,21 +28,27 @@ export class ContentComponent {
         // Further processing
     }
 
-    // TODO form submit with firebase
+    // TODO form submit with firebase and validation fix
     onSubmit() {
         if (this.emailForm.valid) {
             console.log('Form Submitted', this.emailForm.value);
             // const formData = this.emailForm.value;
 
-            // TODO before deploy check for api email implementation
+            // TODO before deploy check for api email implementation https://extensions.dev/extensions/mailersend/mailersend-email
             const subject = this.emailForm.get('subject')?.value;
             const message = this.emailForm.get('message')?.value;
+
+            // TODO send to firestore
             const email = this.emailForm.get('email')?.value;
+            const name = this.emailForm.get('name')?.value;
+            
             window.location.href = `mailto:info@protonmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
 
             setTimeout(() => {
                 this.emailForm.reset();
             }, 2000)
+        } else {
+            this.emailForm.markAsTouched();
         }
     }
 
