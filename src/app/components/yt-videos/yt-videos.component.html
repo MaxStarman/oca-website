@@ -13,9 +13,9 @@
 
         <div class="video-container">
             <!-- TODO make it responsive      -->
-            <youtube-player [videoId]="selectedVideo.id"
-                            class="video-player"
-            ></youtube-player>
+            <!--            <youtube-player [videoId]="selectedVideo.id"-->
+            <!--                            class="video-player"-->
+            <!--            ></youtube-player>-->
         </div>
     </div>
 
@@ -31,17 +31,14 @@
 </section>
 
 <section id="more-videos-section">
-    <div class="container more-videos">
-        <div class="video-grid">
-            <div (click)="viewVideo(video.id.videoId)"
-                 *ngFor="let video of otherVideos"
-                 class="video-card">
-                <img
-                    alt="Other videos"
-                    class="video-thumbnail"
-                    src="{{video.snippet.thumbnails.medium.url}}"
-                >
-            </div>
+    <div class="container more-videos video-grid">
+        <div (click)="viewVideo(video.id.videoId)"
+             *ngFor="let video of otherVideos"
+             class="video-card">
+            <img
+                alt="Other videos"
+                src="{{video.snippet.thumbnails.medium.url}}"
+            >
         </div>
     </div>
 

@@ -33,7 +33,7 @@
 <section id="contact-section">
 
     <!-- TODO add media breakpoints   -->
-    <div class="container contact-info">
+    <div class="container contact-info sticky-top">
         <div class="phone-number">
             <!--            <i class="fa-solid fa-phone fa-2xl"></i>-->
             <img alt="" height="33" ngSrc="assets/svg-icons/phone-white.svg" width="38">
@@ -49,9 +49,9 @@
             <img alt="" height="34" ngSrc="assets/svg-icons/location-white.svg" width="30">
             <span class="info fs-4">KOPER, SLOVENIJA</span>
         </div>
-        <div class="feedback-button mt-3">
-            <button (click)="scrollToFeedback()" class="btn btn-primary">
-                <span class="info fs-3">FEEDBACK</span>
+        <div class="mt-3">
+            <button (click)="scrollToFeedback()" class="contact-btn">
+                <span class="info fs-3 px-4">FEEDBACK</span>
             </button>
         </div>
         <div class="feedback-text">
@@ -62,50 +62,46 @@
 
 <section id="contact-feedback-section">
 
-    <!--    <div class="sticky-top">-->
-    <div class="title h-25">
-        <h1>FEEDBACK</h1>
+    <div class="container sticky-top">
+        <div class="title p-5">
+            <h1>FEEDBACK</h1>
+        </div>
+        <div class="d-flex justify-content-center m-5">
+            <!--   TODO form validacija in preglednost     -->
+            <form (ngSubmit)="onSubmit()"
+                  [formGroup]="emailForm"
+                  class="feedback-form"
+            >
+                <label for="name"></label>
+                <input formControlName="name" id="name" placeholder="Ime" type="text"/>
+                <div *ngIf="emailForm.controls['name'].invalid && emailForm.controls['name'].touched">
+                    <h1 class="fs-6">Prosim vnesite ime.</h1>
+                </div>
+
+                <label for="subject"></label>
+                <input formControlName="subject" id="subject" placeholder="Zadeva" type="text"/>
+
+                <label for="message"></label>
+                <textarea formControlName="message" id="message" placeholder="Sporočilo"></textarea>
+                <div *ngIf="emailForm.controls['message'].invalid && emailForm.controls['message'].touched">
+                    <h1 class="fs-6">Prosim vnesite sporočilo.</h1>
+                </div>
+
+                <label for="email"></label>
+                <input formControlName="email" id="email" placeholder="EMAIL" type="email"/>
+                <div *ngIf="emailForm.controls['email'].invalid && emailForm.controls['email'].touched">
+                    <h1 class="fs-6">Prosim vnesite veljaven email.</h1>
+                </div>
+
+                <button [disabled]="emailForm.invalid" class="mt-2 contact-btn" type="submit">
+                    <h1 class="fs-5 text-center m-0">
+                        Pošlji
+                    </h1>
+                </button>
+            </form>
+        </div>
     </div>
-    <div class="container h-75 d-flex justify-content-center">
-        <!--   TODO form validacija in preglednost     -->
-        <form (ngSubmit)="onSubmit()"
-              [formGroup]="emailForm"
-              class="feedback-form"
-        >
-            <label for="name"></label>
-            <input formControlName="name" id="name" placeholder="Ime" type="text"/>
-            <div *ngIf="emailForm.controls['name'].invalid && emailForm.controls['name'].touched">
-                <h1 class="fs-6">Prosim vnesite ime.</h1>
-            </div>
 
-            <label for="subject"></label>
-            <input formControlName="subject" id="subject" placeholder="Zadeva" type="text"/>
-
-            <label for="message"></label>
-            <textarea formControlName="message" id="message" placeholder="Sporočilo"></textarea>
-            <div *ngIf="emailForm.controls['message'].invalid && emailForm.controls['message'].touched">
-                <h1 class="fs-6">Prosim vnesite sporočilo.</h1>
-            </div>
-
-            <label for="email"></label>
-            <input formControlName="email" id="email" placeholder="EMAIL" type="email"/>
-            <div *ngIf="emailForm.controls['email'].invalid && emailForm.controls['email'].touched">
-                <h1 class="fs-6">Prosim vnesite veljaven email.</h1>
-            </div>
-            <!--            <ngx-recaptcha2 #captchaElem-->
-            <!--                            (success)="handleSuccess($event)"-->
-            <!--                            [siteKey]="'6LejFHgqAAAAAGin9n-51NplW-iTJednTqULyzcd'"-->
-            <!--                            [size]="'normal'">-->
-            <!--            </ngx-recaptcha2>-->
-
-            <button [disabled]="emailForm.invalid" class="mt-2" type="submit">
-                <h1 class="fs-5 text-center m-0">
-                    Pošlji
-                </h1>
-            </button>
-        </form>
-    </div>
-    <!--    </div>-->
 
 </section>
 

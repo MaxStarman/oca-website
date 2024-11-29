@@ -15,11 +15,10 @@ import {NgOptimizedImage} from "@angular/common";
 import {LoadingScreenComponent} from './components/loading-screen/loading-screen.component';
 import {BrowserAnimationsModule, provideAnimations} from '@angular/platform-browser/animations';
 import {CarouselModule} from "ngx-bootstrap/carousel";
-import {DisplayPostsComponent} from './components/news/display-posts/display-posts/display-posts.component';
-import {StartPageComponent} from './components/contact-us/start-page/start-page.component';
+import {DisplayPostsComponent} from './components/news/display-posts/display-posts.component';
+import {ContactStartPageComponent} from './components/contact-us/contact-start-page/contact-start-page.component';
 import {ContentComponent} from './components/contact-us/content/content.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import {NgxCaptchaModule} from "ngx-captcha";
 import {NavMenuComponent} from './components/navigation/nav-menu/nav-menu.component';
 import {AngularFireModule} from "@angular/fire/compat";
 import {environment} from "../enviroments/enviroment";
@@ -27,6 +26,7 @@ import {AngularFireAnalyticsModule} from "@angular/fire/compat/analytics";
 import {initializeApp} from "@angular/fire/app";
 import {getAnalytics} from "@angular/fire/analytics";
 import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
+import {NewsStartPageComponent} from './components/news/news-start-page/news-start-page.component';
 
 @NgModule({
     declarations: [
@@ -39,9 +39,10 @@ import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
         HomePageComponent,
         LoadingScreenComponent,
         DisplayPostsComponent,
-        StartPageComponent,
+        ContactStartPageComponent,
         ContentComponent,
-        NavMenuComponent
+        NavMenuComponent,
+        NewsStartPageComponent
     ],
     imports: [
         BrowserModule,
@@ -52,7 +53,6 @@ import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
         NgOptimizedImage,
         CarouselModule.forRoot(),
         ReactiveFormsModule,
-        NgxCaptchaModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireAnalyticsModule,
         AngularFirestoreModule

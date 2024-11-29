@@ -29,20 +29,20 @@ export class InstagramService {
             // Fetch from API if not cached
             this.http.get(`${this.apiUrl}/${this.accountId}/media`, {
                 params: {
-                    fields: 'id,caption,media_type,media_url,permalink,timestamp,children{media_type,media_url}',
+                    fields: 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,children{media_type,media_url,thumbnail_url}',
                     limit: '5',
                     access_token: this.accessToken
                 }
             }).pipe(
-                    tap((response: any) => {
-                        sessionStorage.setItem(this.sessionKey, JSON.stringify(response));
-                        this.cachedPosts.next(response);
-                    }),
-                    catchError(error => {
-                        console.error('Error fetching YouTube videos:', error);
-                        return of([]);
-                    })
-                ).subscribe();
+                tap((response: any) => {
+                    sessionStorage.setItem(this.sessionKey, JSON.stringify(response));
+                    this.cachedPosts.next(response);
+                }),
+                catchError(error => {
+                    console.error('Error fetching YouTube videos:', error);
+                    return of([]);
+                })
+            ).subscribe();
         }
         return this.cachedPosts.asObservable();
     }

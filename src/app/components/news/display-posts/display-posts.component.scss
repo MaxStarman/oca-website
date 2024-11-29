@@ -1,0 +1,122 @@
+.bg-image {
+    height: 67.66vh;
+    width: 100%;
+    background-image: url("/assets/images/news/news-start-blackend.jpeg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}
+
+
+.instagram-feed {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .post-content {
+        margin: 20px;
+        max-width: 500px;
+
+        .carousel-image,
+        .single-image,
+        .carousel-video,
+        .single-video {
+            width: 100%;
+
+            @media (max-width: 992px) {
+                max-height: 500px;
+            }
+        }
+    }
+
+}
+
+.base-bg-image {
+    background-image: url("/assets/images/dry-earth-bg.jpeg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 32.34vh;
+
+    .post-caption {
+        padding: 30px 0;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+
+        a {
+            color: #3897f0;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+#more-posts-section {
+    height: 300vh;
+    background-image: radial-gradient(rgb(22, 111, 141), rgb(60, 222, 227));
+    background-position: center;
+    background-size: cover;
+
+    .more-posts {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+
+        .post-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+
+            .post-card {
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                overflow: hidden;
+                display: flex;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: transform 0.2s;
+                cursor: pointer;
+
+                &:hover {
+                    transform: translateY(-5px); // Slight lift effect on hover
+                }
+
+                .post-thumbnail {
+                    width: 100%;
+                    max-height: 300px;
+                    object-fit: cover;
+                }
+            }
+        }
+
+        @media (max-width: 576px) {
+
+            .post-grid {
+                grid-template-columns: repeat(1, 1fr);
+                width: 80%;
+
+                .post-card {
+                    height: 150px;
+                }
+            }
+
+        }
+    }
+
+}
+

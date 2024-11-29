@@ -2,7 +2,7 @@
 
 <div>
     <ng-container *ngIf="showStartPage; else contentTemplate">
-        <start-page (clicked)="toggleStartPage()" @fadeOut></start-page>
+        <contact-start-page (clicked)="toggleStartPage()" @fadeOut></contact-start-page>
     </ng-container>
     <ng-template #contentTemplate>
         <content @fadeIn></content>

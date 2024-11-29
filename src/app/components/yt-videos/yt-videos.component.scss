@@ -74,51 +74,45 @@
         position: sticky;
         top: 0;
         height: 100vh;
-        display: flex;
         align-items: center;
+    }
 
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); // Create 2 columns of equal width
-            gap: 1rem; // Add space between grid items
-            width: 100%;
-            max-width: 1200px; // Optional max width for the grid
-            margin: 0 auto; // Center the grid horizontally
-            padding: 1rem;
+    .video-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin: 0 auto;
+        padding: 1rem;
 
-            .video-card {
-                background-color: #f9f9f9;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                transition: transform 0.2s;
+        .video-card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+            cursor: pointer;
 
-                &:hover {
-                    transform: translateY(-5px); // Slight lift effect on hover
-                }
-
-                .video-thumbnail {
-                    width: 100%;
-                    height: auto;
-                    object-fit: cover;
-                }
-            }
-        }
-
-        @media (max-width: 576px) {
-
-            .video-grid {
-                grid-template-columns: repeat(1, 1fr); // Change to a single column on mobile
-
-                .video-card {
-                    height: 200px;
-                }
+            &:hover {
+                transform: translateY(-5px); // Slight lift effect on hover
             }
 
         }
     }
 
+    @media (max-width: 576px) {
+
+        .video-grid {
+            grid-template-columns: repeat(1, 1fr);
+            max-width: 75%;
+
+            .video-card {
+                max-height: 250px;
+            }
+        }
+
+    }
 }
+

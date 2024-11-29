@@ -1,0 +1,64 @@
+<nav-icon></nav-icon>
+<div class="bg-image sticky-top instagram-feed">
+    <div class="post-content">
+        <ng-container *ngIf="selectedPost.media_type === 'CAROUSEL_ALBUM'">
+            <carousel>
+                <slide *ngFor="let child of selectedPost.children.data">
+                    <img *ngIf="child.media_type === 'IMAGE'" [src]="child.media_url"
+                         alt="" class="carousel-image"/>
+                    <video *ngIf="child.media_type === 'VIDEO'" [src]="child.media_url"
+                           class="carousel-video" loop
+                           muted></video>
+                </slide>
+            </carousel>
+        </ng-container>
+
+        <ng-container
+            *ngIf="selectedPost.media_type === 'VIDEO' && selectedPost.media_type !== 'CAROUSEL_ALBUM'">
+            <video [src]="selectedPost.media_url" class="single-video" controls muted></video>
+        </ng-container>
+
+        <ng-container
+            *ngIf="selectedPost.media_type === 'IMAGE' && selectedPost.media_type !== 'CAROUSEL_ALBUM'">
+            <img [src]="selectedPost.media_url" alt="" class="single-image"/>
+        </ng-container>
+    </div>
+</div>
+
+
+<div class="base-bg-image">
+    <div *ngIf="selectedPost.caption" class="container post-caption">
+        <p class="fs-3">
+            {{ selectedPost.caption }}
+        </p>
+
+        <p>{{ selectedPost.timestamp | date: 'longDate' }}</p>
+
+        <a [href]="selectedPost.permalink" class="mt-2 fs-5" target="_blank">
+            View on Instagram <i class="fa-brands fa-instagram mx-1"></i>
+        </a>
+    </div>
+</div>
+
+
+<section id="more-posts-section">
+    <div class="container more-posts">
+        <div class="post-grid">
+            <div (click)="viewPost(post.id)"
+                 *ngFor="let post of otherPosts;"
+                 class="post-card">
+                <img
+                    [src]="getImageSource(post)"
+                    alt="Other posts image"
+                    class="post-thumbnail"
+                >
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+<section>
+    <nav-menu></nav-menu>
+</section>

@@ -1,21 +1,8 @@
-<nav-icon
-    [icon]="'cupcake'"
-    [type]="'home'"
-></nav-icon>
-
-<!-- TODO better UX -> render second image before click-->
-<!-- TODO better image responsivnes-->
-<section
-    (click)="onBackgroundClick()"
-    [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}"
-    class="full-screen">
-</section>
-
-<section class="instagram-feed" id="nextSection">
-    <display-posts [posts]="instagramData"></display-posts>
-</section>
-
-<section>
-    <nav-menu></nav-menu>
-</section>
-
+<div>
+    <ng-container *ngIf="showStartPage; else displayPostsTemplate">
+        <news-start-page (clicked)="toggleStartPage()" @fadeOut></news-start-page>
+    </ng-container>
+    <ng-template #displayPostsTemplate>
+        <display-posts @fadeIn></display-posts>
+    </ng-template>
+</div>

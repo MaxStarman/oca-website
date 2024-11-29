@@ -1,33 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {InstagramService} from "../../services/instagram.service";
+import {Component} from '@angular/core';
+import {fadeAnimations} from "../../ng-animations/animations";
 
 @Component({
     selector: 'news-page',
     templateUrl: './news.component.html',
-    styleUrls: ['./news.component.scss']
+    styleUrls: ['./news.component.scss'],
+    animations: fadeAnimations
 })
-export class NewsComponent implements OnInit {
+export class NewsComponent {
 
-    backgroundImage: string = '/assets/images/news/news-start-full.jpeg'; // Initial background image
-    instagramData: any = [];
+    showStartPage = true;
 
-    constructor(private instagramService: InstagramService) {
-    }
-
-    ngOnInit() {
-        this.instagramService.getUserMedia().subscribe(posts => {
-            this.instagramData = posts.data
-        })
-    }
-
-    // On click, change the background and scroll to the next section
-    onBackgroundClick() {
-        this.backgroundImage = '/assets/images/news/news-start-broken.jpeg'; // Change to second background image
-
-        // Wait 1 seconds and then scroll to the next section
-        // TODO make smooth transition
-        setTimeout(() => {
-            document.getElementById('nextSection')?.scrollIntoView({behavior: 'smooth'});
-        }, 1000);
+    toggleStartPage() {
+        this.showStartPage = !this.showStartPage;
     }
 }

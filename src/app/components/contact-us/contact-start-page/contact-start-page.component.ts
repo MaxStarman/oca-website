@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 
 @Component({
-    selector: 'start-page',
-    templateUrl: './start-page.component.html',
-    styleUrls: ['./start-page.component.scss']
+    selector: 'contact-start-page',
+    templateUrl: './contact-start-page.component.html',
+    styleUrls: ['./contact-start-page.component.scss']
 })
-export class StartPageComponent {
+export class ContactStartPageComponent {
 
     @Output()
     clicked = new EventEmitter<void>();

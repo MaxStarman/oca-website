@@ -23,10 +23,6 @@ export class ContentComponent {
         });
     }
 
-    handleSuccess(captchaResponse: string) {
-        console.log('Resolved captcha with response: ', captchaResponse);
-        // Further processing
-    }
 
     // TODO form submit with firebase and validation fix
     onSubmit() {
@@ -41,7 +37,7 @@ export class ContentComponent {
             // TODO send to firestore
             const email = this.emailForm.get('email')?.value;
             const name = this.emailForm.get('name')?.value;
-            
+
             window.location.href = `mailto:info@protonmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
 
             setTimeout(() => {

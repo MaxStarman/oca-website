@@ -1,4 +1,5 @@
 .bg-image {
+    background-color: black;
     background-image: url("/assets/images/contact-us/contact-start.jpeg");
     background-position: center center;
     background-repeat: no-repeat;
@@ -8,7 +9,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    cursor: crosshair;
+    cursor: pointer;
 
     .title-container {
         display: flex;
