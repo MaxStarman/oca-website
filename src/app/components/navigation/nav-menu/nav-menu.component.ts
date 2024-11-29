@@ -29,10 +29,9 @@ export class NavMenuComponent {
 
     // TODO bug -> end page nav, iz enega paga na drugega pelje na mesto kjer si ostal (exclude homepage)
     notifyParentAndHandleEvent(event: Event, routerLink: string) {
-        this.viewportScroller.scrollToPosition([0, 0]);
 
         if (this.isMobile) {
-            const linkElement = (event.target as HTMLElement).closest('.link-item');
+            const linkElement = (event.target as HTMLElement).closest('.mobile-animation');
             if (linkElement) {
                 // Add the animation class
                 linkElement.classList.add('animate');
@@ -43,11 +42,12 @@ export class NavMenuComponent {
 
                     // TODO (optional) ce user klikne link strani na kateri je je, ga pelje na vrh strani
                     this.router.navigate([routerLink])
-
+                    this.viewportScroller.scrollToPosition([0, 0]);
                 }, 200); // Match the CSS animation duration
             }
         } else {
-            this.router.navigate([routerLink])
+            this.router.navigate([routerLink]);
+            this.viewportScroller.scrollToPosition([0, 0]);
             this.toggleNav.emit();
         }
     }
