@@ -1,13 +1,8 @@
-.bg-image {
-    height: 67.66vh;
-    width: 100%;
-    background-image: url("/assets/images/news/news-start-blackend.jpeg");
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    overflow: hidden;
-}
+@import "../../../../styles/mixins";
 
+.header-bg-image {
+    @include headerBgImage('~src/assets/images/news/news-start-blackend.jpeg');
+}
 
 .instagram-feed {
     display: flex;
@@ -32,33 +27,31 @@
 
 }
 
-.base-bg-image {
-    background-image: url("/assets/images/dry-earth-bg.jpeg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    min-height: 32.34vh;
 
-    .post-caption {
-        padding: 30px 0;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+.post-caption {
+    padding: 30px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
+    a {
+        color: #3897f0;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: bold;
 
-        a {
-            color: #3897f0;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
+        .w-fit-content {
+            width: fit-content;
+        }
 
-            &:hover {
-                text-decoration: underline;
-            }
+        &:hover {
+            text-decoration: underline;
         }
     }
 }
+
 
 #more-posts-section {
     height: 300vh;
