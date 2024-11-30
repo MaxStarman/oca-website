@@ -1,3 +1,6 @@
+@import "../../../styles/animations";
+
+
 .bg-image {
     background-image: url("/assets/images/dry-earth-bg.jpeg");
     height: 100vh;
@@ -6,9 +9,14 @@
     background-size: cover;
 }
 
-#title-logo-img:hover {
-    opacity: 0.75;
+#title-logo-img {
+    animation: upDown 1s infinite;
+
+    &:hover {
+        opacity: 0.75;
+    }
 }
+
 
 a {
     cursor: pointer;
