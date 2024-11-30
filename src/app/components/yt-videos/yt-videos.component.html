@@ -4,26 +4,39 @@
 ></nav-icon>
 
 
-<section class="base-bg" id="featured-video-section">
-
-    <div class="sticky-top">
-        <div class="header">
-            <img alt="glavno ozadje" class="thumbnail-bg" src="{{selectedVideo.snippet.thumbnails.medium.url}}">
-        </div>
-
-        <div class="video-container">
-            <!-- TODO make it responsive      -->
-            <!--            <youtube-player [videoId]="selectedVideo.id"-->
-            <!--                            class="video-player"-->
-            <!--            ></youtube-player>-->
+<section id="featured-video-section">
+    <div
+        [ngStyle]="{'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + selectedVideo.snippet.thumbnails.medium.url + ')'}"
+        class="header sticky-top"
+    >
+        <div class="container video-container">
+            <youtube-player
+                [height]="playerHeight"
+                [videoId]="selectedVideo.id"
+                [width]="playerWidth"
+                class="video-player"
+            ></youtube-player>
         </div>
     </div>
 
-    <div class="footer">
-        <div class="container text-center mx-4">
-            <p>{{
-                    selectedVideo.snippet.description
-                }}</p>
+
+    <div class="pages-base-bg-image">
+        <div class="container video-description">
+            <div class="container">
+
+                <h1 class="fs-3 text-black">
+                    {{ selectedVideo.snippet.title }}
+                </h1>
+                <p class="fs-3 formatted-text">
+
+                    {{ selectedVideo.snippet.description }}
+
+                </p>
+                <p class="fs-4">
+                    {{ selectedVideo.snippet.publishedAt | date: 'longDate' }}
+                </p>
+            </div>
+
         </div>
     </div>
 

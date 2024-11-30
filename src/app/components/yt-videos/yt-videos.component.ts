@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {YoutubeService} from "../../services/youtube.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ViewportScroller} from "@angular/common";
@@ -14,6 +14,9 @@ export class YtVideosComponent implements OnInit {
     otherVideos: any[] = [];
     selectedVideo: any = null;
 
+    playerWidth = 640; // Default width
+    playerHeight = 390; // Default height
+
     constructor(
         private ytService: YoutubeService,
         private route: ActivatedRoute,
@@ -22,7 +25,15 @@ export class YtVideosComponent implements OnInit {
     ) {
     }
 
+    @HostListener('window:resize', ['$event'])
+    onResize(event: Event): void {
+        this.adjustPlayerSize((event.target as Window).innerWidth);
+    }
+
+
     ngOnInit(): void {
+        this.adjustPlayerSize(window.innerWidth); // Adjust video player size
+
         this.ytService.getYoutubeVideos().subscribe(data => {
             this.videos = data.items
         })
@@ -55,4 +66,19 @@ export class YtVideosComponent implements OnInit {
         this.viewportScroller.scrollToPosition([0, 0]);
     }
 
+    private adjustPlayerSize(screenWidth: number): void {
+        if (screenWidth < 480) {
+            // Small screen (e.g., phones)
+            this.playerWidth = 300;
+            this.playerHeight = 169; // Maintain 16:9 ratio
+        } else if (screenWidth < 768) {
+            // Medium screen (e.g., tablets)
+            this.playerWidth = 380;
+            this.playerHeight = 205; // Maintain 16:9 ratio
+        } else {
+            // Large screen (e.g., desktops)
+            this.playerWidth = 640;
+            this.playerHeight = 390; // Maintain 16:9 ratio
+        }
+    }
 }

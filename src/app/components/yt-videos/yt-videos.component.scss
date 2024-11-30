@@ -1,66 +1,30 @@
+@import "../../../styles/mixins";
 
-.base-bg {
-    background-image: url("/assets/images/dry-earth-bg.jpeg");
-    //filter: brightness(0.5);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    //z-index: -1;
-    //position: relative;
-}
 
 #featured-video-section {
-    height: 100vh;
-    max-width: 100%;
-    //display: flex;
-    //flex-direction: column;
 
     .header {
-        position: relative;
-        height: 60vh;
-        width: 100%;
-        overflow: hidden;
-
-    }
-
-    .thumbnail-bg {
-        filter: brightness(0.75); // Dim the background image
-        width: 100%;
-        height: auto;
-        position: absolute; // Ensure it's part of the stacking context
-        top: 0;
-        left: 0;
-        z-index: 1; // Place the background image below the YouTube player
+        @include headerBgImage();
     }
 
     .video-container {
-        display: flex; // Flexbox for centering
-        justify-content: center; // Center horizontally
-        align-items: center; // Center vertically
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2; // Place above the background
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: inherit;
 
-        .video-player {
-            //width: 80%; // Make the player responsive
-            //max-width: 900px; // Limit the maximum width
-            //aspect-ratio: 16 / 9; // Maintain the aspect ratio
-            //z-index: 2; // Ensure the player appears on top
-        }
     }
 
-
-    .footer {
-        height: 33vh;
+    .video-description {
+        padding: 30px 0;
+        text-align: center;
         display: flex;
-        align-items: center;
+        flex-direction: column;
         justify-content: center;
+        align-items: center;
 
-        p {
-            color: rgba(0, 0, 0, 1);
+        .formatted-text {
+            white-space: pre-wrap; /* Preserve newlines and spaces */
         }
     }
 
