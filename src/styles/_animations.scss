@@ -1,0 +1,23 @@
+@keyframes upDown {
+    0% {
+        transform: translateY(0); /* Initial position */
+    }
+    50% {
+        transform: translateY(-20px); /* Move up */
+    }
+    100% {
+        transform: translateY(0); /* Back to initial position */
+    }
+}
+
+@keyframes downUp {
+    0% {
+        transform: translateY(0); /* Initial position */
+    }
+    50% {
+        transform: translateY(20px); /* Move down */
+    }
+    100% {
+        transform: translateY(0); /* Back to initial position */
+    }
+}

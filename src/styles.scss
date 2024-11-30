@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "../node_modules/bootstrap/scss/bootstrap";
+@import "styles/mixins";
+@import 'styles/typography';
 
 body, html {
     height: 100%;
@@ -9,28 +11,20 @@ body, html {
     h1 {
         font-family: 'Ethnocentric', sans-serif;
         font-weight: 400;
+        word-wrap: break-word;
         color: white;
-        //font-size: 64px;
     }
 
     p {
-        //font-size: 32px;
         font-family: "Jersey 10", sans-serif;
         font-weight: 400;
-        word-wrap: break-word
+        word-wrap: break-word;
+        color: black;
+    }
+
+    .pages-base-bg-image {
+        @include pagesBaseBgImage;
     }
 }
 
-@font-face {
-    font-family: 'Ethnocentric';
-    src: url('assets/fonts/Ethnocentric/ethnocentric rg.otf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
 
-@font-face {
-    font-family: 'Jersey 10';
-    src: url('assets/fonts/Jersey10/Jersey10-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}

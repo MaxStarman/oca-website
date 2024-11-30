@@ -1,0 +1,22 @@
+@mixin headerBgImage($image-path: null) {
+    height: 67.66vh;
+    width: 100%;
+    @if $image-path {
+        background-image: url(#{$image-path});
+    }
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}
+
+// TODO nastudiraj kako potemnit samo ozadje (zgornje dela)
+@mixin pagesBaseBgImage() {
+    position: relative;
+    background-image: url('~src/assets/images/dry-earth-bg.jpeg');
+    background-position: top;
+    background-size: cover;
+    min-height: 32.34vh;
+    z-index: -2;
+
+}
