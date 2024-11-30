@@ -1,22 +1,19 @@
 .base-bg {
     background-image: url("/assets/images/dry-earth-bg.jpeg");
-    //filter: brightness(0.35);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    //z-index: -1;
 }
 
 #intro-section {
 
     height: 100vh;
-    max-width: 100%;
-    //overflow-x: hidden;
+    width: 100%;
 
     .header {
 
         position: relative;
-        height: 66vh;
+        height: 67.66vh;
         width: 100%;
         overflow: hidden;
 
@@ -37,18 +34,19 @@
     .main-bg-image, .band-img {
         position: absolute;
         width: 100%;
-        height: 66vh;
+        height: 67.66vh;
     }
 
     .main-bg-image {
         top: 0;
-        //filter: brightness(0.35);
+        filter: brightness(0.5);
         z-index: 2;
     }
 
     .band-img {
         bottom: 0;
-        max-height: 66vh;
+        max-height: 67.66vh;
+        width: 100%;
         height: auto;
         object-fit: contain;
         z-index: 4;
@@ -82,7 +80,7 @@
 
 
     .footer {
-        height: 33vh;
+        height: 32.34vh;
         display: flex;
         align-items: center;
         justify-content: center;
