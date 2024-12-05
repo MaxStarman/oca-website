@@ -78,7 +78,6 @@
         }
     }
 
-
     .footer {
         height: 32.34vh;
         display: flex;
@@ -184,43 +183,14 @@
 
         .phone-number, .email, .location {
             display: flex;
-            align-items: center;
+            align-items: baseline;
         }
     }
 
-    .info {
-        font-family: 'Ethnocentric', sans-serif;
-        font-weight: 400;
-        color: white;
-    }
 
     .info-feedback {
-        font-family: 'Jersey 10', sans-serif;
-        font-weight: 400;
+
         color: white;
-    }
-}
-
-.container.contact-info {
-    .info,
-    .info-feedback {
-        // Default (Bootstrap's fs-4 size)
-        font-size: 1.25rem;
-
-        // Small screens
-        @media (max-width: 576px) {
-            font-size: 1rem; // Adjust to fs-5 equivalent
-        }
-
-        // Medium screens
-        @media (min-width: 577px) and (max-width: 768px) {
-            font-size: 1.125rem; // Slightly larger than fs-5
-        }
-
-        // Large screens
-        @media (min-width: 769px) {
-            font-size: 1.5rem; // Adjust to fs-3 equivalent for larger screens
-        }
     }
 }
 
