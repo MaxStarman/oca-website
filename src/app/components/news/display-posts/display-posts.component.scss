@@ -1,4 +1,5 @@
 @import "../../../../styles/mixins";
+@import "../../../../styles/animations";
 
 .header-bg-image {
     @include headerBgImage('~src/assets/images/news/news-start-blackend.jpeg');
@@ -49,6 +50,11 @@
         &:hover {
             text-decoration: underline;
         }
+    }
+
+    .animate {
+        font-size: 58px;
+        animation: downUp 1s infinite;
     }
 }
 
