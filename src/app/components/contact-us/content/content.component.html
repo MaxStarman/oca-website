@@ -71,7 +71,7 @@
                 <label for="name"></label>
                 <input formControlName="name" id="name" placeholder="Ime" type="text"/>
                 <div *ngIf="emailForm.controls['name'].invalid && emailForm.controls['name'].touched">
-                    <h1 class="fs-6">Prosim vnesite ime.</h1>
+                    <h1 class="fs-6">Obvezno.</h1>
                 </div>
 
                 <label for="subject"></label>
@@ -80,7 +80,7 @@
                 <label for="message"></label>
                 <textarea formControlName="message" id="message" placeholder="Sporočilo"></textarea>
                 <div *ngIf="emailForm.controls['message'].invalid && emailForm.controls['message'].touched">
-                    <h1 class="fs-6">Prosim vnesite sporočilo.</h1>
+                    <h1 class="fs-6">Obvezno.</h1>
                 </div>
 
                 <label for="email"></label>

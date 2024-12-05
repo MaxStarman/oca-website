@@ -26,6 +26,7 @@ export class ContentComponent {
 
     // TODO form submit with firebase and validation fix
     onSubmit() {
+
         if (this.emailForm.valid) {
             console.log('Form Submitted', this.emailForm.value);
             // const formData = this.emailForm.value;
@@ -42,8 +43,10 @@ export class ContentComponent {
 
             setTimeout(() => {
                 this.emailForm.reset();
+                alert("OK, sedaj kliknite pošlji na oknu, ki se vam bo odprlo.")
             }, 2000)
-        } else {
+        } else if (this.emailForm.invalid) {
+            alert('Napolni polja!')
             this.emailForm.markAsTouched();
         }
     }

@@ -284,8 +284,12 @@
     cursor: pointer;
     transition: transform 0.2s;
 
-
-    &:hover {
+    &:disabled {
+        cursor: not-allowed;
+        background-color: #2d2d2d;
+    }
+    
+    &:not(:disabled):hover {
         transform: scale(1.05);
     }
 }
