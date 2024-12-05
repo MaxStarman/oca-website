@@ -175,22 +175,28 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        gap: 1rem;
+        gap: 3.5rem;
 
-        div > i, img {
-            margin-right: 2rem;
+        div > i {
+            margin-right: 2.5rem;
         }
 
         .phone-number, .email, .location {
             display: flex;
-            align-items: baseline;
+            align-items: center;
+
+            h1 {
+                margin-bottom: 0;
+            }
+
         }
+
     }
 
-
-    .info-feedback {
-
-        color: white;
+    .motivational-quote {
+        p {
+            color: white;
+        }
     }
 }
 
