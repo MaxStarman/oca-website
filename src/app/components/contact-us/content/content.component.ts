@@ -1,7 +1,8 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ViewportScroller} from "@angular/common";
-import {Router} from "@angular/router";
+import {doc, setDoc} from "@angular/fire/firestore";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 
 @Component({
     selector: 'content',
@@ -14,7 +15,10 @@ export class ContentComponent {
 
     emailForm: FormGroup;
 
-    constructor(private fb: FormBuilder, private router: Router, private viewportScroller: ViewportScroller) {
+    constructor(private fb: FormBuilder,
+                private ngFire: AngularFirestore,
+                private viewportScroller: ViewportScroller,
+    ) {
         this.emailForm = this.fb.group({
             name: ['', Validators.required],
             subject: [''],
@@ -29,26 +33,35 @@ export class ContentComponent {
 
         if (this.emailForm.valid) {
             console.log('Form Submitted', this.emailForm.value);
-            // const formData = this.emailForm.value;
 
-            // TODO before deploy check for api email implementation https://extensions.dev/extensions/mailersend/mailersend-email
             const subject = this.emailForm.get('subject')?.value;
             const message = this.emailForm.get('message')?.value;
 
-            // TODO send to firestore
+            // Good upgrade for min price -> Trigger Email from Firestore
+            // https://extensions.dev/extensions/firebase/firestore-send-email
+            window.location.href = `mailto:info@protonmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+
+
             const email = this.emailForm.get('email')?.value;
             const name = this.emailForm.get('name')?.value;
 
-            window.location.href = `mailto:info@protonmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+            this.saveUserEmail(email, name).then(
+                () => {
+                    this.emailForm.reset();
+                    alert("Sedaj kliknite pošlji na oknu, ki se vam bo odprlo.")
+                }
+            );
 
-            setTimeout(() => {
-                this.emailForm.reset();
-                alert("OK, sedaj kliknite pošlji na oknu, ki se vam bo odprlo.")
-            }, 2000)
         } else if (this.emailForm.invalid) {
             alert('Napolni polja!')
             this.emailForm.markAsTouched();
         }
+    }
+
+
+    async saveUserEmail(email: string, name: string) {
+        const userRef = doc(this.ngFire.firestore, `fans/${email}`);
+        return setDoc(userRef, {name: name}, {merge: false});
     }
 
     scrollToFeedback() {

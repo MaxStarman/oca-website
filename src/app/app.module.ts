@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
@@ -27,6 +26,7 @@ import {initializeApp} from "@angular/fire/app";
 import {getAnalytics} from "@angular/fire/analytics";
 import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
 import {NewsStartPageComponent} from './components/news/news-start-page/news-start-page.component';
+import {AppCheckModule, initializeAppCheck, ReCaptchaEnterpriseProvider} from "@angular/fire/app-check";
 
 @NgModule({
     declarations: [
@@ -54,6 +54,7 @@ import {NewsStartPageComponent} from './components/news/news-start-page/news-sta
         CarouselModule.forRoot(),
         ReactiveFormsModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
+        AppCheckModule,
         AngularFireAnalyticsModule,
         AngularFirestoreModule
     ],
@@ -66,6 +67,10 @@ export class AppModule {
     constructor() {
         const app = initializeApp(environment.firebaseConfig);
         const analytics = getAnalytics(app);
+        const appCheck = initializeAppCheck(app, {
+            provider: new ReCaptchaEnterpriseProvider(environment.siteKey),
+            isTokenAutoRefreshEnabled: true // Set to true to allow auto-refresh.
+        })
     }
 
 }
