@@ -27,6 +27,7 @@ import {getAnalytics} from "@angular/fire/analytics";
 import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
 import {NewsStartPageComponent} from './components/news/news-start-page/news-start-page.component';
 import {AppCheckModule, initializeAppCheck, ReCaptchaEnterpriseProvider} from "@angular/fire/app-check";
+import {getPerformance} from "firebase/performance";
 
 @NgModule({
     declarations: [
@@ -69,8 +70,9 @@ export class AppModule {
         const analytics = getAnalytics(app);
         const appCheck = initializeAppCheck(app, {
             provider: new ReCaptchaEnterpriseProvider(environment.siteKey),
-            isTokenAutoRefreshEnabled: true // Set to true to allow auto-refresh.
+            isTokenAutoRefreshEnabled: false // Set to true to allow auto-refresh.
         })
+        const perf = getPerformance(app);
     }
 
 }
