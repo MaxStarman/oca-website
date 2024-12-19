@@ -11,7 +11,6 @@ import {NavMenuOverlayComponent} from './components/navigation/nav-menu-overlay/
 import {NavIconComponent} from './components/navigation/nav-icon/nav-icon.component';
 import {HomePageComponent} from './components/home-page/home-page.component';
 import {NgOptimizedImage} from "@angular/common";
-import {LoadingScreenComponent} from './components/loading-screen/loading-screen.component';
 import {BrowserAnimationsModule, provideAnimations} from '@angular/platform-browser/animations';
 import {CarouselModule} from "ngx-bootstrap/carousel";
 import {DisplayPostsComponent} from './components/news/display-posts/display-posts.component';
@@ -26,8 +25,9 @@ import {initializeApp} from "@angular/fire/app";
 import {getAnalytics} from "@angular/fire/analytics";
 import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
 import {NewsStartPageComponent} from './components/news/news-start-page/news-start-page.component';
-import {AppCheckModule, initializeAppCheck, ReCaptchaEnterpriseProvider} from "@angular/fire/app-check";
+import {AppCheckModule} from "@angular/fire/app-check";
 import {getPerformance} from "firebase/performance";
+import {SplashScreenComponent} from './components/spash-screen/splash-screen.component';
 
 @NgModule({
     declarations: [
@@ -38,12 +38,12 @@ import {getPerformance} from "firebase/performance";
         NavMenuOverlayComponent,
         NavIconComponent,
         HomePageComponent,
-        LoadingScreenComponent,
         DisplayPostsComponent,
         ContactStartPageComponent,
         ContentComponent,
         NavMenuComponent,
-        NewsStartPageComponent
+        NewsStartPageComponent,
+        SplashScreenComponent
     ],
     imports: [
         BrowserModule,
@@ -68,10 +68,10 @@ export class AppModule {
     constructor() {
         const app = initializeApp(environment.firebaseConfig);
         const analytics = getAnalytics(app);
-        const appCheck = initializeAppCheck(app, {
-            provider: new ReCaptchaEnterpriseProvider(environment.siteKey),
-            isTokenAutoRefreshEnabled: false // Set to true to allow auto-refresh.
-        })
+        // const appCheck = initializeAppCheck(app, {
+        //     provider: new ReCaptchaEnterpriseProvider(environment.siteKey),
+        //     isTokenAutoRefreshEnabled: false // Set to true to allow auto-refresh.
+        // })
         const perf = getPerformance(app);
     }
 

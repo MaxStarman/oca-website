@@ -39,18 +39,20 @@ export class ContentComponent {
 
             // Good upgrade for min price -> Trigger Email from Firestore
             // https://extensions.dev/extensions/firebase/firestore-send-email
-            window.location.href = `mailto:info@protonmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+            // window.location.href = `mailto:info@protonmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
 
 
             const email = this.emailForm.get('email')?.value;
             const name = this.emailForm.get('name')?.value;
 
-            this.saveUserEmail(email, name).then(
-                () => {
-                    this.emailForm.reset();
-                    alert("Sedaj kliknite pošlji na oknu, ki se vam bo odprlo.")
-                }
-            );
+            this.emailForm.reset();
+            alert("Sedaj kliknite pošlji na oknu, ki se vam bo odprlo.")
+
+            // this.saveUserEmail(email, name).then(
+            //     () => {
+            //
+            //     }
+            // );
 
         } else if (this.emailForm.invalid) {
             alert('Napolni polja!')
