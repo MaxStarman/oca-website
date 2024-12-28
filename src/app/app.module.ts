@@ -23,11 +23,11 @@ import {environment} from "../enviroments/enviroment";
 import {AngularFireAnalyticsModule} from "@angular/fire/compat/analytics";
 import {initializeApp} from "@angular/fire/app";
 import {getAnalytics} from "@angular/fire/analytics";
-import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
 import {NewsStartPageComponent} from './components/news/news-start-page/news-start-page.component';
-import {AppCheckModule} from "@angular/fire/app-check";
 import {getPerformance} from "firebase/performance";
 import {SplashScreenComponent} from './components/spash-screen/splash-screen.component';
+import {LoadingService} from "./services/loading.service";
+import {LoadingPipe} from "./pipes/loading.pipe";
 
 @NgModule({
     declarations: [
@@ -43,7 +43,8 @@ import {SplashScreenComponent} from './components/spash-screen/splash-screen.com
         ContentComponent,
         NavMenuComponent,
         NewsStartPageComponent,
-        SplashScreenComponent
+        SplashScreenComponent,
+        LoadingPipe
     ],
     imports: [
         BrowserModule,
@@ -55,12 +56,11 @@ import {SplashScreenComponent} from './components/spash-screen/splash-screen.com
         CarouselModule.forRoot(),
         ReactiveFormsModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
-        AppCheckModule,
-        AngularFireAnalyticsModule,
-        AngularFirestoreModule
+        AngularFireAnalyticsModule
     ],
     providers: [
-        provideAnimations()
+        provideAnimations(),
+        LoadingService
     ],
     bootstrap: [AppComponent]
 })
@@ -68,10 +68,6 @@ export class AppModule {
     constructor() {
         const app = initializeApp(environment.firebaseConfig);
         const analytics = getAnalytics(app);
-        // const appCheck = initializeAppCheck(app, {
-        //     provider: new ReCaptchaEnterpriseProvider(environment.siteKey),
-        //     isTokenAutoRefreshEnabled: false // Set to true to allow auto-refresh.
-        // })
         const perf = getPerformance(app);
     }
 
