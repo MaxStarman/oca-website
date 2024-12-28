@@ -39,7 +39,7 @@ export class InstagramService {
                     this.cachedPosts.next(response);
                 }),
                 catchError(error => {
-                    console.error('Error fetching YouTube videos:', error);
+                    console.error('Error fetching Instagram posts:', error);
                     return of([]);
                 })
             ).subscribe();

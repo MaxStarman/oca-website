@@ -1,8 +1,4 @@
-<nav-icon
-    [icon]="'cupcake'"
-    [type]="'home'"
-></nav-icon>
-
+<nav-icon></nav-icon>
 
 <section id="featured-video-section">
     <div
@@ -11,6 +7,7 @@
     >
         <div class="container video-container">
             <youtube-player
+                *ngIf="selectedVideo"
                 [height]="playerHeight"
                 [videoId]="selectedVideo.id"
                 [width]="playerWidth"
@@ -22,7 +19,7 @@
 
     <div class="pages-base-bg-image">
         <div class="container video-description">
-            <div class="container">
+            <div *ngIf="selectedVideo" class="container">
 
                 <h1 class="fs-3 text-black">
                     {{ selectedVideo.snippet.title }}
@@ -33,7 +30,7 @@
 
                 </p>
                 <p class="fs-4">
-                    {{ selectedVideo.snippet.publishedAt | date: 'longDate' }}
+                    {{ selectedVideo.snippet.publishedAt  | date: 'longDate' }}
                 </p>
             </div>
 
@@ -44,10 +41,11 @@
 </section>
 
 <section id="more-videos-section">
-    <div class="container more-videos video-grid">
+    <div *ngIf="otherVideos.length > 0" class="container more-videos video-grid">
         <div (click)="viewVideo(video.id.videoId)"
              *ngFor="let video of otherVideos"
-             class="video-card">
+             class="video-card"
+        >
             <img
                 alt="Other videos"
                 src="{{video.snippet.thumbnails.medium.url}}"

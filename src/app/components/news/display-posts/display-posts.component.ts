@@ -12,34 +12,35 @@ export class DisplayPostsComponent implements OnInit, AfterViewInit {
 
     instagramData: any = [];
     otherPosts: any[] = [];
-    selectedPost: any = null;
+    selectedPost: any = [];
 
     @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private viewportScroller: ViewportScroller,
-                private instagramService: InstagramService) {
+                private instagramService: InstagramService
+    ) {
     }
 
     ngOnInit() {
         this.instagramService.getUserMedia().subscribe(posts => {
-            this.instagramData = posts.data
-        })
+            this.instagramData = posts.data || [];
+            if (this.instagramData.length > 0) {
+                // Listen for route changes to update state
+                this.route.paramMap.subscribe((params: any) => {
+                    const postId = params.get('id');
 
-        // Listen for route changes to update state
-        this.route.paramMap.subscribe((params: any) => {
-            const postId = params.get('id');
-
-            if (postId) {
-                // Display post details
-                this.displayPost(postId);
-
-            } else if (this.instagramData.length > 0) {
-                // Display the latest post by default (index 0)
-                this.displayPost(this.instagramData[0].id);
+                    if (postId) {
+                        // Display post details
+                        this.displayPost(postId);
+                    } else {
+                        // Display the latest post by default (index 0)
+                        this.displayPost(this.instagramData[0].id);
+                    }
+                });
             }
-        });
+        })
     }
 
     ngAfterViewInit() {

@@ -12,7 +12,7 @@ export class YtVideosComponent implements OnInit {
 
     videos: any[] = [];
     otherVideos: any[] = [];
-    selectedVideo: any = null;
+    selectedVideo: any = {snippet: {thumbnails: {medium: {url: ''}}, title: '', description: '', publishedAt: ''}};
 
     playerWidth = 640; // Default width
     playerHeight = 390; // Default height
@@ -35,28 +35,33 @@ export class YtVideosComponent implements OnInit {
         this.adjustPlayerSize(window.innerWidth); // Adjust video player size
 
         this.ytService.getYoutubeVideos().subscribe(data => {
-            this.videos = data.items
-        })
-        // Listen for route changes to update state
-        this.route.paramMap.subscribe((params: any) => {
-            const videoId = params.get('id');
-            if (videoId) {
-                this.fetchAndDisplayVideo(videoId); // Video detail view
-            } else if (this.videos.length > 0) {
-                // Display the latest video by default
-                this.fetchAndDisplayVideo(this.videos[0].id.videoId);
+            this.videos = data.items || [];
+            if (this.videos.length > 0) {
+                // Listen for route changes to update state
+                this.route.paramMap.subscribe((params: any) => {
+                    const videoId = params.get('id');
+
+                    if (videoId) {
+                        this.fetchAndDisplayVideo(videoId); // Video detail view
+                    } else {
+
+                        // Display the latest video by default
+                        this.fetchAndDisplayVideo(this.videos[0].id.videoId);
+                    }
+                });
             }
-        });
+        })
     }
 
     fetchAndDisplayVideo(videoId: string): void {
         this.ytService.fetchVideoDetails(videoId).subscribe(details => {
-            this.selectedVideo = details.items[0];
-
-            // Filter out the selected video from the grid
-            this.otherVideos = this.videos.filter(
-                (video) => video.id.videoId !== videoId
-            );
+            if (details && details.items && details.items[0]) {
+                this.selectedVideo = details.items[0];
+                // Filter out the selected video from the grid
+                this.otherVideos = this.videos.filter(
+                    (video) => video.id.videoId !== videoId
+                );
+            }
         });
     }
 

@@ -2,7 +2,7 @@
 
 <section id="featured-post-section">
     <div class="header-bg-image sticky-top instagram-feed">
-        <div class="post-content">
+        <div *ngIf="selectedPost" class="post-content">
             <ng-container *ngIf="selectedPost.media_type === 'CAROUSEL_ALBUM'">
                 <carousel>
                     <slide *ngFor="let child of selectedPost.children.data">
@@ -28,7 +28,7 @@
     </div>
 
     <div class="pages-base-bg-image">
-        <div *ngIf="selectedPost.caption" class="container post-caption">
+        <div *ngIf="selectedPost && selectedPost.caption" class="container post-caption">
             <p class="fs-3">
                 {{ selectedPost.caption }}
             </p>
@@ -46,7 +46,7 @@
 
 <section id="more-posts-section">
     <div class="container more-posts">
-        <div class="post-grid">
+        <div *ngIf="otherPosts.length > 0" class="post-grid">
             <div (click)="viewPost(post.id)"
                  *ngFor="let post of otherPosts;"
                  class="post-card">
