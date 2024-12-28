@@ -37,8 +37,6 @@ export class NavMenuComponent {
                 // Remove the animation class after the animation duration
                 setTimeout(() => {
                     linkElement.classList.remove('animate');
-
-                    // TODO (optional) ce user klikne link strani na kateri je je, ga pelje na vrh strani
                     this.router.navigate([routerLink])
                     this.viewportScroller.scrollToPosition([0, 0]);
                 }, 200); // Match the CSS animation duration

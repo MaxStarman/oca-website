@@ -25,7 +25,6 @@ export class NavIconComponent {
         if (this.type == 'nav-menu') {
             this.navService.toggleNav();
         } else {
-            this.navService.toggleNav();
             this.router.navigate([''])
         }
     }
