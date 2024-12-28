@@ -27,9 +27,7 @@ export class NavMenuComponent {
         this.isMobile = window.innerWidth < 992; // Mobile and tablet breakpoint
     }
 
-    // TODO bug -> end page nav, iz enega paga na drugega pelje na mesto kjer si ostal (exclude homepage)
     notifyParentAndHandleEvent(event: Event, routerLink: string) {
-
         if (this.isMobile) {
             const linkElement = (event.target as HTMLElement).closest('.mobile-animation');
             if (linkElement) {
