@@ -1,6 +1,6 @@
 # OCA Website
 
-This repository contains the Angular single-page application that powers the official website for **Oca**, a four-piece
+This repository contains the Angular application that powers the official website for **Oca band**, a four-piece
 psychedelic rock band from Koper, Slovenia. The site is built with Angular 16 and styled with Bootstrap to deliver a
 mobile-friendly experience for fans who want to follow the band, watch their latest videos, and explore upcoming news and
 events.
@@ -25,54 +25,3 @@ events.
 - [Firebase](https://firebase.google.com/) configuration for deployment
 - Instagram Graph API and YouTube Data API integrations, with request caching handled in-browser
 
-## Getting started
-
-1. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-2. **Start the local development server**
-
-   ```bash
-   npm start
-   ```
-
-   The app will be available at `http://localhost:4200/`.
-
-3. **Run in single-spa mode (optional)**
-
-   ```bash
-   npm run startSPA
-   ```
-
-   This serves the application on port `4207` so it can be mounted by a single-spa root configuration.
-
-## Building for production
-
-```bash
-npm run build
-```
-
-For a micro-frontend-friendly build, use:
-
-```bash
-npm run buildSPA
-```
-
-Both commands emit the compiled assets into the `dist/` directory.
-
-## Environment configuration
-
-To enable the Instagram and YouTube integrations, provide the required API keys and tokens in the environment files under
-`src/enviroments/`. During development populate `enviroment.ts`, and for production builds update `enviroment.prod.ts` with
-the secure values.
-
-## Contributing
-
-Issues and pull requests are welcome! Please open an issue first to discuss substantial changes.
-
-## License
-
-This project is distributed under the MIT License. See the `LICENSE` file (if present) for details.
