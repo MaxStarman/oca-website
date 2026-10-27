@@ -18,16 +18,22 @@ import {ContactStartPageComponent} from './components/contact-us/contact-start-p
 import {ContentComponent} from './components/contact-us/content/content.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {NavMenuComponent} from './components/navigation/nav-menu/nav-menu.component';
-import {AngularFireModule} from "@angular/fire/compat";
 import {environment} from "../enviroments/enviroment";
-import {AngularFireAnalyticsModule} from "@angular/fire/compat/analytics";
-import {initializeApp} from "@angular/fire/app";
-import {getAnalytics} from "@angular/fire/analytics";
+import {initializeApp, provideFirebaseApp} from "@angular/fire/app";
+import {getAnalytics, provideAnalytics, ScreenTrackingService} from "@angular/fire/analytics";
+import {getPerformance, providePerformance} from "@angular/fire/performance";
 import {NewsStartPageComponent} from './components/news/news-start-page/news-start-page.component';
-import {getPerformance} from "firebase/performance";
 import {SplashScreenComponent} from './components/spash-screen/splash-screen.component';
 import {LoadingService} from "./services/loading.service";
 import {LoadingPipe} from "./pipes/loading.pipe";
+
+// Only wire up Firebase when a config is present, so the app still runs with placeholder environments.
+const firebaseEnabled = !!environment.firebaseConfig.apiKey;
+const firebaseImports = firebaseEnabled ? [
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAnalytics(() => getAnalytics()),
+    providePerformance(() => getPerformance())
+] : [];
 
 @NgModule({
     declarations: [
@@ -55,20 +61,15 @@ import {LoadingPipe} from "./pipes/loading.pipe";
         NgOptimizedImage,
         CarouselModule.forRoot(),
         ReactiveFormsModule,
-        AngularFireModule.initializeApp(environment.firebaseConfig),
-        AngularFireAnalyticsModule
+        ...firebaseImports
     ],
     providers: [
         provideAnimations(),
-        LoadingService
+        LoadingService,
+        // Logs a page_view to Analytics on every route change
+        ...(firebaseEnabled ? [ScreenTrackingService] : [])
     ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
-    constructor() {
-        const app = initializeApp(environment.firebaseConfig);
-        const analytics = getAnalytics(app);
-        const perf = getPerformance(app);
-    }
-
 }

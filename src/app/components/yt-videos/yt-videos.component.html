@@ -6,8 +6,21 @@
         class="header sticky-top"
     >
         <div class="container video-container">
+            <div *ngIf="status === 'loading'" class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Nalagam videe...</span>
+            </div>
+
+            <div *ngIf="status === 'error' || status === 'empty'" class="feed-message">
+                <h1 class="fs-4">
+                    {{ status === 'error' ? 'Videov trenutno ne moremo naložiti.' : 'Trenutno ni novih videov.' }}
+                </h1>
+                <a [href]="ytService.channelUrl" class="youtube-link" rel="noopener" target="_blank">
+                    <i class="fab fa-youtube"></i> Poglej nas na YouTubu
+                </a>
+            </div>
+
             <youtube-player
-                *ngIf="selectedVideo"
+                *ngIf="status === 'ready'"
                 [height]="playerHeight"
                 [videoId]="selectedVideo.id"
                 [width]="playerWidth"
@@ -19,7 +32,7 @@
 
     <div class="pages-base-bg-image">
         <div class="container video-description">
-            <div *ngIf="selectedVideo" class="container">
+            <div *ngIf="status === 'ready'" class="container">
 
                 <h1 class="fs-3 text-black">
                     {{ selectedVideo.snippet.title }}

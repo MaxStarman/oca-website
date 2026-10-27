@@ -20,13 +20,13 @@ firebase deploy      # hosting only; serves dist/oca-website
 - Config lives in `src/enviroments/` (note the misspelling — keep it; imports depend on it).
 - Both files are tracked in git (placeholders only, since commit `15cb135`) but also listed in `.gitignore`;
   `.gitignore` has no effect on tracked files, so filling in real keys WILL show in `git status` — don't commit them.
-- Code expects these keys on `environment` (the committed placeholders do NOT define them, so the app
-  fails to type-check until they are added locally):
-  - `firebaseConfig` — used in `app.module.ts` (Analytics + Performance)
+- Shape is the `AppEnvironment` interface in `src/app/models/app-environment.ts` (lives outside
+  `src/enviroments/` because that folder is gitignored, so new files there would never be committed):
+  - `firebaseConfig` — `app.module.ts` (Analytics + Performance + ScreenTracking); skipped entirely if `apiKey` is empty
   - `youtubeApiKey` — `services/youtube.service.ts`
   - `instagramAccessToken`, `instagramAccId` — `services/instagram.service.ts`
-- `angular.json` has **no `fileReplacements`**, so `enviroment.prod.ts` is never used; every build imports
-  `enviroment.ts`.
+- Committed values are empty strings, so a fresh clone builds and runs; the feeds then show their error state.
+- Production builds swap in `enviroment.prod.ts` via `fileReplacements` in `angular.json`.
 - Everything in `environment` ships to the browser. Do not add anything there that must stay secret.
 
 ## Architecture
@@ -49,9 +49,12 @@ src/app/
     yt-videos/             /music: featured YouTube video (@angular/youtube-player) + grid
     contact-us/            /contact: contact-start-page -> fades to content (phone, email, location)
     spash-screen/          (folder name misspelled) splash with pulsing cupcake
+  models/app-environment.ts  typed shape of the environment files
   services/
-    instagram.service.ts   Graph API /media, cached in sessionStorage + ReplaySubject
-    youtube.service.ts     Data API search + videos, cached in sessionStorage
+    instagram.service.ts   Graph API /media -> Observable<post[]>; sessionStorage + shareReplay cache;
+                           ERRORS (not silent) on failure/missing config, failed request is not cached
+    youtube.service.ts     Data API search + videos, same pattern; also lazy-loads the YouTube IFrame API
+                           (@angular/youtube-player v16 does not load it itself)
     nav.service.ts         BehaviorSubject<boolean> for overlay open state
     loading.service.ts     unused (wiring in app.component is commented out)
   pipes/loading.pipe.ts    unused
@@ -72,17 +75,22 @@ Routes: `''` home · `news` · `news/post/:id` · `music` · `music/video/:id` �
   with a sticky inner `100vh` block (scroll-pinning effect), then `<nav-menu>` as the footer.
 - Fonts: `Ethnocentric` for `h1`, `Jersey 10` for `p` (global in `styles.scss`).
 - API data is typed as `any`; Instagram/YouTube response shapes are used directly in templates.
+- Feed components (`display-posts`, `yt-videos`) keep `status: 'loading' | 'ready' | 'empty' | 'error'` and
+  render a spinner / fallback link (Slovene copy) accordingly. Subscriptions use `switchMap` over
+  `route.paramMap` + `takeUntilDestroyed(destroyRef)`.
+- Bootstrap comes only from the SCSS import in `styles.scss` and Font Awesome only from `angular.json` styles;
+  don't re-add CDN tags to `index.html`. Bootstrap's JS bundle is not loaded (carousel is ngx-bootstrap).
 
 ## Known issues (as of 2026-10-27)
 
 - **Leaked key**: a YouTube API key was committed in `8c831e5` and is still in history. It must be rotated
   and HTTP-referrer-restricted in Google Cloud Console.
-- Instagram long-lived token is shipped to clients and expires every 60 days; when it does, the news page
-  renders blank (errors are swallowed, no fallback UI).
-- `firebase.json` has no SPA rewrite, so refreshing/deep-linking `/news/post/:id` or `/music` 404s.
-- Firebase is initialised twice (`AngularFireModule.initializeApp` and `initializeApp` in the module ctor).
-- Bootstrap is loaded 3x (SCSS import 5.3.3, CDN CSS 5.0.2, CDN JS) and Font Awesome 2x (npm + kit);
-  the YouTube iframe API is also loaded manually although `@angular/youtube-player` loads it itself.
+- Instagram long-lived token is shipped to clients and expires every 60 days (the news page then shows its
+  error state). Proper fix: fetch/refresh server-side (e.g. scheduled Firebase Function).
+- YouTube `search` costs 100 quota units per uncached session (~100 sessions/day on default quota);
+  `playlistItems` on the uploads playlist would cost 1.
+- Production build warns on budgets: initial bundle ~844 kB (budget 500 kB), and `content` / `display-posts`
+  component styles exceed the 2 kB warning.
 - `assets/videos/oca-nav-video.mp4` is ~31 MB and autoplays in every nav-menu instance (home overlay + each
   page footer).
 - `main.single-spa.ts` is an unmodified Bitovi template (`@bitovi/micro-fe-billing`); single-spa is not

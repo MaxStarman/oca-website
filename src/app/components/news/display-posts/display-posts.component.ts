@@ -1,6 +1,9 @@
-import {AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {AfterViewInit, Component, DestroyRef, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ViewportScroller} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {EMPTY} from "rxjs";
+import {switchMap} from "rxjs/operators";
 import {InstagramService} from "../../../services/instagram.service";
 
 @Component({
@@ -10,37 +13,43 @@ import {InstagramService} from "../../../services/instagram.service";
 })
 export class DisplayPostsComponent implements OnInit, AfterViewInit {
 
-    instagramData: any = [];
+    readonly instagramUrl = 'https://www.instagram.com/onecupcakeaway/';
+
+    status: 'loading' | 'ready' | 'empty' | 'error' = 'loading';
+    instagramData: any[] = [];
     otherPosts: any[] = [];
-    selectedPost: any = [];
+    selectedPost: any = null;
 
     @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private viewportScroller: ViewportScroller,
-                private instagramService: InstagramService
+                private instagramService: InstagramService,
+                private destroyRef: DestroyRef
     ) {
     }
 
     ngOnInit() {
-        this.instagramService.getUserMedia().subscribe(posts => {
-            this.instagramData = posts.data || [];
-            if (this.instagramData.length > 0) {
+        this.instagramService.getUserMedia().pipe(
+            switchMap(posts => {
+                this.instagramData = posts;
+                if (posts.length === 0) {
+                    this.status = 'empty';
+                    return EMPTY;
+                }
                 // Listen for route changes to update state
-                this.route.paramMap.subscribe((params: any) => {
-                    const postId = params.get('id');
-
-                    if (postId) {
-                        // Display post details
-                        this.displayPost(postId);
-                    } else {
-                        // Display the latest post by default (index 0)
-                        this.displayPost(this.instagramData[0].id);
-                    }
-                });
-            }
-        })
+                return this.route.paramMap;
+            }),
+            takeUntilDestroyed(this.destroyRef)
+        ).subscribe({
+            next: params => {
+                // Display the requested post, or the latest one (index 0) by default
+                this.displayPost(params.get('id') || this.instagramData[0].id);
+                this.status = 'ready';
+            },
+            error: () => this.status = 'error'
+        });
     }
 
     ngAfterViewInit() {
@@ -48,11 +57,12 @@ export class DisplayPostsComponent implements OnInit, AfterViewInit {
     }
 
     displayPost(id: string) {
+        // Unknown ids (old or deleted posts) fall back to the latest post
         this.selectedPost = this.instagramData.find(
             (post: any) => post.id === id
-        );
+        ) || this.instagramData[0];
         this.otherPosts = this.instagramData.filter(
-            (post: any) => post.id !== id
+            (post: any) => post.id !== this.selectedPost.id
         );
     }
 

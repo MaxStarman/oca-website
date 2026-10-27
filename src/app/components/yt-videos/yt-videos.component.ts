@@ -1,7 +1,10 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, DestroyRef, HostListener, OnInit} from '@angular/core';
 import {YoutubeService} from "../../services/youtube.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ViewportScroller} from "@angular/common";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {EMPTY} from "rxjs";
+import {switchMap} from "rxjs/operators";
 
 @Component({
     selector: 'yt-videos',
@@ -10,6 +13,7 @@ import {ViewportScroller} from "@angular/common";
 })
 export class YtVideosComponent implements OnInit {
 
+    status: 'loading' | 'ready' | 'empty' | 'error' = 'loading';
     videos: any[] = [];
     otherVideos: any[] = [];
     selectedVideo: any = {snippet: {thumbnails: {medium: {url: ''}}, title: '', description: '', publishedAt: ''}};
@@ -18,10 +22,11 @@ export class YtVideosComponent implements OnInit {
     playerHeight = 390; // Default height
 
     constructor(
-        private ytService: YoutubeService,
+        public ytService: YoutubeService,
         private route: ActivatedRoute,
         private router: Router,
-        private viewportScroller: ViewportScroller
+        private viewportScroller: ViewportScroller,
+        private destroyRef: DestroyRef
     ) {
     }
 
@@ -33,36 +38,42 @@ export class YtVideosComponent implements OnInit {
 
     ngOnInit(): void {
         this.adjustPlayerSize(window.innerWidth); // Adjust video player size
+        this.ytService.loadIframeApi();
 
-        this.ytService.getYoutubeVideos().subscribe(data => {
-            this.videos = data.items || [];
-            if (this.videos.length > 0) {
+        this.ytService.getYoutubeVideos().pipe(
+            switchMap(videos => {
+                this.videos = videos;
+                if (videos.length === 0) {
+                    this.status = 'empty';
+                    return EMPTY;
+                }
                 // Listen for route changes to update state
-                this.route.paramMap.subscribe((params: any) => {
-                    const videoId = params.get('id');
-
-                    if (videoId) {
-                        this.fetchAndDisplayVideo(videoId); // Video detail view
-                    } else {
-
-                        // Display the latest video by default
-                        this.fetchAndDisplayVideo(this.videos[0].id.videoId);
-                    }
-                });
-            }
-        })
+                return this.route.paramMap;
+            }),
+            // Video detail view, or the latest video by default
+            switchMap(params => this.fetchAndDisplayVideo(params.get('id') || this.videos[0].id.videoId)),
+            takeUntilDestroyed(this.destroyRef)
+        ).subscribe({
+            error: () => this.status = 'error'
+        });
     }
 
-    fetchAndDisplayVideo(videoId: string): void {
-        this.ytService.fetchVideoDetails(videoId).subscribe(details => {
-            if (details && details.items && details.items[0]) {
-                this.selectedVideo = details.items[0];
-                // Filter out the selected video from the grid
-                this.otherVideos = this.videos.filter(
-                    (video) => video.id.videoId !== videoId
-                );
-            }
-        });
+    fetchAndDisplayVideo(videoId: string) {
+        return this.ytService.fetchVideoDetails(videoId).pipe(
+            switchMap(details => {
+                if (details && details.items && details.items[0]) {
+                    this.selectedVideo = details.items[0];
+                    // Filter out the selected video from the grid
+                    this.otherVideos = this.videos.filter(
+                        (video) => video.id.videoId !== videoId
+                    );
+                    this.status = 'ready';
+                } else {
+                    this.status = 'error';
+                }
+                return EMPTY;
+            })
+        );
     }
 
     // Redirect when a video is clicked

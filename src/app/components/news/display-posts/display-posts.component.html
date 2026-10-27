@@ -2,7 +2,20 @@
 
 <section id="featured-post-section">
     <div class="header-bg-image sticky-top instagram-feed">
-        <div *ngIf="selectedPost" class="post-content">
+        <div *ngIf="status === 'loading'" class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Nalagam objave...</span>
+        </div>
+
+        <div *ngIf="status === 'error' || status === 'empty'" class="feed-message">
+            <h1 class="fs-4">
+                {{ status === 'error' ? 'Objav trenutno ne moremo naložiti.' : 'Trenutno ni novih objav.' }}
+            </h1>
+            <a [href]="instagramUrl" class="instagram-link" rel="noopener" target="_blank">
+                <i class="fab fa-instagram"></i> Poglej nas na Instagramu
+            </a>
+        </div>
+
+        <div *ngIf="status === 'ready' && selectedPost" class="post-content">
             <ng-container *ngIf="selectedPost.media_type === 'CAROUSEL_ALBUM'">
                 <carousel>
                     <slide *ngFor="let child of selectedPost.children.data">
@@ -58,7 +71,7 @@
             </div>
         </div>
         <div class="shameless-plug">
-            <a class="instagram-link mb-2" href="https://www.instagram.com/onecupcakeaway/" target="_blank">
+            <a [href]="instagramUrl" class="instagram-link mb-2" rel="noopener" target="_blank">
                 <i class="fab fa-instagram"></i> Follow us on Instagram
             </a>
         </div>
