@@ -10,7 +10,8 @@ import {ContactUsComponent} from './components/contact-us/contact-us.component';
 import {NavMenuOverlayComponent} from './components/navigation/nav-menu-overlay/nav-menu-overlay.component';
 import {NavIconComponent} from './components/navigation/nav-icon/nav-icon.component';
 import {HomePageComponent} from './components/home-page/home-page.component';
-import {NgOptimizedImage} from "@angular/common";
+import {NgOptimizedImage, registerLocaleData} from "@angular/common";
+import localeSl from "@angular/common/locales/sl";
 import {BrowserAnimationsModule, provideAnimations} from '@angular/platform-browser/animations';
 import {CarouselModule} from "ngx-bootstrap/carousel";
 import {DisplayPostsComponent} from './components/news/display-posts/display-posts.component';
@@ -23,9 +24,10 @@ import {initializeApp, provideFirebaseApp} from "@angular/fire/app";
 import {getAnalytics, provideAnalytics, ScreenTrackingService} from "@angular/fire/analytics";
 import {getPerformance, providePerformance} from "@angular/fire/performance";
 import {NewsStartPageComponent} from './components/news/news-start-page/news-start-page.component';
-import {SplashScreenComponent} from './components/spash-screen/splash-screen.component';
-import {LoadingService} from "./services/loading.service";
-import {LoadingPipe} from "./pipes/loading.pipe";
+import {TranslatePipe} from "./i18n/translate.pipe";
+
+// Slovene month names etc. for the date pipe (English is built in)
+registerLocaleData(localeSl);
 
 // Only wire up Firebase when a config is present, so the app still runs with placeholder environments.
 const firebaseEnabled = !!environment.firebaseConfig.apiKey;
@@ -49,8 +51,7 @@ const firebaseImports = firebaseEnabled ? [
         ContentComponent,
         NavMenuComponent,
         NewsStartPageComponent,
-        SplashScreenComponent,
-        LoadingPipe
+        TranslatePipe
     ],
     imports: [
         BrowserModule,
@@ -65,7 +66,6 @@ const firebaseImports = firebaseEnabled ? [
     ],
     providers: [
         provideAnimations(),
-        LoadingService,
         // Logs a page_view to Analytics on every route change
         ...(firebaseEnabled ? [ScreenTrackingService] : [])
     ],

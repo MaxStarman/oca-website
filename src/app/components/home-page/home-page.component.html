@@ -1,20 +1,21 @@
 <nav-menu-overlay></nav-menu-overlay>
 
-<div class="bg-image d-flex justify-content-center align-items-center">
+<div class="home-bg d-flex justify-content-center align-items-center">
+    <!-- TODO(phase 2): <oca-stage> with the 3D cupcake goes here, as a layer behind the logo -->
     <div class="text-center">
-        <a (click)="toggleNav()" class="p-2">
-            <div class="p-1">
-                <img alt="Main OCA logo" class="col-9" id="title-logo-img" src="assets/images/oca-main.png"/>
-            </div>
-        </a>
+        <!-- No hint text on purpose: cursor, hover glow and the idle pulse say "click me" -->
+        <button (click)="onLogoClick()"
+                [attr.aria-label]="'nav.openMenu' | t"
+                [class.is-hinting]="showHint"
+                [class.is-pressed]="pressed"
+                class="logo-button"
+                type="button">
+            <img alt="One Cupcake Away" class="logo-img" src="assets/images/oca-main.png"/>
+        </button>
 
-        <div class="py-1">
-            <p class="fs-5 m-0 px-3 py-2">
-                <b>
-                    Smo 4-članski bando iz Kopra. Pripovedno - plesna, psihadelična rock 'n' roll mineštra po
-                    primorsko.<br/>EN BIŠKOTIN ČA!
-                </b>
-            </p>
-        </div>
+        <p class="intro fs-5 m-0 px-3 py-2">
+            <b>{{ 'home.intro' | t }}<br/><span lang="sl">{{ signature }}</span></b>
+        </p>
+        <!-- TODO(audio): first logo tap may also start the preview track (MP3s to be provided) -->
     </div>
 </div>

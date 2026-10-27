@@ -46,7 +46,8 @@
 
 #more-posts-section {
     height: 300vh;
-    background-image: radial-gradient(rgb(22, 111, 141), rgb(60, 222, 227));
+    // Each page glows in its own palette color: Novice is teal
+    background-image: radial-gradient(circle at 50% 35%, rgba($oca-teal, .4), var(--oca-bg) 70%);
     background-position: center;
     background-size: cover;
 
@@ -68,14 +69,14 @@
             padding: 1rem;
 
             .post-card {
-                background-color: #f9f9f9;
-                border: 1px solid #ddd;
+                background-color: var(--oca-bg-raised);
+                border: 1px solid rgba($oca-text, .12);
                 border-radius: 8px;
                 overflow: hidden;
                 display: flex;
                 height: 250px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                transition: transform 0.2s;
+                box-shadow: 0 12px 28px rgba(0, 0, 0, .35);
+                transition: transform var(--oca-dur-s) var(--oca-ease);
                 cursor: pointer;
 
                 &:hover {

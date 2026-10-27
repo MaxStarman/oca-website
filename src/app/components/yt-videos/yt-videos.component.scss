@@ -15,6 +15,54 @@
 
     }
 
+    .video-facade {
+        position: relative;
+        max-width: 100%;
+        padding: 0;
+        border: 0;
+        overflow: hidden;
+        background: #000;
+        // Warm "projector" glow around the featured video
+        box-shadow: 0 0 60px rgba($oca-ochre, .35);
+        cursor: pointer;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--oca-dur-m) var(--oca-ease);
+        }
+
+        .play-icon {
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            display: grid;
+            place-items: center;
+            width: 4.5rem;
+            height: 4.5rem;
+            border-radius: 50%;
+            background: var(--oca-ochre);
+            color: var(--oca-bg);
+            font-size: 1.6rem;
+            transition: transform var(--oca-dur-s) var(--oca-ease);
+
+            i {
+                margin-left: .25rem; // optical centering of the triangle
+            }
+        }
+
+        &:hover, &:focus-visible {
+            img {
+                transform: scale(1.03);
+            }
+
+            .play-icon {
+                transform: scale(1.1);
+            }
+        }
+    }
+
     .feed-message {
         display: flex;
         flex-direction: column;
@@ -58,7 +106,8 @@
 
 #more-videos-section {
     height: 300vh;
-    background-image: linear-gradient(rgba(234, 69, 69, 0.8), rgba(87, 128, 232, 0.81));
+    // Each page glows in its own palette color: Glasba is ochre
+    background-image: linear-gradient(180deg, rgba($oca-ochre, .55) 0%, var(--oca-bg-raised) 55%, var(--oca-bg) 100%);
 
     .more-videos {
         position: sticky;
@@ -76,15 +125,15 @@
         padding: 1rem;
 
         .video-card {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
+            background-color: var(--oca-bg-raised);
+            border: 1px solid rgba($oca-text, .12);
             border-radius: 8px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             max-height: 280px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, .35);
+            transition: transform var(--oca-dur-s) var(--oca-ease);
             cursor: pointer;
 
             &:hover {

@@ -1,3 +1,5 @@
+@import "tokens";
+
 @mixin headerBgImage($image-path: null) {
     height: 67.66vh;
     width: 100%;
@@ -10,13 +12,22 @@
     overflow: hidden;
 }
 
-// TODO nastudiraj kako potemnit samo ozadje (zgornje dela)
-@mixin pagesBaseBgImage() {
-    position: relative;
-    background-image: url('~src/assets/images/dry-earth-bg.jpeg');
-    background-position: top;
+// Dry-earth photo under a warm dark wash, so cream text stays readable on it. The photo itself is
+// grey, so it is multiplied with a burnt-ochre brown first to warm it up.
+@mixin earthBg() {
+    background-color: #9A5A24;
+    background-image: linear-gradient(rgba($oca-bg, .72), rgba($oca-bg, .88)),
+    url('~src/assets/images/dry-earth-bg.jpeg');
+    background-blend-mode: normal, multiply;
+    background-position: center;
+    background-repeat: no-repeat;
     background-size: cover;
+}
+
+@mixin pagesBaseBgImage() {
+    @include earthBg;
+    position: relative;
+    background-position: top;
     min-height: 32.34vh;
     z-index: -2;
-
 }

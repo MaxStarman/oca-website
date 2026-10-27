@@ -7,25 +7,42 @@
     >
         <div class="container video-container">
             <div *ngIf="status === 'loading'" class="spinner-border text-light" role="status">
-                <span class="visually-hidden">Nalagam videe...</span>
+                <span class="visually-hidden">{{ 'music.loading' | t }}</span>
             </div>
 
             <div *ngIf="status === 'error' || status === 'empty'" class="feed-message">
                 <h1 class="fs-4">
-                    {{ status === 'error' ? 'Videov trenutno ne moremo naložiti.' : 'Trenutno ni novih videov.' }}
+                    {{ (status === 'error' ? 'music.error' : 'music.empty') | t }}
                 </h1>
                 <a [href]="ytService.channelUrl" class="youtube-link" rel="noopener" target="_blank">
-                    <i class="fab fa-youtube"></i> Poglej nas na YouTubu
+                    <i class="fab fa-youtube"></i> {{ 'music.seeOnYoutube' | t }}
                 </a>
             </div>
 
-            <youtube-player
-                *ngIf="status === 'ready'"
-                [height]="playerHeight"
-                [videoId]="selectedVideo.id"
-                [width]="playerWidth"
-                class="video-player"
-            ></youtube-player>
+            <ng-container *ngIf="status === 'ready'">
+                <!-- Facade: a thumbnail until the visitor asks to play. The YouTube iframe and its API
+                     (~1 MB of scripts) only load on that click. -->
+                <youtube-player
+                    *ngIf="playerActive; else facade"
+                    [height]="playerHeight"
+                    [playerVars]="{autoplay: 1, rel: 0}"
+                    [videoId]="selectedVideo.id"
+                    [width]="playerWidth"
+                    class="video-player"
+                ></youtube-player>
+
+                <ng-template #facade>
+                    <button (click)="playVideo()"
+                            [attr.aria-label]="('music.play' | t) + ': ' + selectedVideo.snippet.title"
+                            [style.height.px]="playerHeight"
+                            [style.width.px]="playerWidth"
+                            class="video-facade"
+                            type="button">
+                        <img [src]="facadeThumbnail" alt="">
+                        <span aria-hidden="true" class="play-icon"><i class="fa-solid fa-play"></i></span>
+                    </button>
+                </ng-template>
+            </ng-container>
         </div>
     </div>
 
@@ -34,7 +51,7 @@
         <div class="container video-description">
             <div *ngIf="status === 'ready'" class="container">
 
-                <h1 class="fs-3 text-black">
+                <h1 class="fs-3">
                     {{ selectedVideo.snippet.title }}
                 </h1>
                 <p class="fs-3 formatted-text">
@@ -43,7 +60,7 @@
 
                 </p>
                 <p class="fs-4">
-                    {{ selectedVideo.snippet.publishedAt  | date: 'longDate' }}
+                    {{ selectedVideo.snippet.publishedAt | date: 'longDate' : undefined : i18n.locale }}
                 </p>
             </div>
 
@@ -60,7 +77,7 @@
              class="video-card"
         >
             <img
-                alt="Other videos"
+                [alt]="video.snippet.title"
                 src="{{video.snippet.thumbnails.medium.url}}"
             >
         </div>

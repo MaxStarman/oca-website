@@ -1,9 +1,11 @@
 
-a {
+button {
     z-index: 1022;
+    padding: 0;
+    border: 0;
     opacity: 0.75;
 
-    &:hover {
+    &:hover, &:focus-visible {
         opacity: 1;
         cursor: pointer;
     }

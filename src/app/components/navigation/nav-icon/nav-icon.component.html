@@ -1,4 +1,6 @@
-<a (click)="iconClicked()"
-   class="quarter-circle position-fixed top-0 end-0 d-flex align-items-center bg-black">
-    <img [height]="iconH" [ngSrc]="iconPath" [width]="iconW" alt="moja ikonca">
-</a>
+<button (click)="iconClicked()"
+        [attr.aria-label]="(type === 'nav-menu' ? 'nav.closeMenu' : 'nav.home') | t"
+        class="quarter-circle position-fixed top-0 end-0 d-flex align-items-center bg-black"
+        type="button">
+    <img [height]="iconH" [ngSrc]="iconPath" [width]="iconW" alt="">
+</button>

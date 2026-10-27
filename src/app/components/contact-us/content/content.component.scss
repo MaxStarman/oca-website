@@ -1,8 +1,7 @@
+@import "../../../../styles/mixins";
+
 .base-bg {
-    background-image: url("/assets/images/dry-earth-bg.jpeg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    @include earthBg;
 }
 
 #intro-section {
@@ -84,9 +83,6 @@
         align-items: center;
         justify-content: center;
 
-        p {
-            color: rgba(0, 0, 0, 1);
-        }
     }
 
     @media (max-width: 1200px) {
@@ -166,7 +162,8 @@
 #contact-section {
 
     height: 300vh;
-    background-image: linear-gradient(rgba(234, 69, 69, 0.8), rgba(87, 128, 232, 0.81));
+    // Each page glows in its own palette color: Kontakt is rust
+    background-image: linear-gradient(180deg, rgba($oca-rust, .75) 0%, var(--oca-bg-raised) 55%, var(--oca-bg) 100%);
 
     .contact-info {
         height: 100vh;
@@ -189,10 +186,11 @@
                 margin-bottom: 0;
 
                 .mail-link, .phone-link {
-                    color: white;
+                    color: var(--oca-text);
+                    text-decoration-color: var(--oca-ochre);
 
                     &:hover, &:active {
-                        color: #ffffffab;
+                        color: var(--oca-ochre);
                     }
                 }
             }

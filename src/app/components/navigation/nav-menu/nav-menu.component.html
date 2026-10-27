@@ -4,30 +4,40 @@
 ></nav-icon>
 
 <div class="background-video-container">
-    <video autoplay class="background-video" id="bg-video" loop muted>
+    <!-- Plays only while at least half visible (see ngAfterViewInit). preload="metadata" keeps the
+         footers from downloading the whole file up front.
+         TODO(content): add poster="assets/videos/oca-nav-poster.jpg" once the video is re-encoded. -->
+    <video #bgVideo aria-hidden="true" class="background-video" loop muted playsinline preload="metadata">
         <source src="./assets/videos/oca-nav-video.mp4" type="video/mp4">
-        Your browser does not support HTML5 video.
     </video>
 
+    <div [attr.aria-label]="'lang.label' | t" class="lang-toggle" role="group">
+        <button (click)="i18n.setLang('sl')" [attr.aria-pressed]="i18n.lang === 'sl'" lang="sl" type="button">SL</button>
+        <span aria-hidden="true">/</span>
+        <button (click)="i18n.setLang('en')" [attr.aria-pressed]="i18n.lang === 'en'" lang="en" type="button">EN</button>
+    </div>
+
     <div class="links">
-        <a (click)="notifyParentAndHandleEvent($event, '/news')"
-           class="col-md-4  d-flex flex-column justify-content-center align-items-center mobile-animation">
-            <img [height]="76" [width]="87" alt="News Icon" ngSrc="../../../../assets/svg-icons/alert-white.svg">
-            <h1>Novice</h1>
-        </a>
+        <button (click)="notifyParentAndHandleEvent($event, '/news')"
+                class="menu-link col-md-4 d-flex flex-column justify-content-center align-items-center mobile-animation"
+                type="button">
+            <img [height]="76" [width]="87" alt="" ngSrc="../../../../assets/svg-icons/alert-white.svg">
+            <h1>{{ 'nav.news' | t }}</h1>
+        </button>
 
-        <a (click)="notifyParentAndHandleEvent($event, '/music')"
-           class="col-md-4  d-flex flex-column justify-content-center align-items-center mobile-animation">
-            <img [height]="74" [width]="48" alt="Music Icon" ngSrc="../../../../assets/svg-icons/note-white.svg">
-            <h1>Glasba</h1>
-        </a>
+        <button (click)="notifyParentAndHandleEvent($event, '/music')"
+                class="menu-link col-md-4 d-flex flex-column justify-content-center align-items-center mobile-animation"
+                type="button">
+            <img [height]="74" [width]="48" alt="" ngSrc="../../../../assets/svg-icons/note-white.svg">
+            <h1>{{ 'nav.music' | t }}</h1>
+        </button>
 
-        <a (click)="notifyParentAndHandleEvent($event, '/contact')"
-           class="col-md-4 d-flex flex-column justify-content-center align-items-center mobile-animation">
-            <img [height]="74" [width]="93" alt="Contact Icon" ngSrc="../../../../assets/svg-icons/mail-white.svg">
-            <h1>Kontakt</h1>
-        </a>
+        <button (click)="notifyParentAndHandleEvent($event, '/contact')"
+                class="menu-link col-md-4 d-flex flex-column justify-content-center align-items-center mobile-animation"
+                type="button">
+            <img [height]="74" [width]="93" alt="" ngSrc="../../../../assets/svg-icons/mail-white.svg">
+            <h1>{{ 'nav.contact' | t }}</h1>
+        </button>
     </div>
 
 </div>
-

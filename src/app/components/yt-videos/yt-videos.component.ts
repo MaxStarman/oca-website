@@ -5,6 +5,7 @@ import {ViewportScroller} from "@angular/common";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {EMPTY} from "rxjs";
 import {switchMap} from "rxjs/operators";
+import {I18nService} from "../../i18n/i18n.service";
 
 @Component({
     selector: 'yt-videos',
@@ -18,6 +19,9 @@ export class YtVideosComponent implements OnInit {
     otherVideos: any[] = [];
     selectedVideo: any = {snippet: {thumbnails: {medium: {url: ''}}, title: '', description: '', publishedAt: ''}};
 
+    // False shows the thumbnail facade; true swaps in the real player
+    playerActive = false;
+
     playerWidth = 640; // Default width
     playerHeight = 390; // Default height
 
@@ -26,7 +30,8 @@ export class YtVideosComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private viewportScroller: ViewportScroller,
-        private destroyRef: DestroyRef
+        private destroyRef: DestroyRef,
+        public i18n: I18nService
     ) {
     }
 
@@ -38,7 +43,6 @@ export class YtVideosComponent implements OnInit {
 
     ngOnInit(): void {
         this.adjustPlayerSize(window.innerWidth); // Adjust video player size
-        this.ytService.loadIframeApi();
 
         this.ytService.getYoutubeVideos().pipe(
             switchMap(videos => {
@@ -63,6 +67,7 @@ export class YtVideosComponent implements OnInit {
             switchMap(details => {
                 if (details && details.items && details.items[0]) {
                     this.selectedVideo = details.items[0];
+                    this.playerActive = false;
                     // Filter out the selected video from the grid
                     this.otherVideos = this.videos.filter(
                         (video) => video.id.videoId !== videoId
@@ -74,6 +79,17 @@ export class YtVideosComponent implements OnInit {
                 return EMPTY;
             })
         );
+    }
+
+    // Largest thumbnail YouTube has for this video (maxres/standard only exist for some uploads)
+    get facadeThumbnail(): string {
+        const thumbnails = this.selectedVideo.snippet.thumbnails;
+        return (thumbnails.maxres || thumbnails.standard || thumbnails.high || thumbnails.medium).url;
+    }
+
+    playVideo(): void {
+        this.ytService.loadIframeApi();
+        this.playerActive = true;
     }
 
     // Redirect when a video is clicked

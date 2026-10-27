@@ -5,6 +5,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {EMPTY} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {InstagramService} from "../../../services/instagram.service";
+import {I18nService} from "../../../i18n/i18n.service";
 
 @Component({
     selector: 'display-posts',
@@ -26,7 +27,8 @@ export class DisplayPostsComponent implements OnInit, AfterViewInit {
                 private route: ActivatedRoute,
                 private viewportScroller: ViewportScroller,
                 private instagramService: InstagramService,
-                private destroyRef: DestroyRef
+                private destroyRef: DestroyRef,
+                public i18n: I18nService
     ) {
     }
 

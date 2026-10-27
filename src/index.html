@@ -1,13 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sl">
 <head>
     <meta charset="utf-8">
     <title>One Cupcake Away</title>
     <base href="/">
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="#000000" name="theme-color">
     <link href="assets/svg-icons/cupcake-black.svg" rel="icon" type="image/x-icon">
     <!-- Bootstrap (SCSS, styles.scss) and Font Awesome (angular.json "styles") are bundled from npm; no CDN copies.
          The YouTube IFrame API is loaded on demand by YtVideosComponent. -->
+
+    <!-- Loading screen styles are inline so they apply on first paint, before styles.css arrives.
+         LoadingService adds .is-done and removes #oca-loader once the app is ready. -->
+    <style>
+        /* No background on <html>: the body background must stay the canvas background, or the
+           description strips (z-index: -2, see pagesBaseBgImage) get painted under it. The loader
+           covers the screen from first paint anyway. */
+        #oca-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: grid;
+            place-items: center;
+            background: #000;
+            transition: opacity .6s ease .15s, visibility 0s linear .75s;
+        }
+
+        #oca-loader .oca-loader-cupcake {
+            width: 64px;
+            height: 78px;
+            /* The white cupcake SVG used as a mask, so it can take the cream brand color */
+            background: #F3E6CC;
+            -webkit-mask: url("assets/svg-icons/cupcake-white.svg") center / contain no-repeat;
+            mask: url("assets/svg-icons/cupcake-white.svg") center / contain no-repeat;
+            animation: oca-loader-pulse 2s ease-in-out infinite;
+            transition: transform .75s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        #oca-loader.is-done {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #oca-loader.is-done .oca-loader-cupcake {
+            animation: none;
+            transform: scale(5);
+        }
+
+        @keyframes oca-loader-pulse {
+            50% {
+                transform: scale(.8);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #oca-loader .oca-loader-cupcake {
+                animation: none;
+            }
+
+            #oca-loader.is-done .oca-loader-cupcake {
+                transform: none;
+            }
+        }
+    </style>
 
     <!-- Additional feature https://github.com/GoogleChromeLabs/first-input-delay  -->
     <!--    <script src="first-input-delay/dist/first-input-delay.min.js"></script>-->
@@ -27,6 +82,9 @@
 
 </head>
 <body>
+<div aria-hidden="true" id="oca-loader">
+    <div class="oca-loader-cupcake"></div>
+</div>
 <app-root></app-root>
 </body>
 </html>

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {LoadingService} from "./services/loading.service";
 
 @Component({
@@ -6,20 +6,10 @@ import {LoadingService} from "./services/loading.service";
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-    isLoading = true;
-
-    constructor(public loadingService: LoadingService) {
-    }
-
-    ngOnInit(): void {
-        // this.loadingService.loading$.subscribe((loading) => {
-        //     this.isLoading = loading;
-        // });
-
-        setTimeout(() => {
-            this.isLoading = false;
-        }, 1500)
+    constructor(loadingService: LoadingService) {
+        // Subscribe before the initial navigation starts so its NavigationEnd isn't missed
+        loadingService.dismissWhenReady();
     }
 }

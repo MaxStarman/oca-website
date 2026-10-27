@@ -35,7 +35,7 @@ firebase deploy      # hosting only; serves dist/oca-website
 src/app/
   app.module.ts            single root NgModule; declares every component
   app-routing.module.ts    routes (below)
-  app.component.*          <splash-screen> for a fixed 1.5 s, then <router-outlet>
+  app.component.*          <router-outlet>; asks LoadingService to dismiss the loading screen
   components/
     home-page/             landing: logo click opens the full-screen nav overlay
     navigation/
@@ -48,7 +48,9 @@ src/app/
       display-posts/       Instagram feed: featured post + grid of others, carousel via ngx-bootstrap
     yt-videos/             /music: featured YouTube video (@angular/youtube-player) + grid
     contact-us/            /contact: contact-start-page -> fades to content (phone, email, location)
-    spash-screen/          (folder name misspelled) splash with pulsing cupcake
+  i18n/                    sl.ts (source) + en.ts (typed against it), I18nService (lang from
+                           localStorage / navigator, sets <html lang>), `t` pipe: {{ 'nav.music' | t }}.
+                           SIGNATURE ("EN BIŠKOTIN ČA!") is never translated.
   models/app-environment.ts  typed shape of the environment files
   services/
     instagram.service.ts   Graph API /media -> Observable<post[]>; sessionStorage + shareReplay cache;
@@ -56,11 +58,14 @@ src/app/
     youtube.service.ts     Data API search + videos, same pattern; also lazy-loads the YouTube IFrame API
                            (@angular/youtube-player v16 does not load it itself)
     nav.service.ts         BehaviorSubject<boolean> for overlay open state
-    loading.service.ts     unused (wiring in app.component is commented out)
-  pipes/loading.pipe.ts    unused
+    loading.service.ts     removes the static #oca-loader in index.html (black screen + cupcake) once the
+                           first route, fonts and hold()-ed tasks are done; min 800 ms, max 4 s
+    motion.service.ts      reducedMotion / isLowPower flags for effects
   ng-animations/           fadeIn / fadeOut triggers shared by news + contact
 src/styles.scss            imports Bootstrap SCSS, global h1/p fonts, keyframes
-src/styles/                _mixins (headerBgImage, pagesBaseBgImage), _typography (@font-face), _animations
+src/styles/                _tokens (palette SCSS vars; also exposed as --oca-* CSS vars on :root),
+                           _mixins (headerBgImage, earthBg, pagesBaseBgImage), _typography, _animations
+docs/design-upgrade-plan.md  design direction, copy rules and phases for the visual upgrade
 ```
 
 Routes: `''` home · `news` · `news/post/:id` · `music` · `music/video/:id` · `contact` · `**` -> `''`.
@@ -74,6 +79,11 @@ Routes: `''` home · `news` · `news/post/:id` · `music` · `music/video/:id` �
 - Page layout pattern: sticky header (`67.66vh`) + description strip (`32.34vh`), then a `300vh` section
   with a sticky inner `100vh` block (scroll-pinning effect), then `<nav-menu>` as the footer.
 - Fonts: `Ethnocentric` for `h1`, `Jersey 10` for `p` (global in `styles.scss`).
+- Colors: only `var(--oca-*)` tokens (or `$oca-*` in SCSS); brand colors (Instagram/YouTube) are the exception.
+- All user-facing text goes through the `t` pipe with keys in `i18n/sl.ts` + `en.ts`. Copy is first person
+  plural, minimal, and states only facts the band confirmed (see docs/design-upgrade-plan.md §0).
+- Clickable things are `<button>`s (keyboard reachable), not `<a>` without `href`.
+- Respect `prefers-reduced-motion` in every new animation.
 - API data is typed as `any`; Instagram/YouTube response shapes are used directly in templates.
 - Feed components (`display-posts`, `yt-videos`) keep `status: 'loading' | 'ready' | 'empty' | 'error'` and
   render a spinner / fallback link (Slovene copy) accordingly. Subscriptions use `switchMap` over
@@ -95,5 +105,5 @@ Routes: `''` home · `news` · `news/post/:id` · `music` · `music/video/:id` �
   page footer).
 - `main.single-spa.ts` is an unmodified Bitovi template (`@bitovi/micro-fe-billing`); single-spa is not
   configured in `angular.json` and `single-spa`/`systemjs-webpack-interop` are not dependencies.
-- `angular.json` lists `src/favicon.ico`, which does not exist; `index.html` has `lang="en"` for Slovene content.
+- `angular.json` lists `src/favicon.ico`, which does not exist.
 - No tests, no linting config.

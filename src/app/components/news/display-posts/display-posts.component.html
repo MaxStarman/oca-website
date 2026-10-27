@@ -3,15 +3,15 @@
 <section id="featured-post-section">
     <div class="header-bg-image sticky-top instagram-feed">
         <div *ngIf="status === 'loading'" class="spinner-border text-light" role="status">
-            <span class="visually-hidden">Nalagam objave...</span>
+            <span class="visually-hidden">{{ 'news.loading' | t }}</span>
         </div>
 
         <div *ngIf="status === 'error' || status === 'empty'" class="feed-message">
             <h1 class="fs-4">
-                {{ status === 'error' ? 'Objav trenutno ne moremo naložiti.' : 'Trenutno ni novih objav.' }}
+                {{ (status === 'error' ? 'news.error' : 'news.empty') | t }}
             </h1>
             <a [href]="instagramUrl" class="instagram-link" rel="noopener" target="_blank">
-                <i class="fab fa-instagram"></i> Poglej nas na Instagramu
+                <i class="fab fa-instagram"></i> {{ 'news.seeOnInstagram' | t }}
             </a>
         </div>
 
@@ -46,7 +46,7 @@
                 {{ selectedPost.caption }}
             </p>
 
-            <p>{{ selectedPost.timestamp | date: 'longDate' }}</p>
+            <p>{{ selectedPost.timestamp | date: 'longDate' : undefined : i18n.locale }}</p>
 
             <!--            <a [href]="selectedPost.permalink" class="mt-2 fs-5 w-fit-content" target="_blank">-->
             <!--                View on Instagram <i class="fa-brands fa-instagram mx-1"></i>-->
@@ -65,14 +65,14 @@
                  class="post-card">
                 <img
                     [src]="getImageSource(post)"
-                    alt="Other posts image"
+                    [alt]="'news.otherPostAlt' | t"
                     class="post-thumbnail"
                 >
             </div>
         </div>
         <div class="shameless-plug">
             <a [href]="instagramUrl" class="instagram-link mb-2" rel="noopener" target="_blank">
-                <i class="fab fa-instagram"></i> Follow us on Instagram
+                <i class="fab fa-instagram"></i> {{ 'news.followOnInstagram' | t }}
             </a>
         </div>
     </div>
