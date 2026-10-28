@@ -113,6 +113,8 @@ export class CupcakeScene {
     private eased = {pointerX: 0, pointerY: 0, hover: 0, scroll: 0};
     private lastTime = 0;
     private aspect = 1;
+    // Each visit starts the shader somewhere else in its cycle, so the frosting bands never look the same twice
+    private readonly phase = Math.random() * 60;
 
     constructor(canvas: HTMLCanvasElement, private options: CupcakeSceneOptions) {
         // Throws without WebGL; StageComponent catches that and shows the static fallback
@@ -174,7 +176,7 @@ export class CupcakeScene {
 
         for (const material of this.materials) {
             const u = material.uniforms;
-            u['uTime'].value = timeSeconds;
+            u['uTime'].value = timeSeconds + this.phase;
             u['uBass'].value = levels.bass;
             u['uMid'].value = levels.mid;
             u['uHigh'].value = levels.high;

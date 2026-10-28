@@ -1,1 +1,18 @@
 <router-outlet></router-outlet>
+
+<!-- Route transition: see RouteWipeService -->
+<div #routeWipe aria-hidden="true" class="route-wipe">
+    <div class="route-wipe-cupcake"></div>
+</div>
+
+<!-- Shared SVG filters (referenced from CSS as url(#...)); defined once so the ids stay unique -->
+<svg aria-hidden="true" class="svg-defs" focusable="false">
+    <!-- Liquid wobble for the nav-menu labels on hover: turbulence that slowly drifts, displacing the text -->
+    <filter id="oca-warp" x="-10%" y="-30%" width="120%" height="160%">
+        <feTurbulence baseFrequency="0.012 0.06" numOctaves="2" result="noise" seed="4" type="fractalNoise">
+            <animate attributeName="baseFrequency" dur="6s" repeatCount="indefinite"
+                     values="0.012 0.06;0.02 0.09;0.012 0.06"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+</svg>

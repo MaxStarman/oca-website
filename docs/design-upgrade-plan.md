@@ -1,6 +1,6 @@
 # Oca — frontend design upgrade plan
 
-Status: Phases 1 and 2 implemented (2026-10-28); Phase 1 video re-encode still pending (see §5). Branch: `feat/design-upgrade`
+Status: Phases 1–3 implemented (2026-10-28); Phase 1 video re-encode still pending (see §5). Branch: `feat/design-upgrade`
 (branched from `fix/tier1-functional`, which has the build fixes `master` doesn't have yet).
 
 ## Direction (from interview)
@@ -226,7 +226,34 @@ Check each against Angular 16 / TS 5.1 before installing (pin versions).
    - Instrument orbit is built but hidden: fill `src/app/content/members.ts` to show it.
    - Production: three.js chunk ~98 kB, GSAP + ScrollTrigger ~40 kB (transfer), all lazy; initial
      bundle +12 kB.
-3. **Pages**: route transition, music/news/contact motion, nav hover effects.
+3. **Pages** ✅: route transition, music/news/contact motion, nav hover effects.
+   - **Route transition** ("liquid wipe"): an ochre → rust sheet with wavy edges and the cupcake rises
+     over the old page, the page swaps and scrolls to the top out of sight, then it rises away
+     (~1.1 s). Built as a route guard (`routeWipeGuard`) + Web Animations in `RouteWipeService`, not
+     `@angular/animations`: a route animation would need both pages in the DOM at once, which fights
+     the sticky/`300vh` layouts. If the browser draws no frames (background tab), it skips to the end
+     so navigation is never held up. Reduced motion: pages swap directly.
+   - **Card language** (Glasba + Novice): grid thumbnails are grainy sepia "old photos" that come to full
+     color on hover/focus, edged in the page accent (global `.oca-card`; idea from the "Rusted Gears"
+     example in the TuneTact article below). They rise in one after another, scrubbed to the scroll
+     inside the pinned `300vh` sections (`ScrollReveal`), which were empty scroll distance before.
+     Video titles slide up on hover. Cards are now `<button>`s.
+   - **Glasba**: the projector glow slowly drifts ochre → rust/teal (two static shadows crossfading,
+     compositor-only).
+   - **Novice**: tapping the photo cracks it, then it shatters into six clip-path shards that fall away
+     over the posts. Reduced motion: the old crossfade.
+   - **Kontakt**: the intro is a real button; the four band cut-outs rise in one by one; contact rows
+     reveal on scroll with a teal underline that draws in on hover. Fixed: on short screens the band
+     photos covered the second title line.
+   - **Nav menu**: hovered labels turn ochre and wobble through an SVG turbulence filter
+     (`#oca-warp`, defined once in `app.component.html`).
+   - **Generative touch**: the cupcake shader starts at a random point of its cycle on every visit
+     (idea from the "Quantum Flux" example).
+   - Reference: tunepact.com/blog/inspiring-musician-websites describes ten *conceptual* band sites (no real
+     URLs). Its other recurring ideas (tour calendar, merch, mailing list, press kit) need content we
+     don't have yet, so they're not built; they'd be new pages/copy for you to confirm first.
+   - Verified with frozen animation frames and DOM checks (the preview window wasn't on screen);
+     the real-time feel of the timings still needs a look in a visible browser.
 4. **Polish & perf**: reduced-motion audit, Lighthouse on mid-range Android, bundle budgets,
    `lang="sl"` in `index.html`.
 

@@ -1,9 +1,9 @@
-<div (click)="onClick()" class="bg-image">
-    <div class="title-container">
-        <h1>
+<button (click)="onClick()" class="bg-image" type="button">
+    <span class="title-container">
+        <!-- A heading isn't allowed inside a button; the real <h1> is on the page that follows -->
+        <span class="title">
             {{ 'contact.titleLine1' | t }} <br> {{ 'contact.titleLine2' | t }}
-        </h1>
-        <i class="fa-solid fa-arrow-up"></i>
-    </div>
-</div>
-
+        </span>
+        <i aria-hidden="true" class="fa-solid fa-arrow-up"></i>
+    </span>
+</button>

@@ -10,8 +10,8 @@ export class MotionService {
     private reducedMotionSubject = new BehaviorSubject<boolean>(this.reducedMotionQuery.matches);
     reducedMotion$ = this.reducedMotionSubject.asObservable();
 
-    // Phones and weak CPUs get lighter effects (capped pixel ratio, 30 fps, static grain).
-    // TODO(phase 2): <oca-stage> reads this to pick its three.js quality level.
+    // Phones and weak CPUs get lighter effects (capped pixel ratio, 30 fps, static grain);
+    // <oca-stage> reads this to pick its three.js quality level.
     readonly isLowPower = window.matchMedia('(pointer: coarse)').matches
         || (navigator.hardwareConcurrency ?? 8) <= 4;
 

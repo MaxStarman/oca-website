@@ -6,3 +6,8 @@ news-start-page {
     width: 100%;
     height: 100%;
 }
+
+// Above the posts while it shatters away over them
+news-start-page {
+    z-index: 1030;
+}

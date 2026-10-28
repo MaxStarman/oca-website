@@ -18,21 +18,21 @@
     </div>
 
     <div class="links">
-        <button (click)="notifyParentAndHandleEvent($event, '/news')"
+        <button (click)="onLinkClick($event, '/news')"
                 class="menu-link col-md-4 d-flex flex-column justify-content-center align-items-center mobile-animation"
                 type="button">
             <img [height]="76" [width]="87" alt="" ngSrc="../../../../assets/svg-icons/alert-white.svg">
             <h1>{{ 'nav.news' | t }}</h1>
         </button>
 
-        <button (click)="notifyParentAndHandleEvent($event, '/music')"
+        <button (click)="onLinkClick($event, '/music')"
                 class="menu-link col-md-4 d-flex flex-column justify-content-center align-items-center mobile-animation"
                 type="button">
             <img [height]="74" [width]="48" alt="" ngSrc="../../../../assets/svg-icons/note-white.svg">
             <h1>{{ 'nav.music' | t }}</h1>
         </button>
 
-        <button (click)="notifyParentAndHandleEvent($event, '/contact')"
+        <button (click)="onLinkClick($event, '/contact')"
                 class="menu-link col-md-4 d-flex flex-column justify-content-center align-items-center mobile-animation"
                 type="button">
             <img [height]="74" [width]="93" alt="" ngSrc="../../../../assets/svg-icons/mail-white.svg">

@@ -1,6 +1,6 @@
 <div>
     <ng-container *ngIf="showStartPage; else displayPostsTemplate">
-        <news-start-page (clicked)="toggleStartPage()" @fadeOut></news-start-page>
+        <news-start-page (clicked)="toggleStartPage()" [@startPageLeave]="startPageLeave"></news-start-page>
     </ng-container>
     <ng-template #displayPostsTemplate>
         <display-posts @fadeIn></display-posts>

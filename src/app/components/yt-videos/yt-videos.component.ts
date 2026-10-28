@@ -1,18 +1,31 @@
-import {Component, DestroyRef, HostListener, OnInit} from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    DestroyRef,
+    ElementRef,
+    HostListener,
+    NgZone,
+    OnDestroy,
+    OnInit,
+    QueryList,
+    ViewChild,
+    ViewChildren
+} from '@angular/core';
 import {YoutubeService} from "../../services/youtube.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {ViewportScroller} from "@angular/common";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {EMPTY} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {I18nService} from "../../i18n/i18n.service";
+import {MotionService} from "../../services/motion.service";
+import {ScrollReveal} from "../../ng-animations/scroll-reveal";
 
 @Component({
     selector: 'yt-videos',
     templateUrl: './yt-videos.component.html',
     styleUrls: ['./yt-videos.component.scss']
 })
-export class YtVideosComponent implements OnInit {
+export class YtVideosComponent implements OnInit, AfterViewInit, OnDestroy {
 
     status: 'loading' | 'ready' | 'empty' | 'error' = 'loading';
     videos: any[] = [];
@@ -25,14 +38,21 @@ export class YtVideosComponent implements OnInit {
     playerWidth = 640; // Default width
     playerHeight = 390; // Default height
 
+    @ViewChild('moreVideos') moreVideosRef!: ElementRef<HTMLElement>;
+    @ViewChildren('card') cards!: QueryList<ElementRef<HTMLElement>>;
+
+    private reveal: ScrollReveal;
+
     constructor(
         public ytService: YoutubeService,
         private route: ActivatedRoute,
         private router: Router,
-        private viewportScroller: ViewportScroller,
         private destroyRef: DestroyRef,
-        public i18n: I18nService
+        public i18n: I18nService,
+        ngZone: NgZone,
+        motion: MotionService
     ) {
+        this.reveal = new ScrollReveal(ngZone, motion);
     }
 
     @HostListener('window:resize', ['$event'])
@@ -47,6 +67,8 @@ export class YtVideosComponent implements OnInit {
         this.ytService.getYoutubeVideos().pipe(
             switchMap(videos => {
                 this.videos = videos;
+                // Search results come HTML-escaped ("Rock &amp; Roll"); the grid shows them as text
+                videos.forEach(video => video.snippet.title = decodeEntities(video.snippet.title));
                 if (videos.length === 0) {
                     this.status = 'empty';
                     return EMPTY;
@@ -60,6 +82,18 @@ export class YtVideosComponent implements OnInit {
         ).subscribe({
             error: () => this.status = 'error'
         });
+    }
+
+    // The grid is (re)rendered whenever the feed arrives or another video is picked; a cached feed
+    // can already be on screen here
+    ngAfterViewInit(): void {
+        const update = () => this.reveal.update(this.moreVideosRef.nativeElement, this.cards.map(card => card.nativeElement));
+        update();
+        this.cards.changes.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(update);
+    }
+
+    ngOnDestroy(): void {
+        this.reveal.destroy();
     }
 
     fetchAndDisplayVideo(videoId: string) {
@@ -95,7 +129,6 @@ export class YtVideosComponent implements OnInit {
     // Redirect when a video is clicked
     viewVideo(videoId: string): void {
         this.router.navigate(['/music/video', videoId]);
-        this.viewportScroller.scrollToPosition([0, 0]);
     }
 
     private adjustPlayerSize(screenWidth: number): void {
@@ -113,4 +146,8 @@ export class YtVideosComponent implements OnInit {
             this.playerHeight = 390; // Maintain 16:9 ratio
         }
     }
+}
+
+function decodeEntities(text: string): string {
+    return new DOMParser().parseFromString(text, 'text/html').documentElement.textContent ?? text;
 }

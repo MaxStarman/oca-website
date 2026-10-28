@@ -57,20 +57,18 @@
 </section>
 
 
-<section id="more-posts-section">
+<section #morePosts id="more-posts-section">
     <div class="container more-posts">
         <div *ngIf="otherPosts.length > 0" class="post-grid">
-            <div (click)="viewPost(post.id)"
-                 *ngFor="let post of otherPosts;"
-                 class="post-card">
-                <img
-                    [src]="getImageSource(post)"
-                    [alt]="'news.otherPostAlt' | t"
-                    class="post-thumbnail"
-                >
-            </div>
+            <button #card
+                    (click)="viewPost(post.id)"
+                    *ngFor="let post of otherPosts"
+                    class="oca-card post-card"
+                    type="button">
+                <img [alt]="'news.otherPostAlt' | t" [src]="getImageSource(post)" class="post-thumbnail">
+            </button>
         </div>
-        <div class="shameless-plug">
+        <div #card class="shameless-plug">
             <a [href]="instagramUrl" class="instagram-link mb-2" rel="noopener" target="_blank">
                 <i class="fab fa-instagram"></i> {{ 'news.followOnInstagram' | t }}
             </a>

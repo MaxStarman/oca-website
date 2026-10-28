@@ -15,8 +15,4 @@ export class NavMenuOverlayComponent {
             this.isOpen = isOpen;
         });
     }
-
-    onToggleNav() {
-        this.navService.toggleNav();
-    }
 }

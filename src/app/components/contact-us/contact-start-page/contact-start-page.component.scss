@@ -1,6 +1,10 @@
 @import "../../../../styles/animations";
 
 .bg-image {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    color: inherit;
     background-color: black;
     background-image: url("/assets/images/contact-us/contact-start.jpeg");
     background-position: center center;
@@ -21,10 +25,13 @@
         height: 100vh;
         text-align: center;
 
-        h1 {
+        .title {
+            font-family: 'Ethnocentric', sans-serif;
             font-size: 64px;
+            line-height: 1.2;
+            color: var(--oca-text);
+            margin-bottom: .5rem;
             animation: upDown 1s infinite;
-
         }
 
         i {
@@ -36,15 +43,14 @@
 }
 
 
-// TODO fix
 @media(min-width: 768px) and (max-width: 1024px) {
-    h1 {
+    .bg-image .title-container .title {
         font-size: 32px;
     }
 }
 
 @media (max-width: 767px) {
-    h1 {
+    .bg-image .title-container .title {
         font-size: 21px;
     }
 }

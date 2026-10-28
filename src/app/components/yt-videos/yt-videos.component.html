@@ -19,7 +19,8 @@
                 </a>
             </div>
 
-            <ng-container *ngIf="status === 'ready'">
+            <!-- Warm "projector" frame: its glow slowly drifts ochre -> rust -> teal -->
+            <div *ngIf="status === 'ready'" class="projector">
                 <!-- Facade: a thumbnail until the visitor asks to play. The YouTube iframe and its API
                      (~1 MB of scripts) only load on that click. -->
                 <youtube-player
@@ -42,7 +43,7 @@
                         <span aria-hidden="true" class="play-icon"><i class="fa-solid fa-play"></i></span>
                     </button>
                 </ng-template>
-            </ng-container>
+            </div>
         </div>
     </div>
 
@@ -70,19 +71,18 @@
 
 </section>
 
-<section id="more-videos-section">
+<section #moreVideos id="more-videos-section">
+    <!-- TODO(content): instrument credits per video (who plays what), e.g. as a second caption line -->
     <div *ngIf="otherVideos.length > 0" class="container more-videos video-grid">
-        <div (click)="viewVideo(video.id.videoId)"
-             *ngFor="let video of otherVideos"
-             class="video-card"
-        >
-            <img
-                [alt]="video.snippet.title"
-                src="{{video.snippet.thumbnails.medium.url}}"
-            >
-        </div>
+        <button #card
+                (click)="viewVideo(video.id.videoId)"
+                *ngFor="let video of otherVideos"
+                class="oca-card video-card"
+                type="button">
+            <img [src]="video.snippet.thumbnails.medium.url" alt="">
+            <span class="caption"><span class="caption-text">{{ video.snippet.title }}</span></span>
+        </button>
     </div>
-
 </section>
 
 <section>

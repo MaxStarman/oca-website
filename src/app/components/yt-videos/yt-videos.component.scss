@@ -15,15 +15,39 @@
 
     }
 
+    // Warm "projector" glow around the featured video. Two static shadows crossfade (opacity only,
+    // so the compositor does the work) and the light drifts ochre -> rust -> teal and back.
+    .projector {
+        position: relative;
+        max-width: 100%;
+
+        &::before, &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        &::before {
+            box-shadow: 0 0 60px 4px rgba($oca-ochre, .4);
+        }
+
+        &::after {
+            box-shadow: 0 0 80px 8px rgba($oca-rust, .45), 0 0 140px rgba($oca-teal, .12);
+            opacity: 0;
+            animation: projector-drift 14s ease-in-out infinite alternate;
+        }
+    }
+
     .video-facade {
         position: relative;
+        display: block;
         max-width: 100%;
         padding: 0;
         border: 0;
         overflow: hidden;
         background: #000;
-        // Warm "projector" glow around the featured video
-        box-shadow: 0 0 60px rgba($oca-ochre, .35);
         cursor: pointer;
 
         img {
@@ -124,22 +148,41 @@
         margin: 0 auto;
         padding: 1rem;
 
+        // Look and hover: global .oca-card (styles.scss), in the default ochre accent
         .video-card {
-            background-color: var(--oca-bg-raised);
-            border: 1px solid rgba($oca-text, .12);
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            aspect-ratio: 16 / 9;
             max-height: 280px;
-            box-shadow: 0 12px 28px rgba(0, 0, 0, .35);
-            transition: transform var(--oca-dur-s) var(--oca-ease);
-            cursor: pointer;
 
-            &:hover {
-                transform: translateY(-5px); // Slight lift effect on hover
+            // The title slides up from the bottom edge on hover/focus (always shown on touch)
+            .caption {
+                position: absolute;
+                inset: auto 0 0;
+                z-index: 1;
+                padding: 2rem .9rem .7rem;
+                background: linear-gradient(transparent, rgba($oca-bg, .92));
+                font-family: "Jersey 10", sans-serif;
+                font-size: 1.35rem;
+                line-height: 1.1;
+                color: var(--oca-text);
+                transform: translateY(101%);
+                transition: transform var(--oca-dur-m) var(--oca-ease);
+
+                @media (hover: none) {
+                    transform: none;
+                }
+
+                // Clamped on an inner element: on the padded caption itself a third line would show in the padding
+                .caption-text {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
             }
 
+            &:hover .caption, &:focus-visible .caption {
+                transform: none;
+            }
         }
     }
 
@@ -157,3 +200,8 @@
     }
 }
 
+@keyframes projector-drift {
+    to {
+        opacity: 1;
+    }
+}

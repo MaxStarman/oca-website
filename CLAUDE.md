@@ -35,7 +35,8 @@ firebase deploy      # hosting only; serves dist/oca-website
 src/app/
   app.module.ts            single root NgModule; declares every component
   app-routing.module.ts    routes (below)
-  app.component.*          <router-outlet>; asks LoadingService to dismiss the loading screen
+  app.component.*          <router-outlet>; asks LoadingService to dismiss the loading screen; hosts the
+                           route-wipe element and shared SVG filters (#oca-warp, nav-menu label hover)
   components/
     home-page/             landing: logo (click -> nav overlay) over <oca-stage>, then a pinned GSAP
                            ScrollTrigger manifesto scene, <instrument-orbit>, <nav-menu> footer
@@ -63,14 +64,18 @@ src/app/
                            ERRORS (not silent) on failure/missing config, failed request is not cached
     youtube.service.ts     Data API search + videos, same pattern; also lazy-loads the YouTube IFrame API
                            (@angular/youtube-player v16 does not load it itself)
-    nav.service.ts         BehaviorSubject<boolean> for overlay open state
+    nav.service.ts         BehaviorSubject<boolean> for overlay open state; closes itself on NavigationEnd
+    route-wipe.service.ts  page transition: routeWipeGuard (on every route) waits until the liquid wipe
+                           covers the screen, then scrolls to top and reveals on NavigationEnd
     loading.service.ts     removes the static #oca-loader in index.html (black screen + cupcake) once the
                            first route, fonts and hold()-ed tasks are done; min 800 ms, max 4 s
     motion.service.ts      reducedMotion / isLowPower flags for effects
     audio-reactive.service.ts  read(time) -> {level, bass, mid, high}; idle ~70 BPM signal for now,
                            TODO(audio): real AnalyserNode once MP3 previews exist
-  ng-animations/           fadeIn / fadeOut triggers shared by news + contact
-src/styles.scss            imports Bootstrap SCSS, global h1/p fonts, keyframes
+  ng-animations/           fadeIn / fadeOut triggers shared by news + contact; scroll-reveal.ts: loadGsap()
+                           (lazy, shared) + ScrollReveal (cards rise in, scrubbed, inside 300vh sections)
+src/styles.scss            imports Bootstrap SCSS, global h1/p fonts, film grain, .oca-card (grid cards;
+                           accent via --card-accent), keyframes
 src/styles/                _tokens (palette SCSS vars; also exposed as --oca-* CSS vars on :root),
                            _mixins (headerBgImage, earthBg, pagesBaseBgImage), _typography, _animations
 docs/design-upgrade-plan.md  design direction, copy rules and phases for the visual upgrade
@@ -82,8 +87,9 @@ Routes: `''` home · `news` · `news/post/:id` · `music` · `music/video/:id` �
 
 - Component selectors have **no `app-` prefix** (`nav-icon`, `display-posts`, `content`, ...).
 - 4-space indent, double-quoted imports with `{X}` (no spaces), SCSS per component.
-- Navigation is done imperatively with `router.navigate()` from `(click)` handlers, followed by
-  `viewportScroller.scrollToPosition([0,0])`; there is no `routerLink` usage yet.
+- Navigation is done imperatively with `router.navigate()` from `(click)` handlers; there is no
+  `routerLink` usage yet. Don't scroll manually afterwards: RouteWipeService scrolls to the top while the
+  transition covers the screen. Every route needs `canActivate: [routeWipeGuard]`.
 - Page layout pattern: sticky header (`67.66vh`) + description strip (`32.34vh`), then a `300vh` section
   with a sticky inner `100vh` block (scroll-pinning effect), then `<nav-menu>` as the footer.
 - Fonts: `Ethnocentric` for `h1`, `Jersey 10` for `p` (global in `styles.scss`).
@@ -109,8 +115,9 @@ Routes: `''` home · `news` · `news/post/:id` · `music` · `music/video/:id` �
   error state). Proper fix: fetch/refresh server-side (e.g. scheduled Firebase Function).
 - YouTube `search` costs 100 quota units per uncached session (~100 sessions/day on default quota);
   `playlistItems` on the uploads playlist would cost 1.
-- Production build warns on budgets: initial bundle ~870 kB (budget 500 kB), and `content`, `display-posts`,
-  `yt-videos` and `home-page` component styles exceed the 2 kB warning.
+- Production build warns on budgets: initial bundle ~883 kB (budget 500 kB), and `content`, `display-posts`,
+  `yt-videos` and `home-page` component styles exceed the 2 kB warning (`content` is at 4.9 of the 5 kB
+  error budget: put shared styles in `styles.scss` rather than growing it).
 - `assets/videos/oca-nav-video.mp4` is ~31 MB and autoplays in every nav-menu instance (home overlay + each
   page footer).
 - `main.single-spa.ts` is an unmodified Bitovi template (`@bitovi/micro-fe-billing`); single-spa is not

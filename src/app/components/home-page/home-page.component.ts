@@ -5,6 +5,7 @@ import {MotionService} from "../../services/motion.service";
 import {LoadingService} from "../../services/loading.service";
 import {SIGNATURE, TranslationKey} from "../../i18n/sl";
 import {loadCupcakeScene, StageComponent} from "../stage/stage.component";
+import {loadGsap} from "../../ng-animations/scroll-reveal";
 
 // Once the logo has been clicked, the idle pulse hint stops for the rest of the session
 const HINT_SEEN_KEY = 'oca.logoClicked';
@@ -50,8 +51,7 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
         if (this.motion.reducedMotion) {
             return;
         }
-        const [{gsap}, {ScrollTrigger}] = await Promise.all([import("gsap"), import("gsap/ScrollTrigger")]);
-        gsap.registerPlugin(ScrollTrigger);
+        const {gsap, ScrollTrigger} = await loadGsap();
         const section = this.manifestoRef.nativeElement;
         const lines = Array.from(section.querySelectorAll<HTMLElement>('.line'));
 

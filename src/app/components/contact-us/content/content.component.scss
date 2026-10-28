@@ -22,10 +22,12 @@
             display: flex;
             justify-content: center;
             text-align: center;
-            z-index: 4;
+            // Above the band photos: on short screens they reach up into the title
+            z-index: 5;
 
             h1 {
                 font-size: 64px;
+                text-shadow: 0 2px 18px rgba($oca-bg, .85);
             }
         }
     }
@@ -66,6 +68,8 @@
             object-fit: cover;
             object-position: bottom center;
             overflow-x: hidden;
+            // The four of us rise into the frame one after another (--i is set on each img)
+            animation: band-rise 1100ms var(--oca-ease) calc(250ms + var(--i) * 140ms) both;
         }
 
         #cink {
@@ -182,20 +186,37 @@
             display: flex;
             align-items: center;
 
+            i {
+                transition: color var(--oca-dur-m) var(--oca-ease);
+            }
+
             h1 {
                 margin-bottom: 0;
 
+                // Teal accent: an underline that draws in from the left; the text itself stays cream
                 .mail-link, .phone-link {
                     color: var(--oca-text);
-                    text-decoration-color: var(--oca-ochre);
+                    text-decoration: none;
+                    background: linear-gradient(var(--oca-teal), var(--oca-teal)) left bottom / 0 3px no-repeat;
+                    transition: background-size var(--oca-dur-m) var(--oca-ease);
 
-                    &:hover, &:active {
-                        color: var(--oca-ochre);
+                    &:hover, &:focus-visible {
+                        background-size: 100% 3px;
                     }
                 }
             }
 
+            &:hover i, &:focus-within i {
+                color: var(--oca-teal);
+            }
         }
 
+    }
+}
+
+@keyframes band-rise {
+    from {
+        opacity: 0;
+        transform: translateY(35%);
     }
 }
