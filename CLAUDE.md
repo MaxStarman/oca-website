@@ -37,7 +37,12 @@ src/app/
   app-routing.module.ts    routes (below)
   app.component.*          <router-outlet>; asks LoadingService to dismiss the loading screen
   components/
-    home-page/             landing: logo click opens the full-screen nav overlay
+    home-page/             landing: logo (click -> nav overlay) over <oca-stage>, then a pinned GSAP
+                           ScrollTrigger manifesto scene, <instrument-orbit>, <nav-menu> footer
+    stage/                 <oca-stage>: fixed full-screen WebGL layer. cupcake-scene.ts is plain three.js
+                           (procedural lathe cupcake + GLSL shader), lazy-loaded via loadCupcakeScene();
+                           static CSS cupcake fallback for reduced motion / no WebGL
+    instrument-orbit/      members + their instruments orbiting; renders nothing while MEMBERS is empty
     navigation/
       nav-menu/            video-background menu (Novice / Glasba / Kontakt); also embedded at the
                            bottom of every content page as a footer
@@ -51,6 +56,7 @@ src/app/
   i18n/                    sl.ts (source) + en.ts (typed against it), I18nService (lang from
                            localStorage / navigator, sets <html lang>), `t` pipe: {{ 'nav.music' | t }}.
                            SIGNATURE ("EN BIŠKOTIN ČA!") is never translated.
+  content/members.ts       MEMBERS (empty until the band provides names + instruments)
   models/app-environment.ts  typed shape of the environment files
   services/
     instagram.service.ts   Graph API /media -> Observable<post[]>; sessionStorage + shareReplay cache;
@@ -61,6 +67,8 @@ src/app/
     loading.service.ts     removes the static #oca-loader in index.html (black screen + cupcake) once the
                            first route, fonts and hold()-ed tasks are done; min 800 ms, max 4 s
     motion.service.ts      reducedMotion / isLowPower flags for effects
+    audio-reactive.service.ts  read(time) -> {level, bass, mid, high}; idle ~70 BPM signal for now,
+                           TODO(audio): real AnalyserNode once MP3 previews exist
   ng-animations/           fadeIn / fadeOut triggers shared by news + contact
 src/styles.scss            imports Bootstrap SCSS, global h1/p fonts, keyframes
 src/styles/                _tokens (palette SCSS vars; also exposed as --oca-* CSS vars on :root),
@@ -84,6 +92,8 @@ Routes: `''` home · `news` · `news/post/:id` · `music` · `music/video/:id` �
   plural, minimal, and states only facts the band confirmed (see docs/design-upgrade-plan.md §0).
 - Clickable things are `<button>`s (keyboard reachable), not `<a>` without `href`.
 - Respect `prefers-reduced-motion` in every new animation.
+- Heavy libraries (three, gsap) are only ever `import()`-ed lazily; per-frame work runs in
+  `ngZone.runOutsideAngular`. Versions are pinned exactly in package.json.
 - API data is typed as `any`; Instagram/YouTube response shapes are used directly in templates.
 - Feed components (`display-posts`, `yt-videos`) keep `status: 'loading' | 'ready' | 'empty' | 'error'` and
   render a spinner / fallback link (Slovene copy) accordingly. Subscriptions use `switchMap` over
@@ -99,8 +109,8 @@ Routes: `''` home · `news` · `news/post/:id` · `music` · `music/video/:id` �
   error state). Proper fix: fetch/refresh server-side (e.g. scheduled Firebase Function).
 - YouTube `search` costs 100 quota units per uncached session (~100 sessions/day on default quota);
   `playlistItems` on the uploads playlist would cost 1.
-- Production build warns on budgets: initial bundle ~844 kB (budget 500 kB), and `content` / `display-posts`
-  component styles exceed the 2 kB warning.
+- Production build warns on budgets: initial bundle ~870 kB (budget 500 kB), and `content`, `display-posts`,
+  `yt-videos` and `home-page` component styles exceed the 2 kB warning.
 - `assets/videos/oca-nav-video.mp4` is ~31 MB and autoplays in every nav-menu instance (home overlay + each
   page footer).
 - `main.single-spa.ts` is an unmodified Bitovi template (`@bitovi/micro-fe-billing`); single-spa is not

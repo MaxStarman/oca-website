@@ -10,6 +10,8 @@ export const sl = {
     'lang.label': 'Jezik',
 
     'home.intro': "Smo 4-članski bando iz Kopra. Pripovedno - plesna, psihadelična rock 'n' roll mineštra po primorsko.",
+    'home.manifesto1': 'Vsak od nas je virtuoz na svojem inštrumentu – in vsak igra več kot enega.',
+    'home.manifesto2': 'Najprej zvok in glasba, šele nato besede.',
 
     'contact.titleLine1': 'ALE, DEJMO SE',
     'contact.titleLine2': 'ZMENIT',

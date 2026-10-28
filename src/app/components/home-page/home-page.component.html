@@ -1,21 +1,37 @@
 <nav-menu-overlay></nav-menu-overlay>
 
-<div class="home-bg d-flex justify-content-center align-items-center">
-    <!-- TODO(phase 2): <oca-stage> with the 3D cupcake goes here, as a layer behind the logo -->
-    <div class="text-center">
-        <!-- No hint text on purpose: cursor, hover glow and the idle pulse say "click me" -->
-        <button (click)="onLogoClick()"
-                [attr.aria-label]="'nav.openMenu' | t"
-                [class.is-hinting]="showHint"
-                [class.is-pressed]="pressed"
-                class="logo-button"
-                type="button">
-            <img alt="One Cupcake Away" class="logo-img" src="assets/images/oca-main.png"/>
-        </button>
+<!-- Fixed behind everything on home: the 3D cupcake, reacting to the logo, pointer and scroll -->
+<oca-stage [hovered]="logoHovered" [paused]="navOpen"></oca-stage>
 
-        <p class="intro fs-5 m-0 px-3 py-2">
-            <b>{{ 'home.intro' | t }}<br/><span lang="sl">{{ signature }}</span></b>
-        </p>
-        <!-- TODO(audio): first logo tap may also start the preview track (MP3s to be provided) -->
+<section class="hero d-flex justify-content-center align-items-center">
+    <!-- No hint text on purpose: cursor, hover glow and the idle pulse say "click me" -->
+    <button (blur)="logoHovered = false"
+            (click)="onLogoClick()"
+            (focus)="logoHovered = true"
+            (mouseenter)="logoHovered = true"
+            (mouseleave)="logoHovered = false"
+            [attr.aria-label]="'nav.openMenu' | t"
+            [class.is-hinting]="showHint"
+            [class.is-pressed]="pressed"
+            class="logo-button"
+            type="button">
+        <img alt="One Cupcake Away" class="logo-img" src="assets/images/oca-main.png"/>
+    </button>
+    <!-- TODO(audio): first logo tap may also start the preview track (MP3s to be provided) -->
+
+    <i aria-hidden="true" class="fa-solid fa-arrow-down scroll-cue"></i>
+</section>
+
+<!-- Pinned scroll scene: the lines arrive one at a time, like verses being played -->
+<section #manifesto class="manifesto">
+    <div class="manifesto-pin">
+        <p *ngFor="let key of lines" class="line">{{ key | t }}</p>
+        <p class="line signature" lang="sl">{{ signature }}</p>
     </div>
-</div>
+</section>
+
+<instrument-orbit></instrument-orbit>
+
+<section #footer class="footer">
+    <nav-menu></nav-menu>
+</section>

@@ -11,6 +11,8 @@ export const en: Record<TranslationKey, string> = {
     'lang.label': 'Language',
 
     'home.intro': "We're a four-piece band from Koper. A storytelling, danceable, psychedelic rock 'n' roll stew, Primorska style.",
+    'home.manifesto1': 'Each of us is a virtuoso on our instrument – and each of us plays more than one.',
+    'home.manifesto2': 'Sound and music first, words second.',
 
     'contact.titleLine1': 'COME ON,',
     'contact.titleLine2': "LET'S TALK",

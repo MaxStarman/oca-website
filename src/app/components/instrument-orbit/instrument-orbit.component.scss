@@ -1,0 +1,57 @@
+$radius: clamp(6rem, 16vw, 9rem);
+
+.orbits {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4rem 2rem;
+    padding: 6rem 1rem;
+}
+
+.orbit {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: calc(#{$radius} * 2 + 6rem);
+    aspect-ratio: 1;
+}
+
+.member-name {
+    margin: 0;
+    font-size: clamp(1rem, 2.4vw, 1.4rem);
+    text-align: center;
+}
+
+// The ring turns slowly; each label counter-rotates by the same amount so it stays upright
+.ring {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    animation: orbit-spin 60s linear infinite;
+}
+
+.instrument {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: rotate(var(--angle)) translateX($radius) rotate(calc(var(--angle) * -1));
+
+    .label {
+        margin: 0;
+        translate: -50% -50%;
+        white-space: nowrap;
+        font-size: clamp(1.25rem, 2vw, 1.6rem);
+        color: var(--oca-ochre);
+        animation: orbit-spin 60s linear infinite reverse;
+    }
+}
+
+@keyframes orbit-spin {
+    to {
+        rotate: 360deg;
+    }
+}

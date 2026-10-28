@@ -25,6 +25,8 @@ import {getAnalytics, provideAnalytics, ScreenTrackingService} from "@angular/fi
 import {getPerformance, providePerformance} from "@angular/fire/performance";
 import {NewsStartPageComponent} from './components/news/news-start-page/news-start-page.component';
 import {TranslatePipe} from "./i18n/translate.pipe";
+import {StageComponent} from './components/stage/stage.component';
+import {InstrumentOrbitComponent} from './components/instrument-orbit/instrument-orbit.component';
 
 // Slovene month names etc. for the date pipe (English is built in)
 registerLocaleData(localeSl);
@@ -51,7 +53,9 @@ const firebaseImports = firebaseEnabled ? [
         ContentComponent,
         NavMenuComponent,
         NewsStartPageComponent,
-        TranslatePipe
+        TranslatePipe,
+        StageComponent,
+        InstrumentOrbitComponent
     ],
     imports: [
         BrowserModule,

@@ -1,6 +1,6 @@
 # Oca — frontend design upgrade plan
 
-Status: Phase 1 implemented (2026-10-27), except the video re-encode (see Phase 1 notes). Branch: `feat/design-upgrade`
+Status: Phases 1 and 2 implemented (2026-10-28); Phase 1 video re-encode still pending (see §5). Branch: `feat/design-upgrade`
 (branched from `fix/tier1-functional`, which has the build fixes `master` doesn't have yet).
 
 ## Direction (from interview)
@@ -216,7 +216,16 @@ Check each against Angular 16 / TS 5.1 before installing (pin versions).
    - The arrow "nudge" on hover needs the arrow as a separate SVG (it's baked into `oca-main.png`);
      for now the whole logo lifts and glows.
    - Each page has its own palette accent: Glasba ochre, Novice teal, Kontakt rust.
-2. **Home**: `<oca-stage>` + procedural cupcake + `AudioReactiveService` stub + manifesto scroll scene.
+2. **Home** ✅: `<oca-stage>` + procedural cupcake + `AudioReactiveService` stub + manifesto scroll scene.
+   - `AudioReactiveService` exposes a synchronous `read(time)` instead of `levels$`: the render loop
+     samples it once per frame, which an Observable would only add overhead to.
+   - Cupcake colors are ochre/rust (frosting) and dark brown (cup), never cream, so the cream logo
+     in front keeps its contrast. Canvas at 60 % opacity, 1.5 px blur on desktop only.
+   - Rendering stops when off-screen, when the nav overlay is open, when the footer video covers it,
+     and when the tab is hidden. Phones: 30 fps, pixel ratio ≤ 1.5, no blur.
+   - Instrument orbit is built but hidden: fill `src/app/content/members.ts` to show it.
+   - Production: three.js chunk ~98 kB, GSAP + ScrollTrigger ~40 kB (transfer), all lazy; initial
+     bundle +12 kB.
 3. **Pages**: route transition, music/news/contact motion, nav hover effects.
 4. **Polish & perf**: reduced-motion audit, Lighthouse on mid-range Android, bundle budgets,
    `lang="sl"` in `index.html`.
