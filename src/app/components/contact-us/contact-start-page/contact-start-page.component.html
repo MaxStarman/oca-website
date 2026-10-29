@@ -1,10 +1,10 @@
-<div (click)="onClick()" class="bg-image">
-    <div class="title-container">
-        <h1>
-            ALE, DEJMO SE <br> ZMENIT
-            <br>
-        </h1>
-        <i class="fa-solid fa-arrow-up"></i>
-    </div>
-</div>
-
+<button (click)="onClick()" (scrollIntent)="onClick()" class="bg-image" type="button">
+    <span class="title-container">
+        <!-- A heading isn't allowed inside a button; the real <h1> is on the page that follows -->
+        <span class="title">
+            {{ 'contact.titleLine1' | t }} <br> {{ 'contact.titleLine2' | t }}
+        </span>
+        <!-- "Go on": a click, scroll or swipe continues (scrollIntent) -->
+        <icon aria-hidden="true" class="continue-cue" name="arrow-down"></icon>
+    </span>
+</button>

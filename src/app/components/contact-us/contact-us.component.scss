@@ -6,3 +6,12 @@ contact-start-page {
     width: 100%;
     height: 100%;
 }
+
+.is-fading-in {
+    animation: fade-in 1s both;
+}
+
+.is-fading-out {
+    animation: fade-out 1s both;
+    pointer-events: none;
+}

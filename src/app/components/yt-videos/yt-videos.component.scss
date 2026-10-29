@@ -8,11 +8,110 @@
     }
 
     .video-container {
+        padding-top: var(--oca-header-h);
         display: flex;
         justify-content: center;
         align-items: center;
         height: inherit;
 
+    }
+
+    // Warm "projector" glow around the featured video. Two static shadows crossfade (opacity only,
+    // so the compositor does the work) and the light drifts ochre -> rust -> teal and back.
+    .projector {
+        position: relative;
+        max-width: 100%;
+
+        &::before, &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        &::before {
+            box-shadow: 0 0 60px 4px rgba($oca-ochre, .4);
+        }
+
+        &::after {
+            box-shadow: 0 0 80px 8px rgba($oca-rust, .45), 0 0 140px rgba($oca-teal, .12);
+            opacity: 0;
+            animation: projector-drift 14s ease-in-out infinite alternate;
+        }
+    }
+
+    .video-facade {
+        position: relative;
+        display: block;
+        max-width: 100%;
+        padding: 0;
+        border: 0;
+        overflow: hidden;
+        background: #000;
+        cursor: pointer;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--oca-dur-m) var(--oca-ease);
+        }
+
+        .play-icon {
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            display: grid;
+            place-items: center;
+            width: 4.5rem;
+            height: 4.5rem;
+            border-radius: 50%;
+            background: var(--oca-ochre);
+            color: var(--oca-bg);
+            font-size: 1.6rem;
+            transition: transform var(--oca-dur-s) var(--oca-ease);
+
+            icon {
+                margin-left: .25rem; // optical centering of the triangle
+            }
+        }
+
+        &:hover, &:focus-visible {
+            img {
+                transform: scale(1.03);
+            }
+
+            .play-icon {
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    .feed-message {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        text-align: center;
+
+        .youtube-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #FF0000;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: transform 0.2s;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
     }
 
     .video-description {
@@ -32,7 +131,8 @@
 
 #more-videos-section {
     height: 300vh;
-    background-image: linear-gradient(rgba(234, 69, 69, 0.8), rgba(87, 128, 232, 0.81));
+    // Each page glows in its own palette color: Glasba is ochre
+    background-image: linear-gradient(180deg, rgba($oca-ochre, .55) 0%, var(--oca-bg-raised) 55%, var(--oca-bg) 100%);
 
     .more-videos {
         position: sticky;
@@ -49,22 +149,41 @@
         margin: 0 auto;
         padding: 1rem;
 
+        // Look and hover: global .oca-card (styles.scss), in the default ochre accent
         .video-card {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            aspect-ratio: 16 / 9;
             max-height: 280px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-            cursor: pointer;
 
-            &:hover {
-                transform: translateY(-5px); // Slight lift effect on hover
+            // The title slides up from the bottom edge on hover/focus (always shown on touch)
+            .caption {
+                position: absolute;
+                inset: auto 0 0;
+                z-index: 1;
+                padding: 2rem .9rem .7rem;
+                background: linear-gradient(transparent, rgba($oca-bg, .92));
+                font-family: "Jersey 10", sans-serif;
+                font-size: 1.35rem;
+                line-height: 1.1;
+                color: var(--oca-text);
+                transform: translateY(101%);
+                transition: transform var(--oca-dur-m) var(--oca-ease);
+
+                @media (hover: none) {
+                    transform: none;
+                }
+
+                // Clamped on an inner element: on the padded caption itself a third line would show in the padding
+                .caption-text {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
             }
 
+            &:hover .caption, &:focus-visible .caption {
+                transform: none;
+            }
         }
     }
 
@@ -82,3 +201,8 @@
     }
 }
 
+@keyframes projector-drift {
+    to {
+        opacity: 1;
+    }
+}

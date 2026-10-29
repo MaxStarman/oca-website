@@ -1,70 +1,100 @@
-import {AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {ViewportScroller} from "@angular/common";
+import {
+    AfterViewInit,
+    Component,
+    DestroyRef,
+    ElementRef,
+    NgZone,
+    OnDestroy,
+    OnInit,
+    QueryList,
+    ViewChild,
+    ViewChildren
+} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {EMPTY} from "rxjs";
+import {switchMap} from "rxjs/operators";
 import {InstagramService} from "../../../services/instagram.service";
+import {I18nService} from "../../../i18n/i18n.service";
+import {MotionService} from "../../../services/motion.service";
+import {ScrollReveal} from "../../../ng-animations/scroll-reveal";
 
 @Component({
     selector: 'display-posts',
     templateUrl: './display-posts.component.html',
     styleUrls: ['./display-posts.component.scss']
 })
-export class DisplayPostsComponent implements OnInit, AfterViewInit {
+export class DisplayPostsComponent implements OnInit, AfterViewInit, OnDestroy {
 
-    instagramData: any = [];
+    readonly instagramUrl = 'https://www.instagram.com/onecupcakeaway/';
+
+    status: 'loading' | 'ready' | 'empty' | 'error' = 'loading';
+    instagramData: any[] = [];
     otherPosts: any[] = [];
-    selectedPost: any = [];
+    selectedPost: any = null;
 
-    @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
+    @ViewChild('morePosts') morePostsRef!: ElementRef<HTMLElement>;
+    // The post cards plus the "follow us" plug, revealed in that order
+    @ViewChildren('card') cards!: QueryList<ElementRef<HTMLElement>>;
+
+    // 0 turns the carousel's auto-advance off
+    readonly carouselInterval: number;
+
+    private reveal: ScrollReveal;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
-                private viewportScroller: ViewportScroller,
-                private instagramService: InstagramService
+                private instagramService: InstagramService,
+                private destroyRef: DestroyRef,
+                public i18n: I18nService,
+                ngZone: NgZone,
+                motion: MotionService
     ) {
+        this.reveal = new ScrollReveal(ngZone, motion);
+        this.carouselInterval = motion.reducedMotion ? 0 : 5000;
     }
 
     ngOnInit() {
-        this.instagramService.getUserMedia().subscribe(posts => {
-            this.instagramData = posts.data || [];
-            if (this.instagramData.length > 0) {
+        this.instagramService.getUserMedia().pipe(
+            switchMap(posts => {
+                this.instagramData = posts;
+                if (posts.length === 0) {
+                    this.status = 'empty';
+                    return EMPTY;
+                }
                 // Listen for route changes to update state
-                this.route.paramMap.subscribe((params: any) => {
-                    const postId = params.get('id');
-
-                    if (postId) {
-                        // Display post details
-                        this.displayPost(postId);
-                    } else {
-                        // Display the latest post by default (index 0)
-                        this.displayPost(this.instagramData[0].id);
-                    }
-                });
-            }
-        })
+                return this.route.paramMap;
+            }),
+            takeUntilDestroyed(this.destroyRef)
+        ).subscribe({
+            next: params => {
+                // Display the requested post, or the latest one (index 0) by default
+                this.displayPost(params.get('id') || this.instagramData[0].id);
+                this.status = 'ready';
+            },
+            error: () => this.status = 'error'
+        });
     }
 
     ngAfterViewInit() {
-        this.muteAllVideos();
+        // The grid is (re)rendered whenever the feed arrives or another post is picked
+        const update = () => this.reveal.update(this.morePostsRef.nativeElement, this.cards.map(card => card.nativeElement));
+        update();
+        this.cards.changes.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(update);
+    }
+
+    ngOnDestroy(): void {
+        this.reveal.destroy();
     }
 
     displayPost(id: string) {
+        // Unknown ids (old or deleted posts) fall back to the latest post
         this.selectedPost = this.instagramData.find(
             (post: any) => post.id === id
-        );
+        ) || this.instagramData[0];
         this.otherPosts = this.instagramData.filter(
-            (post: any) => post.id !== id
+            (post: any) => post.id !== this.selectedPost.id
         );
-    }
-
-    // Function to mute all video elements
-    muteAllVideos() {
-        this.videoElements.forEach((videoElement) => {
-            const video = videoElement.nativeElement;
-            video.muted = true;
-            video.play().catch((error: any) => {
-                console.log('Auto-play or mute might be blocked by the browser: ', error);
-            });
-        });
     }
 
     getImageSource(post: any): string {
@@ -83,6 +113,5 @@ export class DisplayPostsComponent implements OnInit, AfterViewInit {
     // Redirect when a post is clicked
     viewPost(postId: string): void {
         this.router.navigate(['/news/post', postId]);
-        this.viewportScroller.scrollToPosition([0, 0]);
     }
 }

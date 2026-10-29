@@ -1,0 +1,12 @@
+<section *ngIf="members.length > 0" class="orbits">
+    <div *ngFor="let member of members" class="orbit">
+        <h1 class="member-name">{{ member.name }}</h1>
+        <ul class="ring">
+            <li *ngFor="let instrument of member.instruments; let i = index"
+                [style.--angle]="angle(i, member.instruments.length)"
+                class="instrument">
+                <p class="label">{{ instrument[i18n.lang] }}</p>
+            </li>
+        </ul>
+    </div>
+</section>

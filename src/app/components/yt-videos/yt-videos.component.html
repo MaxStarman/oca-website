@@ -1,27 +1,56 @@
-<nav-icon></nav-icon>
-
 <section id="featured-video-section">
     <div
         [ngStyle]="{'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + selectedVideo.snippet.thumbnails.medium.url + ')'}"
         class="header sticky-top"
     >
         <div class="container video-container">
-            <youtube-player
-                *ngIf="selectedVideo"
-                [height]="playerHeight"
-                [videoId]="selectedVideo.id"
-                [width]="playerWidth"
-                class="video-player"
-            ></youtube-player>
+            <div *ngIf="status === 'loading'" class="spinner-border text-light" role="status">
+                <span class="visually-hidden">{{ 'music.loading' | t }}</span>
+            </div>
+
+            <div *ngIf="status === 'error' || status === 'empty'" class="feed-message">
+                <h1 class="fs-4">
+                    {{ (status === 'error' ? 'music.error' : 'music.empty') | t }}
+                </h1>
+                <a [href]="ytService.channelUrl" class="youtube-link" rel="noopener" target="_blank">
+                    <icon name="youtube"></icon> {{ 'music.seeOnYoutube' | t }}
+                </a>
+            </div>
+
+            <!-- Warm "projector" frame: its glow slowly drifts ochre -> rust -> teal -->
+            <div *ngIf="status === 'ready'" class="projector">
+                <!-- Facade: a thumbnail until the visitor asks to play. The YouTube iframe and its API
+                     (~1 MB of scripts) only load on that click. -->
+                <youtube-player
+                    *ngIf="playerActive; else facade"
+                    [height]="playerHeight"
+                    [playerVars]="{autoplay: 1, rel: 0}"
+                    [videoId]="selectedVideo.id"
+                    [width]="playerWidth"
+                    class="video-player"
+                ></youtube-player>
+
+                <ng-template #facade>
+                    <button (click)="playVideo()"
+                            [attr.aria-label]="('music.play' | t) + ': ' + selectedVideo.snippet.title"
+                            [style.height.px]="playerHeight"
+                            [style.width.px]="playerWidth"
+                            class="video-facade"
+                            type="button">
+                        <img [src]="facadeThumbnail" alt="">
+                        <span aria-hidden="true" class="play-icon"><icon name="play"></icon></span>
+                    </button>
+                </ng-template>
+            </div>
         </div>
     </div>
 
 
     <div class="pages-base-bg-image">
         <div class="container video-description">
-            <div *ngIf="selectedVideo" class="container">
+            <div *ngIf="status === 'ready'" class="container">
 
-                <h1 class="fs-3 text-black">
+                <h1 class="fs-3">
                     {{ selectedVideo.snippet.title }}
                 </h1>
                 <p class="fs-3 formatted-text">
@@ -30,7 +59,7 @@
 
                 </p>
                 <p class="fs-4">
-                    {{ selectedVideo.snippet.publishedAt  | date: 'longDate' }}
+                    {{ selectedVideo.snippet.publishedAt | date: 'longDate' : undefined : i18n.locale }}
                 </p>
             </div>
 
@@ -40,19 +69,18 @@
 
 </section>
 
-<section id="more-videos-section">
+<section #moreVideos id="more-videos-section">
+    <!-- TODO(content): instrument credits per video (who plays what), e.g. as a second caption line -->
     <div *ngIf="otherVideos.length > 0" class="container more-videos video-grid">
-        <div (click)="viewVideo(video.id.videoId)"
-             *ngFor="let video of otherVideos"
-             class="video-card"
-        >
-            <img
-                alt="Other videos"
-                src="{{video.snippet.thumbnails.medium.url}}"
-            >
-        </div>
+        <button #card
+                (click)="viewVideo(video.id.videoId)"
+                *ngFor="let video of otherVideos"
+                class="oca-card video-card"
+                type="button">
+            <img [src]="video.snippet.thumbnails.medium.url" alt="">
+            <span class="caption"><span class="caption-text">{{ video.snippet.title }}</span></span>
+        </button>
     </div>
-
 </section>
 
 <section>

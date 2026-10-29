@@ -1,3 +1,5 @@
+// Shared keyframes, imported once by styles.scss so they are global: components refer to them by name
+// (keyframes declared inside a component's own styles are scoped to that component instead).
 @keyframes upDown {
     0% {
         transform: translateY(0); /* Initial position */
@@ -31,5 +33,26 @@
     }
     100% {
         transform: scale(1); /* Grow back */
+    }
+}
+
+// Kontakt: the band cut-outs rising into the frame
+@keyframes band-rise {
+    from {
+        opacity: 0;
+        transform: translateY(35%);
+    }
+}
+
+// Page hand-overs (Novice, Kontakt start pages)
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-out {
+    to {
+        opacity: 0;
     }
 }

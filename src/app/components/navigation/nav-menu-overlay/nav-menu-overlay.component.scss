@@ -1,3 +1,5 @@
+@import "../../../../styles/tokens";
+
 // show navigation
 .nav {
     display: none;
@@ -11,8 +13,33 @@
     height: 100%;
     width: 100%;
     position: fixed;
-    z-index: 5;
+    z-index: 1040; // over the site header too: the menu has the whole screen
     left: 0;
     top: 0;
     overflow-x: hidden;
+}
+
+// Top right, above the menu video and its links
+.close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9;
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    padding: 0;
+    border: 2px solid rgba($oca-text, .5);
+    border-radius: 50%;
+    background: rgba($oca-bg, .6);
+    color: var(--oca-text);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: border-color var(--oca-dur-s) var(--oca-ease), transform var(--oca-dur-s) var(--oca-ease);
+
+    &:hover, &:focus-visible {
+        border-color: var(--oca-ochre);
+        transform: rotate(90deg);
+    }
 }

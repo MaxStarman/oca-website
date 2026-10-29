@@ -1,11 +1,11 @@
 @import "../../../../styles/mixins";
-@import "../../../../styles/animations";
 
 .header-bg-image {
-    @include headerBgImage('~src/assets/images/news/news-start-blackend.jpeg');
+    @include headerBgImage('~src/assets/images/news/news-start-blackend.webp');
 }
 
 .instagram-feed {
+    padding-top: var(--oca-header-h);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,7 +46,8 @@
 
 #more-posts-section {
     height: 300vh;
-    background-image: radial-gradient(rgb(22, 111, 141), rgb(60, 222, 227));
+    // Each page glows in its own palette color: Novice is teal
+    background-image: radial-gradient(circle at 50% 35%, rgba($oca-teal, .4), var(--oca-bg) 70%);
     background-position: center;
     background-size: cover;
 
@@ -67,56 +68,48 @@
             margin: 0 auto;
             padding: 1rem;
 
+            // Look and hover: global .oca-card (styles.scss)
             .post-card {
-                background-color: #f9f9f9;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                overflow: hidden;
-                display: flex;
+                --card-accent: var(--oca-teal);
                 height: 250px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                transition: transform 0.2s;
-                cursor: pointer;
-
-                &:hover {
-                    transform: translateY(-5px); // Slight lift effect on hover
-                }
-
-                .post-thumbnail {
-                    width: 100%;
-                    max-height: 300px;
-                    object-fit: cover;
-                }
             }
         }
 
-        .shameless-plug {
-            .instagram-link {
-                display: inline-flex;
-                align-items: center;
-                text-decoration: none;
-                font-size: 18px;
-                font-weight: bold;
-                color: #ffffff;
-                background-color: #E1306C; /* Instagram gradient-like color */
-                padding: 10px 20px;
-                border-radius: 30px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-                transition: transform 0.2s, background-color 0.2s;
-            }
-
-            .instagram-link i {
-                margin-right: 10px;
-                font-size: 20px;
-            }
-
-            .instagram-link:hover {
-                transform: scale(1.05);
-                background-color: #D6249F; /* Slightly brighter hover effect */
-            }
-
-        }
     }
+}
+
+// Shared by the "follow us" plug and the feed error/empty message
+.instagram-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #E1306C; /* Instagram gradient-like color */
+    padding: 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, background-color 0.2s;
+
+    icon {
+        margin-right: 10px;
+        font-size: 20px;
+    }
+
+    &:hover {
+        transform: scale(1.05);
+        background-color: #D6249F; /* Slightly brighter hover effect */
+    }
+}
+
+.feed-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 1rem;
+    text-align: center;
 }
 
 @media (max-width: 576px) {

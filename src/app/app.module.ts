@@ -8,26 +8,23 @@ import {YouTubePlayerModule} from "@angular/youtube-player";
 import {NewsComponent} from './components/news/news.component';
 import {ContactUsComponent} from './components/contact-us/contact-us.component';
 import {NavMenuOverlayComponent} from './components/navigation/nav-menu-overlay/nav-menu-overlay.component';
-import {NavIconComponent} from './components/navigation/nav-icon/nav-icon.component';
 import {HomePageComponent} from './components/home-page/home-page.component';
-import {NgOptimizedImage} from "@angular/common";
-import {BrowserAnimationsModule, provideAnimations} from '@angular/platform-browser/animations';
+import {NgOptimizedImage, registerLocaleData} from "@angular/common";
+import localeSl from "@angular/common/locales/sl";
 import {CarouselModule} from "ngx-bootstrap/carousel";
 import {DisplayPostsComponent} from './components/news/display-posts/display-posts.component';
 import {ContactStartPageComponent} from './components/contact-us/contact-start-page/contact-start-page.component';
 import {ContentComponent} from './components/contact-us/content/content.component';
-import {ReactiveFormsModule} from "@angular/forms";
 import {NavMenuComponent} from './components/navigation/nav-menu/nav-menu.component';
-import {AngularFireModule} from "@angular/fire/compat";
-import {environment} from "../enviroments/enviroment";
-import {AngularFireAnalyticsModule} from "@angular/fire/compat/analytics";
-import {initializeApp} from "@angular/fire/app";
-import {getAnalytics} from "@angular/fire/analytics";
 import {NewsStartPageComponent} from './components/news/news-start-page/news-start-page.component';
-import {getPerformance} from "firebase/performance";
-import {SplashScreenComponent} from './components/spash-screen/splash-screen.component';
-import {LoadingService} from "./services/loading.service";
-import {LoadingPipe} from "./pipes/loading.pipe";
+import {TranslatePipe} from "./i18n/translate.pipe";
+import {InstrumentOrbitComponent} from './components/instrument-orbit/instrument-orbit.component';
+import {SiteHeaderComponent} from './components/navigation/site-header/site-header.component';
+import {IconComponent} from './components/icon/icon.component';
+import {ScrollIntentDirective} from './directives/scroll-intent.directive';
+
+// Slovene month names etc. for the date pipe (English is built in)
+registerLocaleData(localeSl);
 
 @NgModule({
     declarations: [
@@ -36,39 +33,27 @@ import {LoadingPipe} from "./pipes/loading.pipe";
         NewsComponent,
         ContactUsComponent,
         NavMenuOverlayComponent,
-        NavIconComponent,
         HomePageComponent,
         DisplayPostsComponent,
         ContactStartPageComponent,
         ContentComponent,
         NavMenuComponent,
         NewsStartPageComponent,
-        SplashScreenComponent,
-        LoadingPipe
+        TranslatePipe,
+        InstrumentOrbitComponent,
+        SiteHeaderComponent,
+        IconComponent,
+        ScrollIntentDirective
     ],
     imports: [
         BrowserModule,
-        BrowserAnimationsModule,
         AppRoutingModule,
         HttpClientModule,
         YouTubePlayerModule,
         NgOptimizedImage,
-        CarouselModule.forRoot(),
-        ReactiveFormsModule,
-        AngularFireModule.initializeApp(environment.firebaseConfig),
-        AngularFireAnalyticsModule
-    ],
-    providers: [
-        provideAnimations(),
-        LoadingService
+        CarouselModule.forRoot()
     ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
-    constructor() {
-        const app = initializeApp(environment.firebaseConfig);
-        const analytics = getAnalytics(app);
-        const perf = getPerformance(app);
-    }
-
 }

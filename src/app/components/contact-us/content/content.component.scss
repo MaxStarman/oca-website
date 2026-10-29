@@ -1,8 +1,7 @@
+@import "../../../../styles/mixins";
+
 .base-bg {
-    background-image: url("/assets/images/dry-earth-bg.jpeg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    @include earthBg;
 }
 
 #intro-section {
@@ -19,14 +18,16 @@
 
         .heading {
             position: relative;
-            top: 3rem;
+            top: calc(var(--oca-header-h) + 1rem);
             display: flex;
             justify-content: center;
             text-align: center;
-            z-index: 4;
+            // Above the band photos: on short screens they reach up into the title
+            z-index: 5;
 
             h1 {
                 font-size: 64px;
+                text-shadow: 0 2px 18px rgba($oca-bg, .85);
             }
         }
     }
@@ -67,6 +68,8 @@
             object-fit: cover;
             object-position: bottom center;
             overflow-x: hidden;
+            // The four of us rise into the frame one after another (--i is set on each img)
+            animation: band-rise 1100ms var(--oca-ease) calc(250ms + var(--i) * 140ms) both;
         }
 
         #cink {
@@ -84,9 +87,6 @@
         align-items: center;
         justify-content: center;
 
-        p {
-            color: rgba(0, 0, 0, 1);
-        }
     }
 
     @media (max-width: 1200px) {
@@ -166,7 +166,8 @@
 #contact-section {
 
     height: 300vh;
-    background-image: linear-gradient(rgba(234, 69, 69, 0.8), rgba(87, 128, 232, 0.81));
+    // Each page glows in its own palette color: Kontakt is rust
+    background-image: linear-gradient(180deg, rgba($oca-rust, .75) 0%, var(--oca-bg-raised) 55%, var(--oca-bg) 100%);
 
     .contact-info {
         height: 100vh;
@@ -177,26 +178,38 @@
         text-align: center;
         gap: 3.5rem;
 
-        div > i {
+        .contact-icon {
             margin-right: 2.5rem;
+            font-size: 2rem;
         }
 
         .phone-number, .email, .location {
             display: flex;
             align-items: center;
 
+            .contact-icon {
+                transition: color var(--oca-dur-m) var(--oca-ease);
+            }
+
             h1 {
                 margin-bottom: 0;
 
+                // Teal accent: an underline that draws in from the left; the text itself stays cream
                 .mail-link, .phone-link {
-                    color: white;
+                    color: var(--oca-text);
+                    text-decoration: none;
+                    background: linear-gradient(var(--oca-teal), var(--oca-teal)) left bottom / 0 3px no-repeat;
+                    transition: background-size var(--oca-dur-m) var(--oca-ease);
 
-                    &:hover, &:active {
-                        color: #ffffffab;
+                    &:hover, &:focus-visible {
+                        background-size: 100% 3px;
                     }
                 }
             }
 
+            &:hover .contact-icon, &:focus-within .contact-icon {
+                color: var(--oca-teal);
+            }
         }
 
     }

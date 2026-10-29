@@ -1,33 +1,22 @@
-<nav-icon
-    *ngIf="isFromOverlay"
-    [type]="'nav-menu'"
-></nav-icon>
-
 <div class="background-video-container">
-    <video autoplay class="background-video" id="bg-video" loop muted>
+    <!-- Plays only while at least half visible (see ngAfterViewInit), and loads nothing before that:
+         this MP4 keeps its index at the end of the file, so even preload="metadata" pulled ~3 MB per page.
+         TODO(content): add poster="assets/videos/oca-nav-poster.jpg" once the video is re-encoded. -->
+    <video #bgVideo aria-hidden="true" class="background-video" loop muted playsinline preload="none">
         <source src="./assets/videos/oca-nav-video.mp4" type="video/mp4">
-        Your browser does not support HTML5 video.
     </video>
 
+    <!-- The big menu: every item named, the current page marked in its own color -->
     <div class="links">
-        <a (click)="notifyParentAndHandleEvent($event, '/news')"
-           class="col-md-4  d-flex flex-column justify-content-center align-items-center mobile-animation">
-            <img [height]="76" [width]="87" alt="News Icon" ngSrc="../../../../assets/svg-icons/alert-white.svg">
-            <h1>Novice</h1>
-        </a>
-
-        <a (click)="notifyParentAndHandleEvent($event, '/music')"
-           class="col-md-4  d-flex flex-column justify-content-center align-items-center mobile-animation">
-            <img [height]="74" [width]="48" alt="Music Icon" ngSrc="../../../../assets/svg-icons/note-white.svg">
-            <h1>Glasba</h1>
-        </a>
-
-        <a (click)="notifyParentAndHandleEvent($event, '/contact')"
-           class="col-md-4 d-flex flex-column justify-content-center align-items-center mobile-animation">
-            <img [height]="74" [width]="93" alt="Contact Icon" ngSrc="../../../../assets/svg-icons/mail-white.svg">
-            <h1>Kontakt</h1>
+        <a (click)="nav.scrollUpIfCurrent(link.path)"
+           *ngFor="let link of links"
+           [routerLink]="link.path"
+           [style.--accent]="link.accent"
+           ariaCurrentWhenActive="page"
+           class="menu-link"
+           routerLinkActive="is-current">
+            <img [height]="link.iconHeight" [ngSrc]="link.icon" [width]="link.iconWidth" alt="">
+            <span class="menu-label">{{ link.label | t }}</span>
         </a>
     </div>
-
 </div>
-

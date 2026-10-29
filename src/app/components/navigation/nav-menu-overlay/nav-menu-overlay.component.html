@@ -1,8 +1,13 @@
-<div [ngClass]="{'open': isOpen}" class="nav overlay">
+<div (keydown)="onKeydown($event)"
+     [attr.aria-label]="'nav.main' | t"
+     [class.open]="isOpen"
+     aria-modal="true"
+     class="nav overlay"
+     role="dialog">
 
-    <nav-menu
-        (toggleNav)="onToggleNav()"
-        [isFromOverlay]="true"
-    ></nav-menu>
+    <button #closeButton (click)="close()" [attr.aria-label]="'nav.closeMenu' | t" class="close-button" type="button">
+        <icon name="xmark"></icon>
+    </button>
 
+    <nav-menu></nav-menu>
 </div>

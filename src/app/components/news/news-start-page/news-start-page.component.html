@@ -1,6 +1,19 @@
-<nav-icon></nav-icon>
-<div
-    (click)="onBackgroundClick()"
-    [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}"
-    class="full-screen">
-</div>
+<button (click)="onBackgroundClick()"
+        (scrollIntent)="onBackgroundClick()"
+        [attr.aria-label]="'nav.news' | t"
+        [class.is-broken]="broken"
+        [class.is-shattering]="shattering"
+        [disabled]="broken"
+        [style.background-image]="shattering ? null : 'url(' + backgroundImage + ')'"
+        class="full-screen"
+        type="button">
+    <!-- The cracked photo, cut into shards along its cracks; they fall away to reveal the posts -->
+    <span *ngIf="shattering" aria-hidden="true" class="shards">
+        <span *ngFor="let shard of shards"
+              [ngStyle]="{'background-image': 'url(' + backgroundImage + ')', 'clip-path': shard.clip,
+                          '--dx': shard.dx, '--rot': shard.rot, 'animation-delay': shard.delay}"
+              class="shard"></span>
+    </span>
+    <!-- "Go on": same cue as on Kontakt; scrolling or swiping also continues (scrollIntent) -->
+    <span *ngIf="!broken" aria-hidden="true" class="continue-cue"><icon name="arrow-down"></icon></span>
+</button>

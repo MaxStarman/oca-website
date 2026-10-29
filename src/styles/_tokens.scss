@@ -1,0 +1,11 @@
+// Warm 70s earth palette. The SCSS variables feed Bootstrap and the mixins (they emit no CSS on import);
+// components use the matching CSS custom properties defined on :root in styles.scss.
+$oca-bg: #1C130C; // near-black brown, page base
+$oca-bg-raised: #2A1D13; // cards, strips
+$oca-text: #F3E6CC; // cream
+$oca-text-dim: #BFA98A;
+$oca-ochre: #E0892B; // primary accent, links, focus
+$oca-rust: #B5432A; // secondary accent (large/decorative use only: ~3:1 on $oca-bg)
+$oca-teal: #4FB3A0; // the one "pop"
+
+$oca-ease: cubic-bezier(.22, 1, .36, 1);

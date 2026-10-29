@@ -10,7 +10,13 @@ export class ContactStartPageComponent {
     @Output()
     clicked = new EventEmitter<void>();
 
+    private continued = false;
+
+    // Click, wheel or swipe (scrollIntent); a wheel gesture fires many events, so only the first counts
     onClick() {
-        this.clicked.emit();
+        if (!this.continued) {
+            this.continued = true;
+            this.clicked.emit();
+        }
     }
 }
