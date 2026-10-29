@@ -1,5 +1,3 @@
-<nav-icon></nav-icon>
-
 <section id="featured-post-section">
     <div class="header-bg-image sticky-top instagram-feed">
         <div *ngIf="status === 'loading'" class="spinner-border text-light" role="status">
@@ -11,19 +9,19 @@
                 {{ (status === 'error' ? 'news.error' : 'news.empty') | t }}
             </h1>
             <a [href]="instagramUrl" class="instagram-link" rel="noopener" target="_blank">
-                <i class="fab fa-instagram"></i> {{ 'news.seeOnInstagram' | t }}
+                <icon name="instagram"></icon> {{ 'news.seeOnInstagram' | t }}
             </a>
         </div>
 
         <div *ngIf="status === 'ready' && selectedPost" class="post-content">
             <ng-container *ngIf="selectedPost.media_type === 'CAROUSEL_ALBUM'">
-                <carousel>
+                <!-- Auto-advances every 5 s, except with reduced motion -->
+                <carousel [interval]="carouselInterval">
                     <slide *ngFor="let child of selectedPost.children.data">
                         <img *ngIf="child.media_type === 'IMAGE'" [src]="child.media_url"
                              alt="" class="carousel-image"/>
                         <video *ngIf="child.media_type === 'VIDEO'" [src]="child.media_url"
-                               class="carousel-video" loop
-                               muted></video>
+                               class="carousel-video" controls loop playsinline preload="metadata"></video>
                     </slide>
                 </carousel>
             </ng-container>
@@ -51,7 +49,7 @@
             <!--            <a [href]="selectedPost.permalink" class="mt-2 fs-5 w-fit-content" target="_blank">-->
             <!--                View on Instagram <i class="fa-brands fa-instagram mx-1"></i>-->
             <!--            </a>-->
-            <i class="fa-solid fa-arrow-down animate"></i>
+            <icon class="animate" name="arrow-down"></icon>
         </div>
     </div>
 </section>
@@ -70,7 +68,7 @@
         </div>
         <div #card class="shameless-plug">
             <a [href]="instagramUrl" class="instagram-link mb-2" rel="noopener" target="_blank">
-                <i class="fab fa-instagram"></i> {{ 'news.followOnInstagram' | t }}
+                <icon name="instagram"></icon> {{ 'news.followOnInstagram' | t }}
             </a>
         </div>
     </div>

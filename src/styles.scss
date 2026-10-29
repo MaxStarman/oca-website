@@ -11,9 +11,29 @@ $danger: $oca-rust;
 $info: $oca-teal;
 $link-color: $oca-ochre;
 
-@import "../node_modules/bootstrap/scss/bootstrap";
+// Only the parts of Bootstrap the site uses (layout helpers, spinner, the ngx-bootstrap carousel),
+// instead of the whole framework. Need another component or utility? Add its partial / map key here.
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/utilities";
+$utilities: map-get-multiple($utilities, (
+    "display", "flex-direction", "align-items", "justify-content", "font-size", "text-align", "color",
+    "margin-x", "margin-top", "margin-bottom"
+));
+@import "../node_modules/bootstrap/scss/root";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";
+@import "../node_modules/bootstrap/scss/containers";
+@import "../node_modules/bootstrap/scss/spinners";
+@import "../node_modules/bootstrap/scss/carousel";
+@import "../node_modules/bootstrap/scss/helpers";
+@import "../node_modules/bootstrap/scss/utilities/api";
 @import "styles/mixins";
 @import 'styles/typography';
+@import 'styles/animations';
 
 :root {
     --oca-bg: #{$oca-bg};
@@ -25,6 +45,8 @@ $link-color: $oca-ochre;
     --oca-teal: #{$oca-teal};
 
     --oca-ease: #{$oca-ease};
+    --oca-header-h: 60px; // fixed site header; pages keep their content clear of it
+    --oca-ribbon-w: clamp(22px, 6vw, 110px); // home's side stripes; the header clears them there
     --oca-dur-s: 200ms;
     --oca-dur-m: 500ms;
     --oca-dur-l: 1200ms;

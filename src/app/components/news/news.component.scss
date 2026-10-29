@@ -7,7 +7,15 @@ news-start-page {
     height: 100%;
 }
 
-// Above the posts while it shatters away over them
+// Above the posts (and their sticky header, 1020) while it shatters away over them; below the site header
 news-start-page {
-    z-index: 1030;
+    z-index: 1021;
+}
+
+.is-fading-in {
+    animation: fade-in 1s both;
+}
+
+.is-fading-out {
+    animation: fade-out 1s both;
 }

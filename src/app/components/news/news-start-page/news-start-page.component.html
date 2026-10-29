@@ -1,5 +1,5 @@
-<nav-icon></nav-icon>
 <button (click)="onBackgroundClick()"
+        (scrollIntent)="onBackgroundClick()"
         [attr.aria-label]="'nav.news' | t"
         [class.is-broken]="broken"
         [class.is-shattering]="shattering"
@@ -14,4 +14,6 @@
                           '--dx': shard.dx, '--rot': shard.rot, 'animation-delay': shard.delay}"
               class="shard"></span>
     </span>
+    <!-- "Go on": same cue as on Kontakt; scrolling or swiping also continues (scrollIntent) -->
+    <span *ngIf="!broken" aria-hidden="true" class="continue-cue"><icon name="arrow-down"></icon></span>
 </button>

@@ -8,6 +8,7 @@
     }
 
     .video-container {
+        padding-top: var(--oca-header-h);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -71,7 +72,7 @@
             font-size: 1.6rem;
             transition: transform var(--oca-dur-s) var(--oca-ease);
 
-            i {
+            icon {
                 margin-left: .25rem; // optical centering of the triangle
             }
         }

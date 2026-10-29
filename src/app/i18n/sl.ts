@@ -7,6 +7,7 @@ export const sl = {
     'nav.home': 'Domov',
     'nav.openMenu': 'Odpri meni',
     'nav.closeMenu': 'Zapri meni',
+    'nav.main': 'Glavni meni',
     'lang.label': 'Jezik',
 
     'home.intro': "Smo 4-članski bando iz Kopra. Pripovedno - plesna, psihadelična rock 'n' roll mineštra po primorsko.",

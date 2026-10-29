@@ -1,17 +1,8 @@
-import {
-    AfterViewInit,
-    Component,
-    ElementRef,
-    HostListener,
-    Input,
-    NgZone,
-    OnDestroy,
-    ViewChild
-} from '@angular/core';
-import {Router} from "@angular/router";
-import {I18nService} from "../../../i18n/i18n.service";
+import {AfterViewInit, Component, ElementRef, NgZone, OnDestroy, ViewChild} from '@angular/core';
+import {NAV_LINKS, NavService} from "../../../services/nav.service";
 import {MotionService} from "../../../services/motion.service";
 
+// The big video menu: inside the home overlay and as the footer of every page
 @Component({
     selector: 'nav-menu',
     templateUrl: './nav-menu.component.html',
@@ -19,26 +10,15 @@ import {MotionService} from "../../../services/motion.service";
 })
 export class NavMenuComponent implements AfterViewInit, OnDestroy {
 
-    isMobile = false;
-
-    @Input()
-    isFromOverlay = false;
+    readonly links = NAV_LINKS;
 
     @ViewChild('bgVideo') bgVideo!: ElementRef<HTMLVideoElement>;
 
     private videoObserver?: IntersectionObserver;
 
-    constructor(private router: Router,
+    constructor(public nav: NavService,
                 private ngZone: NgZone,
-                private motion: MotionService,
-                public i18n: I18nService) {
-        this.checkScreenSize();
-    }
-
-    // Detect screen size on window resize
-    @HostListener('window:resize', [])
-    checkScreenSize() {
-        this.isMobile = window.innerWidth < 992; // Mobile and tablet breakpoint
+                private motion: MotionService) {
     }
 
     // Every page has a nav-menu footer plus the home overlay: only the one on screen plays.
@@ -66,33 +46,5 @@ export class NavMenuComponent implements AfterViewInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.videoObserver?.disconnect();
-    }
-
-    onLinkClick(event: Event, routerLink: string) {
-        if (this.isMobile) {
-            const linkElement = (event.target as HTMLElement).closest('.mobile-animation');
-            if (linkElement) {
-                // Add the animation class
-                linkElement.classList.add('animate');
-
-                // Remove the animation class after the animation duration
-                setTimeout(() => {
-                    linkElement.classList.remove('animate');
-                    this.goTo(routerLink);
-                }, 200); // Match the CSS animation duration
-            }
-        } else {
-            this.goTo(routerLink);
-        }
-    }
-
-    // The route transition scrolls to the top and NavService closes the overlay. The router ignores
-    // links to the page we're already on, so from that page's own footer just glide back up.
-    private goTo(routerLink: string) {
-        if (this.router.url === routerLink) {
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        } else {
-            this.router.navigate([routerLink]);
-        }
     }
 }

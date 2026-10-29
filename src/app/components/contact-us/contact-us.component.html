@@ -1,11 +1,5 @@
-<nav-icon></nav-icon>
-
 <div>
-    <ng-container *ngIf="showStartPage; else contentTemplate">
-        <contact-start-page (clicked)="toggleStartPage()" @fadeOut></contact-start-page>
-    </ng-container>
-    <ng-template #contentTemplate>
-        <content @fadeIn></content>
-    </ng-template>
+    <!-- Both are on screen during the hand-over: the content fades in over the fading start page -->
+    <contact-start-page (clicked)="onStartPageDone()" *ngIf="showStartPage" [class.is-fading-out]="showContent"></contact-start-page>
+    <content *ngIf="showContent" class="is-fading-in"></content>
 </div>
-

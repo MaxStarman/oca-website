@@ -1,0 +1,126 @@
+@import "../../../../styles/tokens";
+
+:host {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1025; // above the pages' sticky blocks (1020), below the open menu overlay (1040)
+}
+
+.site-header {
+    display: flex;
+    align-items: center;
+    gap: clamp(.75rem, 3vw, 2.5rem);
+    height: var(--oca-header-h);
+    padding: 0 clamp(.75rem, 3vw, 2rem);
+    // Readable over any photo or video underneath, fading out so the pages stay full-bleed
+    background: linear-gradient(rgba($oca-bg, .92), rgba($oca-bg, .7) 65%, rgba($oca-bg, 0));
+
+    // Home: inside the side stripes
+    &.is-home {
+        padding: 0 calc(var(--oca-ribbon-w) + clamp(.5rem, 2vw, 1.25rem));
+    }
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-right: auto;
+    color: var(--oca-text);
+    text-decoration: none;
+
+    img {
+        width: 28px;
+        height: auto;
+        transition: transform var(--oca-dur-s) var(--oca-ease);
+    }
+
+    &:hover img, &:focus-visible img {
+        transform: rotate(-8deg) scale(1.08);
+    }
+}
+
+// Not on phones (no room) and not on home, where the big logo is the name
+.brand-name {
+    font-family: 'Ethnocentric', sans-serif;
+    font-size: .8rem;
+    white-space: nowrap;
+
+    .is-home & {
+        display: none;
+    }
+
+    @media (max-width: 767px) {
+        display: none;
+    }
+}
+
+.links {
+    display: flex;
+    gap: clamp(.9rem, 3vw, 2.25rem);
+}
+
+// Pixel-font labels; an underline in the page's own color grows in on hover and stays on the current page
+.link {
+    position: relative;
+    padding: .35rem 0;
+    font-family: "Jersey 10", sans-serif;
+    font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+    line-height: 1;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--oca-text-dim);
+    transition: color var(--oca-dur-s) var(--oca-ease);
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 3px;
+        border-radius: 2px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform var(--oca-dur-m) var(--oca-ease);
+    }
+
+    &:hover, &:focus-visible, &.is-current {
+        color: var(--oca-text);
+
+        &::after {
+            transform: scaleX(1);
+        }
+    }
+}
+
+.lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    font-family: 'Ethnocentric', sans-serif;
+    font-size: .75rem;
+    color: var(--oca-text-dim);
+
+    button {
+        padding: .35rem .3rem;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+        transition: color var(--oca-dur-s) var(--oca-ease);
+
+        &:hover {
+            color: var(--oca-text);
+        }
+
+        &[aria-pressed="true"] {
+            color: var(--oca-ochre);
+        }
+    }
+}

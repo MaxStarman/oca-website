@@ -1,37 +1,47 @@
 <nav-menu-overlay></nav-menu-overlay>
 
-<!-- Fixed behind everything on home: the 3D cupcake, reacting to the logo, pointer and scroll -->
-<oca-stage [hovered]="logoHovered" [paused]="navOpen"></oca-stage>
+<!-- Dry-earth backdrop, fixed behind the page -->
+<div aria-hidden="true" class="backdrop"></div>
 
-<section class="hero d-flex justify-content-center align-items-center">
-    <!-- No hint text on purpose: cursor, hover glow and the idle pulse say "click me" -->
-    <button (blur)="logoHovered = false"
-            (click)="onLogoClick()"
-            (focus)="logoHovered = true"
-            (mouseenter)="logoHovered = true"
-            (mouseleave)="logoHovered = false"
-            [attr.aria-label]="'nav.openMenu' | t"
-            [class.is-hinting]="showHint"
-            [class.is-pressed]="pressed"
-            class="logo-button"
-            type="button">
-        <img alt="One Cupcake Away" class="logo-img" src="assets/images/oca-main.png"/>
-    </button>
-    <!-- TODO(audio): first logo tap may also start the preview track (MP3s to be provided) -->
+<div [class.is-logo-hovered]="logoHovered" [class.is-paused]="navOpen" class="home-body">
+    <!-- Psychedelic 70s stripes flowing down the sides of the page: the left one flows down, its mirror up -->
+    <div aria-hidden="true" class="ribbon ribbon--left"><div class="ribbon-flow"></div></div>
+    <div aria-hidden="true" class="ribbon ribbon--right"><div class="ribbon-flow"></div></div>
 
-    <i aria-hidden="true" class="fa-solid fa-arrow-down scroll-cue"></i>
-</section>
+    <section class="hero d-flex justify-content-center align-items-center">
+        <!-- No hint text on purpose: cursor, hover glow and the idle pulse say "click me" -->
+        <button (blur)="logoHovered = false"
+                (click)="onLogoClick()"
+                (focus)="logoHovered = true"
+                (mouseenter)="logoHovered = true"
+                (mouseleave)="logoHovered = false"
+                [attr.aria-expanded]="navOpen"
+                [attr.aria-label]="'nav.openMenu' | t"
+                aria-haspopup="dialog"
+                [class.is-hinting]="showHint"
+                [class.is-pressed]="pressed"
+                class="logo-button"
+                type="button">
+            <img alt="One Cupcake Away" class="logo-img" fetchpriority="high" height="258" src="assets/images/oca-main.webp"
+                 width="364"/>
+        </button>
+        <!-- TODO(audio): first logo tap may also start the preview track (MP3s to be provided);
+             the side stripes could then pulse with the music -->
 
-<!-- Pinned scroll scene: the lines arrive one at a time, like verses being played -->
-<section #manifesto class="manifesto">
-    <div class="manifesto-pin">
-        <p *ngFor="let key of lines" class="line">{{ key | t }}</p>
-        <p class="line signature" lang="sl">{{ signature }}</p>
-    </div>
-</section>
+        <icon class="scroll-cue" name="arrow-down"></icon>
+    </section>
 
-<instrument-orbit></instrument-orbit>
+    <!-- Pinned scroll scene: the lines arrive one at a time, like verses being played -->
+    <section #manifesto class="manifesto">
+        <div class="manifesto-pin">
+            <p *ngFor="let key of lines" class="line">{{ key | t }}</p>
+            <p class="line signature" lang="sl">{{ signature }}</p>
+        </div>
+    </section>
 
-<section #footer class="footer">
+    <instrument-orbit></instrument-orbit>
+</div>
+
+<section class="footer">
     <nav-menu></nav-menu>
 </section>

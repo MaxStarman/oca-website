@@ -24,7 +24,7 @@ export class NewsStartPageComponent {
 
     readonly shards = SHARDS;
 
-    backgroundImage: string = '/assets/images/news/news-start-full.jpeg'; // Initial background image
+    backgroundImage: string = '/assets/images/news/news-start-full.webp'; // Initial background image
     broken = false;
     shattering = false;
 
@@ -38,7 +38,10 @@ export class NewsStartPageComponent {
     // Click: the photo cracks, then shatters. The posts render underneath as the shards fall
     // (NewsComponent keeps this page around until they're gone).
     onBackgroundClick() {
-        this.backgroundImage = '/assets/images/news/news-start-broken.jpeg';
+        if (this.broken) {
+            return; // a wheel gesture fires many events
+        }
+        this.backgroundImage = '/assets/images/news/news-start-broken.webp';
         this.broken = true;
 
         setTimeout(() => {

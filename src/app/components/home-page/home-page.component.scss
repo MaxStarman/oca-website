@@ -1,15 +1,92 @@
 @import "../../../styles/mixins";
-@import "../../../styles/animations";
 
 // The logo PNG is black letters with a white outline; inverting and warming it gives cream letters
 // that read on the dark background without editing the asset.
 $logo-filter: invert(1) sepia(.35) saturate(1.3) brightness(.96);
 $logo-glow: drop-shadow(0 0 22px rgba($oca-ochre, .55));
 
-// Everything sits above the fixed <oca-stage> (z-index 0)
+
+.backdrop {
+    @include earthBg;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.home-body {
+    // One tile of the stripe pattern is 3.25x as tall as it is wide
+    --ribbon-w: var(--oca-ribbon-w);
+    --ribbon-tile: calc(var(--ribbon-w) * 3.25);
+    position: relative;
+    z-index: 1;
+}
+
 .hero, .manifesto, .footer {
     position: relative;
     z-index: 1;
+}
+
+// The stripes run the whole length of the home page (not the footer) and scroll with it, so they keep
+// streaming past while the manifesto is pinned. The flow is a transform on a pre-painted layer: the
+// compositor moves it without repainting the page.
+.ribbon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 0; // under the text, should they ever meet on a narrow screen
+    width: var(--ribbon-w);
+    overflow: hidden;
+    pointer-events: none;
+    opacity: .85;
+    transition: opacity var(--oca-dur-m) var(--oca-ease);
+
+    &--left {
+        left: 0;
+    }
+
+    &--right {
+        right: 0;
+        transform: scaleX(-1);
+    }
+}
+
+.ribbon-flow {
+    position: absolute;
+    inset: calc(var(--ribbon-tile) * -1) 0;
+    // assets/images/ribbon.svg (generated): four wavy bands, rust | ochre | cream | teal from the page edge
+    // inward, one wave period tall so it tiles seamlessly. The bands' waves are slightly out of phase, so
+    // the stripes swell and narrow as they flow.
+    background: url("/assets/images/ribbon.svg") 0 0 / 100% var(--ribbon-tile) repeat-y;
+    will-change: transform;
+    animation: ribbon-down 16s linear infinite;
+
+    // The mirrored right side flows up, a little slower, so the two never look like copies
+    .ribbon--right & {
+        animation-name: ribbon-up;
+        animation-duration: 21s;
+    }
+
+    .is-paused & {
+        animation-play-state: paused;
+    }
+}
+
+// Pointing at the logo lights the stripes up, as the 3D cupcake used to react
+.is-logo-hovered .ribbon {
+    opacity: 1;
+}
+
+@keyframes ribbon-down {
+    to {
+        transform: translateY(var(--ribbon-tile));
+    }
+}
+
+@keyframes ribbon-up {
+    to {
+        transform: translateY(calc(var(--ribbon-tile) * -1));
+    }
 }
 
 .hero {
@@ -20,7 +97,7 @@ $logo-glow: drop-shadow(0 0 22px rgba($oca-ochre, .55));
     position: absolute;
     bottom: 2rem;
     left: 50%;
-    translate: -50% 0;
+    margin-left: -.5em;
     font-size: 1.75rem;
     color: var(--oca-text-dim);
     animation: downUp 2s ease-in-out infinite;
@@ -40,7 +117,8 @@ $logo-glow: drop-shadow(0 0 22px rgba($oca-ochre, .55));
     justify-content: center;
     align-items: center;
     gap: 1.75rem;
-    padding: 0 1.5rem;
+    // Clear of the side stripes
+    padding: 0 calc(var(--ribbon-w) + 1rem);
     text-align: center;
 }
 

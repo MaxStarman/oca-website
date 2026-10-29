@@ -18,7 +18,7 @@
 
         .heading {
             position: relative;
-            top: 3rem;
+            top: calc(var(--oca-header-h) + 1rem);
             display: flex;
             justify-content: center;
             text-align: center;
@@ -178,15 +178,16 @@
         text-align: center;
         gap: 3.5rem;
 
-        div > i {
+        .contact-icon {
             margin-right: 2.5rem;
+            font-size: 2rem;
         }
 
         .phone-number, .email, .location {
             display: flex;
             align-items: center;
 
-            i {
+            .contact-icon {
                 transition: color var(--oca-dur-m) var(--oca-ease);
             }
 
@@ -206,17 +207,10 @@
                 }
             }
 
-            &:hover i, &:focus-within i {
+            &:hover .contact-icon, &:focus-within .contact-icon {
                 color: var(--oca-teal);
             }
         }
 
-    }
-}
-
-@keyframes band-rise {
-    from {
-        opacity: 0;
-        transform: translateY(35%);
     }
 }

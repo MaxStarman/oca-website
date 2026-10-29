@@ -1,32 +1,29 @@
 import {Component} from '@angular/core';
-import {animate, style, transition, trigger} from "@angular/animations";
 import {MotionService} from "../../services/motion.service";
-import {fadeAnimations} from "../../ng-animations/animations";
+
+// Shard animation (news-start-page CSS) or, with reduced motion, the crossfade
+const SHATTER_MS = 1400;
+const FADE_MS = 1000;
 
 @Component({
     selector: 'news-page',
     templateUrl: './news.component.html',
-    styleUrls: ['./news.component.scss'],
-    animations: [
-        ...fadeAnimations,
-        // 'shatter' keeps the start page in the DOM, unchanged, while its shards fall (news-start-page
-        // CSS); with reduced motion it simply fades
-        trigger('startPageLeave', [
-            transition('shatter => void', [animate('1400ms')]),
-            transition('fade => void', [animate('1000ms', style({opacity: 0}))])
-        ])
-    ]
+    styleUrls: ['./news.component.scss']
 })
 export class NewsComponent {
 
     showStartPage = true;
-    readonly startPageLeave: 'shatter' | 'fade';
+    showPosts = false;
+    // Reduced motion: the start page fades out instead of shattering
+    readonly fadeOut: boolean;
 
     constructor(motion: MotionService) {
-        this.startPageLeave = motion.reducedMotion ? 'fade' : 'shatter';
+        this.fadeOut = motion.reducedMotion;
     }
 
-    toggleStartPage() {
-        this.showStartPage = !this.showStartPage;
+    // The posts appear underneath right away; the start page goes once its exit has played
+    onStartPageDone() {
+        this.showPosts = true;
+        setTimeout(() => this.showStartPage = false, this.fadeOut ? FADE_MS : SHATTER_MS);
     }
 }

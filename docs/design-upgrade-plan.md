@@ -1,6 +1,8 @@
 # Oca — frontend design upgrade plan
 
-Status: Phases 1–3 implemented (2026-10-28); Phase 1 video re-encode still pending (see §5). Branch: `feat/design-upgrade`
+Status: Phases 1–4 implemented (2026-10-29); Phase 1 video re-encode still pending (see §5).
+**Changed in Phase 4:** the 3D cupcake was removed (too slow); home now has flowing 70s stripes on its sides,
+and navigation was reworked (fixed header, labelled menu). The Phase 2 notes below describe the 3D version. Branch: `feat/design-upgrade`
 (branched from `fix/tier1-functional`, which has the build fixes `master` doesn't have yet).
 
 ## Direction (from interview)
@@ -10,8 +12,8 @@ Status: Phases 1–3 implemented (2026-10-28); Phase 1 video re-encode still pen
 | Message | High-quality music; every member a virtuoso on several instruments; psychedelic storytelling, sound before lyrics |
 | Palette | Warm 70s earth, one teal "pop" accent |
 | Motion | Immersive but readable; full `prefers-reduced-motion` fallback |
-| 3D | Procedural 3D cupcake (hero) + audio-reactive visual |
-| Home | Sound-first: experience before text ("show, don't tell"); logo in front, 3D cupcake behind it; no "Vstopi" button, the logo itself invites the click |
+| 3D | ~~Procedural 3D cupcake (hero) + audio-reactive visual~~ removed in Phase 4 (performance); psychedelic stripes on the home page's sides instead |
+| Home | Sound-first: experience before text ("show, don't tell"); logo between flowing side stripes; no "Vstopi" button, the logo itself invites the click |
 | Type | Keep Ethnocentric (h1) + Jersey 10 (p) |
 | Devices | Mobile-first; lighter 3D on phones, full on desktop |
 | Audio | **Not now.** Leave hooks + `TODO(audio)` comments; MP3 previews come later |
@@ -254,16 +256,49 @@ Check each against Angular 16 / TS 5.1 before installing (pin versions).
      don't have yet, so they're not built; they'd be new pages/copy for you to confirm first.
    - Verified with frozen animation frames and DOM checks (the preview window wasn't on screen);
      the real-time feel of the timings still needs a look in a visible browser.
-4. **Polish & perf**: reduced-motion audit, Lighthouse on mid-range Android, bundle budgets,
-   `lang="sl"` in `index.html`.
+4. **Polish & perf** ✅ (plus three requests made during the phase):
+   - **3D cupcake removed** (it slowed the site down a lot): `<oca-stage>`, three.js and the audio stub are
+     gone. Its biggest cost was a full-screen WebGL canvas with a CSS blur, redrawn every frame.
+   - **Psychedelic sides on home**: wavy stripes (rust, ochre, cream, teal) flow down the left edge and,
+     mirrored, up the right edge, at different speeds. One generated, seamlessly tiling SVG
+     (`assets/images/ribbon.svg`) moved with CSS `transform` only, so the compositor animates it without
+     repainting. They light up when the logo is hovered, pause while the menu is open, and stand still
+     with reduced motion. `TODO(audio)`: they could pulse with the music once MP3s exist.
+   - **Navigation made logical**:
+     - A fixed header on every page: cupcake = home (always), Novice / Glasba / Kontakt by name with the
+       current page underlined in its color (`aria-current`), and the SL/EN switch.
+     - The big video menu shows its labels all the time (they only appeared on hover before), marks the
+       current page, and the home overlay has a real close button (✕), Esc, and keeps focus inside.
+     - The top-right cupcake button is gone: it meant "home" on pages but "close" in the menu.
+     - The Novice and Kontakt intros show a "continue" arrow, and scrolling or swiping continues too
+       (before, only a click on the photo/title did, with no hint). Kontakt's arrow pointed up.
+   - **Reduced-motion audit**: every CSS animation is covered by the global rule; GSAP, the page wipe,
+     the footer video and scroll-to-top check `MotionService`. Fixed: the Novice carousel auto-advanced
+     every 5 s regardless (now off with reduced motion); carousel videos had no controls and never played.
+   - **Payload**:
+     - Images to WebP: 6.0 MB -> 0.6 MB (the dry-earth background alone 1.36 MB -> 113 kB).
+     - Fonts to WOFF2 (Jersey 10 195 -> 20 kB), preloaded with the home logo.
+     - Font Awesome (CSS + up to three fonts) replaced by 8 inline SVG icons (`<icon>`).
+     - Bootstrap: only the partials and utilities in use. Global styles 318 -> 45 kB.
+     - Firebase loads lazily after the first page (and not at all while unconfigured); AngularFire,
+       which also pulled in Firebase Auth, is gone.
+     - `@angular/animations` removed: the two page hand-overs are CSS classes + timers.
+     - Nav video `preload="none"`: its MP4 index sits at the end of the file, so "metadata" fetched
+       ~3 MB on every page.
+     - Initial JS+CSS: 882 kB -> 443 kB (185 -> 110 kB transferred), under the 500 kB budget.
+   - **Lighthouse, mobile (emulated Moto G Power, 4x CPU slowdown, slow 4G)**, home page:
+     performance 44 -> 89–91, LCP 12.6 s -> 3.3 s, total blocking time 2,310 -> 100–140 ms,
+     page weight 2.2 MB -> 0.4 MB, accessibility 93 -> 100. Kontakt: performance 93, accessibility 100.
+     First contentful paint in the simulation went from 1.0 to ~1.8 s (unthrottled: 0.15 -> 0.27 s);
+     the cause isn't pinned down (not the preloads, tested), and the inline loading screen shows at once.
+   - `.gitattributes`: LF line endings everywhere.
 
 ## 6. Content slots to fill later (`TODO(content)` / `TODO(audio)`)
 - MP3 previews (and per-instrument stems, if you want a "solo each instrument" feature later)
 - Member photos + short clips per instrument
 - Instrument list per member, instrument credits per video
 - Approval of the draft SL/EN lines in §0 and of the English translations of existing copy
-- Optional `.glb` cupcake model (can replace the procedural one 1:1)
-- Story artwork per song (could become shader textures)
+- Story artwork per song (could join the side stripes as psychedelic panels)
 
 ## Open questions
 - Reference sites you love? (The Mobbin search failed because it needs a paid plan.)

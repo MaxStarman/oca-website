@@ -1,0 +1,23 @@
+<header [class.is-home]="router.url === '/'" class="site-header">
+    <!-- The cupcake is always "home" -->
+    <a (click)="nav.scrollUpIfCurrent('/')" [attr.aria-label]="'nav.home' | t" class="brand" routerLink="/">
+        <img alt="" height="34" src="assets/svg-icons/cupcake-white.svg" width="28">
+        <span aria-hidden="true" class="brand-name">One Cupcake Away</span>
+    </a>
+
+    <nav [attr.aria-label]="'nav.main' | t" class="links">
+        <a (click)="nav.scrollUpIfCurrent(link.path)"
+           *ngFor="let link of links"
+           [routerLink]="link.path"
+           [style.--accent]="link.accent"
+           ariaCurrentWhenActive="page"
+           class="link"
+           routerLinkActive="is-current">{{ link.label | t }}</a>
+    </nav>
+
+    <div [attr.aria-label]="'lang.label' | t" class="lang-toggle" role="group">
+        <button (click)="i18n.setLang('sl')" [attr.aria-pressed]="i18n.lang === 'sl'" lang="sl" type="button">SL</button>
+        <span aria-hidden="true">/</span>
+        <button (click)="i18n.setLang('en')" [attr.aria-pressed]="i18n.lang === 'en'" lang="en" type="button">EN</button>
+    </div>
+</header>

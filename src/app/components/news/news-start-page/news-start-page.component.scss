@@ -1,3 +1,5 @@
+@import "../../../../styles/tokens";
+
 /* Full screen section */
 .full-screen {
     position: relative;
@@ -27,6 +29,24 @@
     &.is-broken {
         animation: crack-jolt 280ms var(--oca-ease);
     }
+}
+
+// A dark disc so the arrow reads on any part of the photo
+.continue-cue {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    margin-left: -2rem;
+    border: 2px solid rgba($oca-text, .6);
+    border-radius: 50%;
+    background: rgba($oca-bg, .6);
+    font-size: 1.75rem;
+    color: var(--oca-text);
+    animation: downUp 1.6s ease-in-out infinite;
 }
 
 .shards {

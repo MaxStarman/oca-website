@@ -33,10 +33,12 @@ export class DisplayPostsComponent implements OnInit, AfterViewInit, OnDestroy {
     otherPosts: any[] = [];
     selectedPost: any = null;
 
-    @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
     @ViewChild('morePosts') morePostsRef!: ElementRef<HTMLElement>;
     // The post cards plus the "follow us" plug, revealed in that order
     @ViewChildren('card') cards!: QueryList<ElementRef<HTMLElement>>;
+
+    // 0 turns the carousel's auto-advance off
+    readonly carouselInterval: number;
 
     private reveal: ScrollReveal;
 
@@ -49,6 +51,7 @@ export class DisplayPostsComponent implements OnInit, AfterViewInit, OnDestroy {
                 motion: MotionService
     ) {
         this.reveal = new ScrollReveal(ngZone, motion);
+        this.carouselInterval = motion.reducedMotion ? 0 : 5000;
     }
 
     ngOnInit() {
@@ -74,7 +77,6 @@ export class DisplayPostsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit() {
-        this.muteAllVideos();
         // The grid is (re)rendered whenever the feed arrives or another post is picked
         const update = () => this.reveal.update(this.morePostsRef.nativeElement, this.cards.map(card => card.nativeElement));
         update();
@@ -93,17 +95,6 @@ export class DisplayPostsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.otherPosts = this.instagramData.filter(
             (post: any) => post.id !== this.selectedPost.id
         );
-    }
-
-    // Function to mute all video elements
-    muteAllVideos() {
-        this.videoElements.forEach((videoElement) => {
-            const video = videoElement.nativeElement;
-            video.muted = true;
-            video.play().catch((error: any) => {
-                console.log('Auto-play or mute might be blocked by the browser: ', error);
-            });
-        });
     }
 
     getImageSource(post: any): string {

@@ -1,13 +1,19 @@
+// WOFF2 first (a tenth of the TTF's size), the original as fallback. Root-relative URLs (not ~src/...)
+// keep the file names stable, so index.html can preload them. `swap`: text never waits on a font.
 @font-face {
     font-family: 'Ethnocentric';
-    src: url('~src/assets/fonts/Ethnocentric/ethnocentric rg.otf') format('truetype');
+    src: url('/assets/fonts/Ethnocentric/ethnocentric-rg.woff2') format('woff2'),
+    url('/assets/fonts/Ethnocentric/ethnocentric rg.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'Jersey 10';
-    src: url('~src/assets/fonts/Jersey10/Jersey10-Regular.ttf') format('truetype');
+    src: url('/assets/fonts/Jersey10/Jersey10-Regular.woff2') format('woff2'),
+    url('/assets/fonts/Jersey10/Jersey10-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }

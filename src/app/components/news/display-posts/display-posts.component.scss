@@ -1,11 +1,11 @@
 @import "../../../../styles/mixins";
-@import "../../../../styles/animations";
 
 .header-bg-image {
-    @include headerBgImage('~src/assets/images/news/news-start-blackend.jpeg');
+    @include headerBgImage('~src/assets/images/news/news-start-blackend.webp');
 }
 
 .instagram-feed {
+    padding-top: var(--oca-header-h);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,7 +92,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, background-color 0.2s;
 
-    i {
+    icon {
         margin-right: 10px;
         font-size: 20px;
     }

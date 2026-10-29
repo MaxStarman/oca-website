@@ -1,8 +1,5 @@
 <div>
-    <ng-container *ngIf="showStartPage; else displayPostsTemplate">
-        <news-start-page (clicked)="toggleStartPage()" [@startPageLeave]="startPageLeave"></news-start-page>
-    </ng-container>
-    <ng-template #displayPostsTemplate>
-        <display-posts @fadeIn></display-posts>
-    </ng-template>
+    <!-- Both are on screen during the hand-over: the start page shatters (or fades) over the posts -->
+    <news-start-page (clicked)="onStartPageDone()" *ngIf="showStartPage" [class.is-fading-out]="showPosts && fadeOut"></news-start-page>
+    <display-posts *ngIf="showPosts" class="is-fading-in"></display-posts>
 </div>

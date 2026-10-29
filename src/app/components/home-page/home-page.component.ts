@@ -2,9 +2,7 @@ import {AfterViewInit, Component, DestroyRef, ElementRef, NgZone, OnDestroy, Vie
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {NavService} from "../../services/nav.service";
 import {MotionService} from "../../services/motion.service";
-import {LoadingService} from "../../services/loading.service";
 import {SIGNATURE, TranslationKey} from "../../i18n/sl";
-import {loadCupcakeScene, StageComponent} from "../stage/stage.component";
 import {loadGsap} from "../../ng-animations/scroll-reveal";
 
 // Once the logo has been clicked, the idle pulse hint stops for the rest of the session
@@ -28,21 +26,14 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
     navOpen = false;
 
     @ViewChild('manifesto') manifestoRef!: ElementRef<HTMLElement>;
-    @ViewChild('footer') footerRef!: ElementRef<HTMLElement>;
-    @ViewChild(StageComponent) stage!: StageComponent;
 
     private revertScrollScene?: () => void;
 
     constructor(private navService: NavService,
                 private motion: MotionService,
                 private ngZone: NgZone,
-                loadingService: LoadingService,
                 destroyRef: DestroyRef) {
-        // Start downloading three.js now and keep the loading screen up until it's here,
-        // so the cupcake is already breathing when the screen lifts
-        if (!motion.reducedMotion) {
-            loadingService.hold(loadCupcakeScene());
-        }
+        // The side stripes pause while the menu covers the page
         navService.isOpen$.pipe(takeUntilDestroyed(destroyRef)).subscribe(open => this.navOpen = open);
     }
 
@@ -51,7 +42,7 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
         if (this.motion.reducedMotion) {
             return;
         }
-        const {gsap, ScrollTrigger} = await loadGsap();
+        const {gsap} = await loadGsap();
         const section = this.manifestoRef.nativeElement;
         const lines = Array.from(section.querySelectorAll<HTMLElement>('.line'));
 
@@ -68,27 +59,8 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
                     }
                 });
                 timeline.to({}, {duration: 0.6}); // hold the last line before the section ends
-
-                // The cupcake turns, shrinks and dims behind the text over the same stretch
-                ScrollTrigger.create({
-                    trigger: section,
-                    start: 'top bottom',
-                    end: 'bottom bottom',
-                    onUpdate: self => this.stage?.setScrollProgress(self.progress)
-                });
             }, section);
-
-            // Once the footer video (almost) fills the screen the cupcake can't be seen: stop rendering it.
-            // Same visibility pattern as the nav-menu video.
-            const footerObserver = new IntersectionObserver(entries => {
-                this.stage?.setCovered(entries[entries.length - 1].intersectionRatio >= 0.98);
-            }, {threshold: [0, 0.98]});
-            footerObserver.observe(this.footerRef.nativeElement);
-
-            this.revertScrollScene = () => {
-                context.revert();
-                footerObserver.disconnect();
-            };
+            this.revertScrollScene = () => context.revert();
         });
     }
 

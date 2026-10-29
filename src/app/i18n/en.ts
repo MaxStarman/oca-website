@@ -8,6 +8,7 @@ export const en: Record<TranslationKey, string> = {
     'nav.home': 'Home',
     'nav.openMenu': 'Open menu',
     'nav.closeMenu': 'Close menu',
+    'nav.main': 'Main menu',
     'lang.label': 'Language',
 
     'home.intro': "We're a four-piece band from Koper. A storytelling, danceable, psychedelic rock 'n' roll stew, Primorska style.",

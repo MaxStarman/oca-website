@@ -17,7 +17,7 @@
 @mixin earthBg() {
     background-color: #9A5A24;
     background-image: linear-gradient(rgba($oca-bg, .72), rgba($oca-bg, .88)),
-    url('~src/assets/images/dry-earth-bg.jpeg');
+    url('~src/assets/images/dry-earth-bg.webp');
     background-blend-mode: normal, multiply;
     background-position: center;
     background-repeat: no-repeat;

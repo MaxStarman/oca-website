@@ -26,8 +26,8 @@ export class LoadingService {
                 private motion: MotionService) {
     }
 
-    // Keep the loading screen up until `task` settles.
-    // TODO(phase 2): home holds the lazy three.js chunk here so the cupcake is ready when the screen lifts.
+    // Keep the loading screen up until `task` settles: for something the first screen can't show without
+    // (no caller at the moment; the 3D cupcake used to hold its three.js chunk here).
     hold(task: Promise<unknown>): void {
         this.tasks.push(task);
     }
